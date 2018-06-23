@@ -1,0 +1,21 @@
+{
+  "name": "validate-me",
+  "version": "1.0.0-alpha.0",
+  "description": "Dynamic validation lib for hydrating server errors",
+  "main": "index.js",
+  "repository": "https://github.com/dimax/validate-me",
+  "author": "Luciano Graziani @lgraziani2712",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "@dimax-ar/eslint-config-dimax": "1.0.2",
+    "eslint": "5.0.0",
+    "jest": "23.1.0",
+    "lerna": "2.11.0",
+    "npm-check": "5.7.1",
+    "prettier": "1.13.5"
+  }
+}

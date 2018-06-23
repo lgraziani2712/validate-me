@@ -1,0 +1,18 @@
+{
+  "lerna": "2.11.0",
+  "version": "0.0.0",
+  "npmClient": "yarn",
+  "useWorkspaces": true,
+  "packages": [
+    "packages/*"
+  ],
+  "command": {
+    "init": {
+      "exact": true
+    },
+    "publish": {
+      "exact": true,
+      "message": "✨ Publish"
+    }
+  }
+}
