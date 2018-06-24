@@ -8,7 +8,8 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "web"
   ],
   "devDependencies": {
     "@dimax-ar/eslint-config-dimax": "1.0.2",
@@ -16,6 +17,7 @@
     "jest": "23.1.0",
     "lerna": "2.11.0",
     "npm-check": "5.7.1",
-    "prettier": "1.13.5"
+    "prettier": "1.13.5",
+    "rollup": "0.61.2"
   }
 }
