@@ -1,21 +1,12 @@
-const notEmpty = () => instance => value => {
-  if (value === undefined || value === null || value === '') {
-    instance.addError('notEmpty');
-  } else {
-    instance.removeError('notEmpty');
-  }
-};
+const notEmpty = () => () => value =>
+  value !== undefined && value !== null && value !== '';
 const len = (min, max) => instance => {
   instance.setArgsToRule('len', [min, max]);
 
   return rawValue => {
     const value = String(rawValue);
 
-    if (min <= value.length && value.length <= max) {
-      instance.removeError('len');
-    } else {
-      instance.addError('len');
-    }
+    return value === '' || (min <= value.length && value.length <= max);
   };
 };
 
