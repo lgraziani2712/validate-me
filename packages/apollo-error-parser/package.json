@@ -1,6 +1,6 @@
 {
   "name": "@validate-me/apollo-error-parser",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "repository": "https://github.com/dimax/validate-me",
   "author": "Luciano Graziani @lgraziani2712",
   "main": "index.js",

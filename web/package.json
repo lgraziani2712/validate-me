@@ -1,0 +1,7 @@
+{
+  "name": "@validate-me/web",
+  "version": "1.0.0-alpha.2",
+  "private": true,
+  "repository": "https://github.com/dimax/validate-me",
+  "author": "Luciano Graziani @lgraziani2712"
+}
