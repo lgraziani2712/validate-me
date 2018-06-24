@@ -5,5 +5,8 @@
   "author": "Luciano Graziani @lgraziani2712",
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "files": [
+    "*.js"
+  ]
 }

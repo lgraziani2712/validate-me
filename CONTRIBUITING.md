@@ -1,4 +1,4 @@
-# Contribute to dimax-scripts
+# Contribute to validate-me
 
 The following rules will make easier to review PR's. Please, follow them so we all can have a better developer experience.
 
@@ -17,7 +17,7 @@ This project uses [Yarn](https://yarnpkg.com/en/) and [lerna](https://github.com
 
 For contribuitors with publish permissions, follow this steps:
 
-1. `[One time only]` Login permanently into NPM with this command: `npm adduser`. It creates an NPM user if not exists.
+1. `[One time only]` Login permanently into NPM with this command: `npm login`.
 2. `yarn lerna publish [--npm-tag=next]`.
 
 **NOTE**: Use `--npm-tag=next` only for alpha/beta releases. Without the tag uses latest.
@@ -44,7 +44,7 @@ To be able to use the `yarn run changelog` command, you'll need to set `GITHUB_A
 ### Add, update or remove a dependency from a package
 
 ```sh
-yarn run lerna add {dependency-name} [--dev] --scope={@dimax-ar/package-name}
+yarn run lerna add {dependency-name} [--dev] --scope={@validate-me/package-name}
 ```
 
 ## CI Configuration

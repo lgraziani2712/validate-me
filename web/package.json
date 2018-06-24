@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "@validate-me/apollo-error-parser": "1.0.0-alpha.2",
-    "@validate-me/core": "1.0.0-alpha.2"
+    "@validate-me/core": "1.0.0-alpha.2",
+    "@validate-me/vanilla-connector": "1.0.0-alpha.2"
   },
   "devDependencies": {
     "webpack": "4.12.1",

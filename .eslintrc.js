@@ -6,6 +6,9 @@ module.exports = {
     ecmaVersion: 8,
     sourceType: 'module',
   },
+  env: {
+    browser: true,
+  },
   rules: {
     'filenames/match-exported': 0,
   },
