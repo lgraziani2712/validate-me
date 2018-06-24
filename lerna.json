@@ -12,7 +12,7 @@
     },
     "publish": {
       "exact": true,
-      "message": "✨ Publish"
+      "message": "✨ Publish v%v"
     }
   }
 }

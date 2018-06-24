@@ -6,4 +6,7 @@ module.exports = {
     ecmaVersion: 8,
     sourceType: 'module',
   },
+  rules: {
+    'filenames/match-exported': 0,
+  },
 };
