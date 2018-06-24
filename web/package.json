@@ -3,5 +3,17 @@
   "version": "1.0.0-alpha.2",
   "private": true,
   "repository": "https://github.com/dimax/validate-me",
-  "author": "Luciano Graziani @lgraziani2712"
+  "author": "Luciano Graziani @lgraziani2712",
+  "scripts": {
+    "start": "webpack-dev-server --content-base dist"
+  },
+  "dependencies": {
+    "@validate-me/apollo-error-parser": "1.0.0-alpha.2",
+    "@validate-me/core": "1.0.0-alpha.2"
+  },
+  "devDependencies": {
+    "webpack": "4.12.1",
+    "webpack-cli": "3.0.8",
+    "webpack-dev-server": "3.1.4"
+  }
 }
