@@ -1,6 +1,8 @@
 {
   "name": "@validate-me/core",
   "version": "1.0.0-alpha.1",
+  "repository": "https://github.com/dimax/validate-me",
+  "author": "Luciano Graziani @lgraziani2712",
   "publishConfig": {
     "access": "public"
   }
