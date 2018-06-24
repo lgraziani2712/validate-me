@@ -19,6 +19,9 @@ export default class ValidatemeItem {
       this.setRule(key, rules[key]);
     });
   }
+  setStateChangeHandler(fn) {
+    this.stateChangeHandler = fn;
+  }
   setRule(name, rule) {
     if (this.rules[name]) {
       throw new Error(
@@ -55,25 +58,24 @@ export default class ValidatemeItem {
     if (this.errors.includes(rule)) {
       return;
     }
-    if (this.state.valid) {
-      this.state.valid = false;
-      this.state.error = true;
-    }
+    this.state.valid = false;
+    this.state.error = true;
 
     this.errors.push(rule);
+    this.stateChangeHandler();
   }
   removeError(rule) {
     const indexOfError = this.errors.indexOf(rule);
 
-    if (indexOfError === -1) {
-      return;
+    if (indexOfError !== -1) {
+      this.errors.splice(indexOfError, 1);
     }
-    this.errors.splice(indexOfError, 1);
 
     if (!this.errors.length) {
       this.state.valid = true;
       this.state.error = false;
     }
+    this.stateChangeHandler();
   }
   firstError() {
     const error = this.errors[0];
@@ -86,19 +88,18 @@ export default class ValidatemeItem {
       this.state.warning = true;
     }
     this.warnings.push(rule);
+    this.stateChangeHandler();
   }
   clearWarnings() {
     this.state.warning = false;
     this.warnings = [];
+    this.stateChangeHandler();
   }
   firstWarning() {
-    const warning = this.warnings[0];
-
-    // TODO: Allow a11y
-    return `AVISO: ${ValidatemeDictionary.getMessage(
-      warning,
+    return ValidatemeDictionary.getWarning(
+      this.warnings[0],
       this.lastValueToServer,
-    )}`;
+    );
   }
   touchState() {
     if (this.state.touched) {
@@ -108,13 +109,28 @@ export default class ValidatemeItem {
 
     this.run(this.value);
   }
+  runRules() {
+    Object.keys(this.rules).forEach(key => {
+      const success = this.rules[key].run(this.value);
+
+      if (success) {
+        this.removeError(key);
+      } else {
+        this.addError(key);
+      }
+    });
+  }
   run(value) {
     this.value = value;
 
-    if (!this.state.touched) {
-      return;
+    this.runRules();
+  }
+  validate() {
+    if (this.state.touched) {
+      return this.isSuccess();
     }
 
-    Object.values(this.rules).forEach(rule => rule.run(value, this));
+    this.state.touched = true;
+    this.runRules();
   }
 }

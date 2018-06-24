@@ -55,4 +55,10 @@ export default class Validateme {
       });
     });
   }
+  isValid() {
+    return Object.values(this.fields).reduce(
+      (success, field) => field.validate() && success,
+      true,
+    );
+  }
 }
