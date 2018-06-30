@@ -1,4 +1,6 @@
-# validate-me
+# @validate-me/core
+
+Main package for `validate-me`. It contains everything to run client side validations with any kind of JS framework or with vanilla JS.
 
 > validate-me stands for the "client asking the server to validate its data"
 
