@@ -1,5 +1,3 @@
-const notEmpty = () => () => value =>
-  value !== undefined && value !== null && value !== '';
 const len = (min, max) => instance => {
   instance.setArgsToRule('len', [min, max]);
 
@@ -10,7 +8,4 @@ const len = (min, max) => instance => {
   };
 };
 
-export default {
-  len,
-  notEmpty,
-};
+export default len;
