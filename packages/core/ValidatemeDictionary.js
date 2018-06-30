@@ -21,12 +21,15 @@ function setConfig(newConfig) {
   }
 }
 function getWarning(rule, value, ...args) {
-  const fn = dictionary[config.lang][rule];
   const unknownRule = dictionary[config.lang].unknownRule;
+  const fn = dictionary[config.lang][rule];
+  const warning = extras[config.lang].preWarning || '';
 
-  return !fn
-    ? (unknownRule && unknownRule(rule, value)) || ''
-    : extras.preWarning + fn(value, ...args);
+  if (!fn && !unknownRule) {
+    return '';
+  }
+
+  return warning + (!fn ? unknownRule(rule, value) : fn(value, ...args));
 }
 function getMessage(rule, value, ...args) {
   const fn = dictionary[config.lang][rule];
