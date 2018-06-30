@@ -1,6 +1,6 @@
 {
   "name": "@validate-me/web",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.4",
   "private": true,
   "repository": "https://github.com/dimax/validate-me",
   "author": "Luciano Graziani @lgraziani2712",
@@ -9,9 +9,9 @@
     "start": "webpack-dev-server --content-base dist"
   },
   "dependencies": {
-    "@validate-me/apollo-error-parser": "1.0.0-alpha.3",
-    "@validate-me/core": "1.0.0-alpha.3",
-    "@validate-me/vanilla-connector": "1.0.0-alpha.3"
+    "@validate-me/apollo-error-parser": "1.0.0-alpha.4",
+    "@validate-me/core": "1.0.0-alpha.4",
+    "@validate-me/vanilla-connector": "1.0.0-alpha.4"
   },
   "devDependencies": {
     "webpack": "4.12.1",
