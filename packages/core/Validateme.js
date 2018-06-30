@@ -1,5 +1,9 @@
+const defaultConfig = {
+  processErrorFromServer: f => f,
+};
+
 export default class Validateme {
-  constructor(fields = [], configs) {
+  constructor(fields = [], configs = defaultConfig) {
     this.fields = {};
     this.processErrorFromServer = configs.processErrorFromServer;
 
@@ -39,7 +43,7 @@ export default class Validateme {
       });
     });
   }
-  isValid() {
+  validate() {
     return Object.values(this.fields).reduce(
       (success, field) => field.validate() && success,
       true,
