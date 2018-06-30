@@ -15,9 +15,7 @@ ValidatemeRules.setConfig({
 window.addEventListener('load', () => {
   const form = document.getElementById('form');
   const result = document.getElementById('result');
-  const validateme = new Validateme([new ValidatemeItem('name')], {
-    processErrorFromServer: f => f,
-  });
+  const validateme = new Validateme([new ValidatemeItem('name')]);
 
   vanillaConnector(validateme, form);
   let first = true;
@@ -28,12 +26,12 @@ window.addEventListener('load', () => {
     if (first) {
       first = false;
       validateme.process({
-        name: ['required', 'len:0:10', 'unexistingRule'],
+        name: ['unexistingRule', 'required', 'len:0:10'],
       });
     }
 
     result.innerHTML = `Validation complete: ${
-      validateme.isValid() ? 'Success!' : 'Errors!'
+      validateme.validate() ? 'Success!' : 'Errors!'
     }`;
   });
 });
