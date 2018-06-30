@@ -1,3 +1,4 @@
+import ValidatemeRules from './ValidatemeRules';
 import ValidatemeDictionary from './ValidatemeDictionary';
 
 export default class ValidatemeItem {
@@ -7,13 +8,14 @@ export default class ValidatemeItem {
     this.errors = [];
     this.warnings = [];
     this.state = {
+      loading: false,
       touched: false,
       valid: true,
       error: false,
       warning: false,
     };
-    this.value = null;
-    this.lastValueToServer = null;
+    this.value = '';
+    this.lastValueToServer = '';
 
     Object.keys(rules).forEach(key => {
       this.setRule(key, rules[key]);
@@ -31,9 +33,6 @@ export default class ValidatemeItem {
     this.rules[name] = {};
     this.rules[name].run = rule(this);
   }
-  hasRule(name) {
-    return !!this.rules[name];
-  }
   setArgsToRule(name, args) {
     if (!this.rules[name]) {
       throw new Error(
@@ -46,13 +45,34 @@ export default class ValidatemeItem {
     this.lastValueToServer = this.value;
   }
   isSuccess() {
-    return this.state.touched && this.state.valid && !this.state.warning;
+    return !this.state.loading && this.state.touched && this.state.valid;
   }
   hasErrors() {
-    return this.state.touched && this.state.error;
+    return !this.state.loading && this.state.touched && this.state.error;
   }
   hasWarnings() {
-    return this.state.touched && this.state.warning;
+    return !this.state.loading && this.state.touched && this.state.warning;
+  }
+  addFailedRule(failedRule, ...args) {
+    if (this.rules[failedRule]) {
+      this.addError(failedRule);
+
+      return;
+    }
+    this.loading = true;
+
+    ValidatemeDictionary.loadMessage(failedRule);
+    ValidatemeRules.getRule(failedRule)
+      .then(rule => {
+        this.setRule(failedRule, rule(...args));
+        this.addError(failedRule);
+      })
+      .catch(() => {
+        this.addWarning(failedRule);
+      })
+      .then(() => {
+        this.loading = false;
+      });
   }
   addError(rule) {
     if (this.errors.includes(rule)) {

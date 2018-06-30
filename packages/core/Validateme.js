@@ -1,5 +1,3 @@
-import ValidatemeRules from './ValidatemeRules';
-
 export default class Validateme {
   constructor(fields = [], configs) {
     this.fields = {};
@@ -36,22 +34,8 @@ export default class Validateme {
 
       failedFieldsRules[fieldName].forEach(rawError => {
         const [failedRule, ...args] = rawError.split(':');
-        const errorType = ValidatemeRules.hasRule(failedRule)
-          ? 'errors'
-          : 'warnings';
 
-        if (errorType === 'warnings') {
-          field.addWarning(failedRule);
-
-          return;
-        }
-        if (!field.hasRule(failedRule)) {
-          field.setRule(
-            failedRule,
-            ValidatemeRules.instanciateRule(failedRule, ...args),
-          );
-        }
-        field.addError(failedRule);
+        field.addFailedRule(failedRule, ...args);
       });
     });
   }
