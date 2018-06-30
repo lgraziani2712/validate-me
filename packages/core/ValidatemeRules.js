@@ -1,19 +1,23 @@
-const rules = {};
+const config = {
+  clientRulesHandler() {
+    throw new Error("Client's rules handler not found.");
+  },
+};
 
-function setRules(tempRules) {
-  Object.keys(tempRules).forEach(key => {
-    rules[key] = tempRules[key];
+// TODO: validate the data structure? See https://www.npmjs.com/package/validated
+function setConfig(newConfig) {
+  Object.keys(newConfig).forEach(key => {
+    config[key] = newConfig[key];
   });
 }
-function hasRule(name) {
-  return !!this.rules[name];
-}
-function instanciateRule(name, ...args) {
-  return this.rules[name](...args);
+function getRule(name) {
+  return config
+    .clientRulesHandler(name)
+    .catch(() => import(`./rules/${name}`))
+    .then(module => module.default);
 }
 
 export default {
-  setRules,
-  hasRule,
-  instanciateRule,
+  setConfig,
+  getRule,
 };
