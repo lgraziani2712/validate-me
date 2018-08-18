@@ -31,12 +31,8 @@ export default function vanillaConnector(validateme, form) {
     const input = form[key];
     const label = input.nextElementSibling;
 
-    input.addEventListener('blur', () => {
-      field.touchState();
-    });
-    input.addEventListener('change', evt => {
-      field.run(evt.target.value);
-    });
+    input.addEventListener('blur', () => field.touchState());
+    input.addEventListener('input', evt => field.run(evt.target.value));
     field.setStateChangeHandler(() => print(field, label));
   });
 }
