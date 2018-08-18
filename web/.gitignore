@@ -1,3 +1,5 @@
 .cache
-/dist
-!dist/index.html
+/dist/**/*.*
+!/dist/index.html
+!/dist/vue-index.html
+!/dist/vanilla-index.html
