@@ -1,30 +1,46 @@
 const defaultConfig = {
+  fields: [],
+  store: {
+    fields: {},
+  },
+  setField: field => {
+    this.store.fields[field.name] = field;
+  },
   processErrorFromServer: f => f,
 };
 
 export default class Validateme {
-  constructor(fields = [], configs = defaultConfig) {
-    this.fields = {};
+  constructor(newConfig) {
+    const configs = Object.assign(defaultConfig, newConfig);
+
+    this.store = configs.store;
+    this.handleSetField = configs.setField;
     this.processErrorFromServer = configs.processErrorFromServer;
 
-    fields.forEach(field => this.setField(field));
+    configs.fields.forEach(field => this.setField(field));
   }
   field(name) {
-    if (!this.fields[name]) {
-      throw new Error(`Field "${name}" doesn't exists.`);
-    }
-
-    return this.fields[name];
+    return this.store.fields[name];
   }
   setField(field) {
-    if (this.fields[field.name]) {
+    if (this.store.fields[field.name]) {
       throw new Error(`Field "${field.name}" already exists.`);
     }
 
-    this.fields[field.name] = field;
+    this.handleSetField(field);
+  }
+  firstErrorOf(name) {
+    const field = this.store.fields[name];
+
+    return field && field.hasErrors() && field.firstError();
+  }
+  firstWarningOf(name) {
+    const field = this.store.fields[name];
+
+    return field && field.hasWarnings() && field.firstWarning();
   }
   beforeSendToServer() {
-    Object.values(this.fields).forEach(field => {
+    Object.values(this.store.fields).forEach(field => {
       field.setSentValue();
       field.clearWarnings();
     });
@@ -34,17 +50,15 @@ export default class Validateme {
     const failedFieldsRules = this.processErrorFromServer(error);
 
     Object.keys(failedFieldsRules).forEach(fieldName => {
-      const field = this.fields[fieldName];
+      const field = this.store.fields[fieldName];
 
       failedFieldsRules[fieldName].forEach(rawError => {
-        const [failedRule, ...args] = rawError.split(':');
-
-        field.addFailedRule(failedRule, ...args);
+        field.parseRawError(rawError);
       });
     });
   }
   validate() {
-    return Object.values(this.fields).reduce(
+    return Object.values(this.store.fields).reduce(
       (success, field) => field.validate() && success,
       true,
     );
