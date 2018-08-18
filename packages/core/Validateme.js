@@ -29,15 +29,18 @@ export default class Validateme {
 
     this.handleSetField(field);
   }
-  firstErrorOf(name) {
+  firstMessageOf(name) {
     const field = this.store.fields[name];
 
-    return field && field.hasErrors() && field.firstError();
-  }
-  firstWarningOf(name) {
-    const field = this.store.fields[name];
-
-    return field && field.hasWarnings() && field.firstWarning();
+    if (!field) {
+      return;
+    }
+    if (field.hasErrors()) {
+      return field.firstError();
+    }
+    if (field.hasWarnings()) {
+      return field.firstWarning();
+    }
   }
   beforeSendToServer() {
     Object.values(this.store.fields).forEach(field => {
@@ -62,5 +65,12 @@ export default class Validateme {
       (success, field) => field.validate() && success,
       true,
     );
+  }
+  data() {
+    return Object.values(this.store.fields).reduce((data, field) => {
+      data[field.name] = field.value;
+
+      return data;
+    }, {});
   }
 }
