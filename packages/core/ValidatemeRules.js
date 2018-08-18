@@ -1,6 +1,13 @@
 const config = {
   clientRulesHandler() {
-    throw new Error("Client's rules handler not found.");
+    if (process.env.NODE_ENV !== 'production') {
+      // eslint-disable-next-line no-console
+      console.warn(
+        "[dev-only] @validate-me: Client's rules handler not found.",
+      );
+    }
+
+    return Promise.reject();
   },
 };
 
