@@ -59,18 +59,17 @@ export default class ValidatemeItem {
     if (this.rules[rule]) {
       return Promise.resolve({ rule, args });
     }
-    this.loading = true;
+    this.state.loading = true;
 
     ValidatemeDictionary.loadMessage(rule);
 
     return ValidatemeRules.getRule(rule)
-      .then(rule => {
-        this.loading = false;
-
-        return { rule, args };
-      })
+      .then(rule => ({ rule, args }))
       .catch(() => {
         throw { rule, args };
+      })
+      .finally(() => {
+        this.state.loading = false;
       });
   }
   parseRawError(rawError) {
@@ -80,7 +79,7 @@ export default class ValidatemeItem {
         this.addError(rule.name);
       })
       .catch(rule => {
-        this.addWarning(rule.name);
+        this.addWarning(rule);
       });
   }
   addError(rule) {
@@ -154,11 +153,10 @@ export default class ValidatemeItem {
     this.runRules();
   }
   validate() {
-    if (this.state.touched) {
-      return this.isSuccess();
+    if (!this.state.touched) {
+      this.touchState();
     }
 
-    this.state.touched = true;
-    this.runRules();
+    return this.isSuccess();
   }
 }
