@@ -61,13 +61,14 @@ export default class ValidatemeItem {
     }
     this.state.loading = true;
 
-    ValidatemeDictionary.loadMessage(rule);
-
-    return ValidatemeRules.getRule(rule)
-      .then(rule => ({ rule, args }))
-      .catch(() => {
-        throw { rule, args };
-      })
+    return ValidatemeDictionary.loadMessage(rule)
+      .then(() =>
+        ValidatemeRules.getRule(rule)
+          .then(rule => ({ rule, args }))
+          .catch(() => {
+            throw { rule, args };
+          }),
+      )
       .finally(() => {
         this.state.loading = false;
       });

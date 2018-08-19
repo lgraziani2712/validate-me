@@ -44,7 +44,7 @@ function getMessage(rule, value, args) {
   return !fn ? '' : fn(value, ...args);
 }
 function loadMessage(name) {
-  config
+  return config
     .clientDictionaryHandler(config.lang, name)
     .catch(() => import(`./dictionaries/${config.lang}/rules/${name}`))
     .catch(() => import(`./dictionaries/${config.lang}/unknownRule`))
