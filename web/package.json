@@ -1,6 +1,6 @@
 {
   "name": "@validate-me/web",
-  "version": "1.0.0-alpha.6",
+  "version": "1.0.0-alpha.7",
   "private": true,
   "repository": "https://github.com/dimax/validate-me",
   "author": "Luciano Graziani @lgraziani2712",
@@ -9,10 +9,10 @@
     "start": "webpack-dev-server --content-base dist"
   },
   "dependencies": {
-    "@validate-me/apollo-error-parser": "1.0.0-alpha.6",
-    "@validate-me/core": "1.0.0-alpha.6",
-    "@validate-me/vanilla-connector": "1.0.0-alpha.6",
-    "@validate-me/vue-plugin": "1.0.0-alpha.6"
+    "@validate-me/apollo-error-parser": "1.0.0-alpha.7",
+    "@validate-me/core": "1.0.0-alpha.7",
+    "@validate-me/vanilla-connector": "1.0.0-alpha.7",
+    "@validate-me/vue-plugin": "1.0.0-alpha.7"
   },
   "devDependencies": {
     "css-loader": "1.0.0",
