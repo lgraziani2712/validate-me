@@ -1,6 +1,12 @@
 import Vue from 'vue';
 import Validateme from '@validate-me/core/Validateme';
 
+let serverErrorHandler;
+
+export function setServerErrorHandler(handler) {
+  serverErrorHandler = handler;
+}
+
 export default {
   provide() {
     return {
@@ -14,6 +20,7 @@ export default {
   },
   beforeCreate() {
     this.$validateme = new Validateme({
+      serverErrorHandler,
       store: new Vue({
         data() {
           return {

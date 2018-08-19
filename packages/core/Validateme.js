@@ -6,7 +6,7 @@ const defaultConfig = {
   setField(field) {
     this.store.fields[field.name] = field;
   },
-  processErrorFromServer: f => f,
+  serverErrorHandler: f => f,
 };
 
 export default class Validateme {
@@ -15,7 +15,7 @@ export default class Validateme {
 
     this.store = configs.store;
     this.handleSetField = configs.setField;
-    this.processErrorFromServer = configs.processErrorFromServer;
+    this.serverErrorHandler = configs.serverErrorHandler;
 
     configs.fields.forEach(field => this.setField(field));
   }
@@ -53,7 +53,7 @@ export default class Validateme {
   }
   process(error) {
     // TODO: validate the data structure?
-    const failedFieldsRules = this.processErrorFromServer(error);
+    const failedFieldsRules = this.serverErrorHandler(error);
 
     Object.keys(failedFieldsRules).forEach(fieldName => {
       const field = this.store.fields[fieldName];
