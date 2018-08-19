@@ -22,7 +22,10 @@ export default {
 
     validateme.setField(field);
 
-    elem.addEventListener('blur', () => field.touchState(), { passive: true });
+    elem.addEventListener('blur', () => field.touchState(), {
+      once: true,
+      passive: true,
+    });
     elem.addEventListener('input', evt => field.run(evt.target.value), {
       passive: true,
     });

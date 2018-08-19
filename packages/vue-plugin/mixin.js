@@ -18,10 +18,10 @@ export default {
     });
   },
   methods: {
-    inputHasError(name) {
+    inputHasErrorOrWarning(name) {
       const field = this.$validateme.field(name);
 
-      return field && field.hasErrors();
+      return field && (field.hasErrors() || field.hasWarnings());
     },
   },
 };
