@@ -2,20 +2,18 @@
   <div>
     <h2>Form</h2>
     <form @submit.prevent="handleSubmit">
-      <div>
-        <h3>Name</h3>
-        <div>
-          <input v-validate-me="['len:2:10']" name="name" autofocus required>
-          <span v-show="inputHasErrorOrWarning('name')">
-            {{$validateme.firstMessageOf('name')}}
-          </span>
-        </div>
-      </div>
+      <input-string
+        label="Name"
+        name="name"
+        :validateme-rules="['len:2:10']"
+        autofocus
+        required
+      />
       <div>
         <h3>Surname</h3>
         <div>
           <input v-validate-me name="surname" required>
-          <span v-show="inputHasErrorOrWarning('surname')">
+          <span v-show="$validateme.inputHasErrorOrWarning('surname')">
             {{$validateme.firstMessageOf('surname')}}
           </span>
         </div>
@@ -29,7 +27,12 @@
 <script>
 import ValidatemeMixin from '@validate-me/vue-plugin/mixin';
 
+import InputString from './InputString';
+
 export default {
+  components: {
+    InputString,
+  },
   mixins: [ValidatemeMixin],
   methods: {
     handleSubmit() {
