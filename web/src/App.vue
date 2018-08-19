@@ -57,8 +57,6 @@ export default {
       }
       this.$validateme.beforeSendToServer();
 
-      console.log(this.$validateme.data());
-
       this.$validateme.process({
         name: ['unexistingRule'],
       });

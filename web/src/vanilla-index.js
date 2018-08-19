@@ -15,7 +15,7 @@ ValidatemeRules.setConfig({
 window.addEventListener('load', () => {
   const form = document.getElementById('form');
   const result = document.getElementById('result');
-  const validateme = new Validateme([new ValidatemeItem('name')]);
+  const validateme = new Validateme([new ValidatemeItem({ name: 'name' })]);
 
   vanillaConnector(validateme, form);
   let first = true;

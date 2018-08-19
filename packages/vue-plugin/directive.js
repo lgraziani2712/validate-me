@@ -21,7 +21,11 @@ export default {
       rules.push('required');
     }
 
-    const field = new ValidatemeItem(elem.name, rules);
+    const field = new ValidatemeItem({
+      name: elem.name,
+      rules,
+      value: elem.value,
+    });
 
     validateme.setField(field);
 
