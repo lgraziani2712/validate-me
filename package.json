@@ -1,6 +1,5 @@
 {
   "name": "validate-me",
-  "version": "1.0.0-alpha.4",
   "description": "Dynamic validation lib for hydrating server errors",
   "main": "index.js",
   "repository": "https://github.com/dimax/validate-me",
