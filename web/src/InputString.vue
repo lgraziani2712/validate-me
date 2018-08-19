@@ -1,17 +1,22 @@
 <template>
   <div>
     <h3>{{label}}</h3>
-    <div>
+    <p>
       <input
         v-validate-me="validatemeRules"
         :name="name"
         :autofocus="autofocus"
         :required="required"
-      >
-      <span v-show="$validateme.inputHasErrorOrWarning(name)">
-        {{$validateme.firstMessageOf(name)}}
+      />
+    </p>
+    <p>
+      <span v-show="$validateme.inputHasError(name)" style="color: red">
+        {{$validateme.firstError(name)}}
       </span>
-    </div>
+      <span v-show="$validateme.inputHasWarning(name)" style="color: orange">
+        {{$validateme.firstWarning(name)}}
+      </span>
+    </p>
   </div>
 </template>
 

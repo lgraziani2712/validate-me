@@ -11,12 +11,15 @@
       />
       <div>
         <h3>Surname</h3>
-        <div>
-          <input v-validate-me name="surname" required>
-          <span v-show="$validateme.inputHasErrorOrWarning('surname')">
-            {{$validateme.firstMessageOf('surname')}}
+        <p><input v-validate-me name="surname" required /></p>
+        <p>
+          <span v-show="$validateme.inputHasError('surname')" style="color: red">
+            {{$validateme.firstError('surname')}}
           </span>
-        </div>
+          <span v-show="$validateme.inputHasWarning('surname')" style="color: orange">
+            {{$validateme.firstWarning('surname')}}
+          </span>
+        </p>
       </div>
       <br>
       <button>Submit form</button>

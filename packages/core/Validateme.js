@@ -29,23 +29,21 @@ export default class Validateme {
 
     this.handleSetField(field);
   }
-  inputHasErrorOrWarning(name) {
-    const field = this.field(name);
-
-    return field && (field.hasErrors() || field.hasWarnings());
+  inputHasError(name) {
+    return this.field(name) && this.field(name).hasErrors();
   }
-  firstMessageOf(name) {
+  inputHasWarning(name) {
+    return this.field(name) && this.field(name).hasWarnings();
+  }
+  firstError(name) {
     const field = this.store.fields[name];
 
-    if (!field) {
-      return;
-    }
-    if (field.hasErrors()) {
-      return field.firstError();
-    }
-    if (field.hasWarnings()) {
-      return field.firstWarning();
-    }
+    return field && field.hasErrors() ? field.firstError() : '';
+  }
+  firstWarning(name) {
+    const field = this.store.fields[name];
+
+    return field && field.hasWarnings() ? field.firstWarning() : '';
   }
   beforeSendToServer() {
     Object.values(this.store.fields).forEach(field => {
