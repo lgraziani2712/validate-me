@@ -6,12 +6,19 @@
         label="Name"
         name="name"
         :validateme-rules="['len:2:10']"
+        v-model="name"
         autofocus
         required
       />
       <div>
         <h3>Surname</h3>
-        <p><input v-validate-me name="surname" required /></p>
+        <p>
+          <input
+            v-validate-me
+            name="surname"
+            required
+            v-model="surname"
+          /></p>
         <p>
           <span v-show="$validateme.inputHasError('surname')" style="color: red">
             {{$validateme.firstError('surname')}}
@@ -37,6 +44,12 @@ export default {
     InputString,
   },
   mixins: [ValidatemeMixin],
+  data() {
+    return {
+      name: '',
+      surname: '',
+    };
+  },
   methods: {
     handleSubmit() {
       if (!this.$validateme.validate()) {

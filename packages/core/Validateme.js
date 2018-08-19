@@ -69,11 +69,4 @@ export default class Validateme {
       true,
     );
   }
-  data() {
-    return Object.values(this.store.fields).reduce((data, field) => {
-      data[field.name] = field.value;
-
-      return data;
-    }, {});
-  }
 }

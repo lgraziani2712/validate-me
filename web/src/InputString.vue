@@ -7,6 +7,7 @@
         :name="name"
         :autofocus="autofocus"
         :required="required"
+        @input.passive="handleInput"
       />
     </p>
     <p>
@@ -26,12 +27,25 @@ import VueTypes from 'vue-types';
 export default {
   inject: ['$validateme'],
   props: {
-    name: VueTypes.string.isRequired,
     label: VueTypes.string.isRequired,
     validatemeRules: VueTypes.arrayOf(String),
     autofocus: Boolean,
     required: Boolean,
   },
-}
+  computed: {
+    name() {
+      if (!this.$vnode.data.model) {
+        throw new Error('[$validateme] v-model not found and is required.');
+      }
+
+      return this.$vnode.data.model.expression;
+    },
+  },
+  methods: {
+    handleInput(evt) {
+      this.$emit('input', evt.target.value);
+    }
+  },
+};
 </script>
 
