@@ -1,27 +1,32 @@
+import Vue from 'vue';
 import Validateme from '@validate-me/core/Validateme';
 
 export default {
-  data() {
+  provide() {
     return {
-      fields: {},
+      $validateme: this.$validateme,
     };
   },
-  created() {
+  computed: {
+    fields() {
+      return this.$validateme.store.fields;
+    },
+  },
+  beforeCreate() {
     this.$validateme = new Validateme({
-      store: this.$data,
-      setField: field => {
-        this.$data.fields = {
-          ...this.$data.fields,
+      store: new Vue({
+        data() {
+          return {
+            fields: {},
+          };
+        },
+      }),
+      setField(field) {
+        this.store.fields = {
+          ...this.store.fields,
           [field.name]: field,
         };
       },
     });
-  },
-  methods: {
-    inputHasErrorOrWarning(name) {
-      const field = this.$validateme.field(name);
-
-      return field && (field.hasErrors() || field.hasWarnings());
-    },
   },
 };
