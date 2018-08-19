@@ -1,0 +1,19 @@
+{
+  "name": "@validate-me/vue-plugin",
+  "version": "1.0.0-alpha.5",
+  "repository": "https://github.com/dimax/validate-me",
+  "author": "Luciano Graziani @lgraziani2712",
+  "license": "MIT",
+  "main": "index.js",
+  "module": "index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "*.js"
+  ],
+  "peerDependencies": {
+    "vue": "^2.5.16",
+    "@validate-me/core": "^1.0.0-alpha.5"
+  }
+}

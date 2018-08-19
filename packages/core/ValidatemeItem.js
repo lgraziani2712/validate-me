@@ -2,7 +2,7 @@ import ValidatemeRules from './ValidatemeRules';
 import ValidatemeDictionary from './ValidatemeDictionary';
 
 export default class ValidatemeItem {
-  constructor(field, rules = {}) {
+  constructor(field, rawRules = []) {
     this.name = field;
     this.rules = {};
     this.errors = [];
@@ -17,19 +17,19 @@ export default class ValidatemeItem {
     this.value = '';
     this.lastValueToServer = '';
 
-    Object.keys(rules).forEach(key => {
-      this.setRule(key, rules[key]);
+    rawRules.forEach(rawRule => {
+      this.loadRule(rawRule)
+        .then(({ rule, args }) => {
+          this.setRule(rule.name, rule(...args));
+        })
+        .catch(({ rule, args }) => {
+          throw new Error(
+            `Unknown rule "${rule}" with args "${args.join(', ')}".`,
+          );
+        });
     });
   }
-  setStateChangeHandler(fn) {
-    this.stateChangeHandler = fn;
-  }
   setRule(name, rule) {
-    if (this.rules[name]) {
-      throw new Error(
-        `Rule "${name}" already exists for the field "${this.name}".`,
-      );
-    }
     this.rules[name] = {};
     this.rules[name].run = rule(this);
   }
@@ -53,25 +53,34 @@ export default class ValidatemeItem {
   hasWarnings() {
     return !this.state.loading && this.state.touched && this.state.warning;
   }
-  addFailedRule(failedRule, ...args) {
-    if (this.rules[failedRule]) {
-      this.addError(failedRule);
+  loadRule(rawRule) {
+    const [rule, ...args] = rawRule.split(':');
 
-      return;
+    if (this.rules[rule]) {
+      return Promise.resolve({ rule, args });
     }
-    this.loading = true;
+    this.state.loading = true;
 
-    ValidatemeDictionary.loadMessage(failedRule);
-    ValidatemeRules.getRule(failedRule)
-      .then(rule => {
-        this.setRule(failedRule, rule(...args));
-        this.addError(failedRule);
+    return ValidatemeDictionary.loadMessage(rule)
+      .then(() =>
+        ValidatemeRules.getRule(rule)
+          .then(rule => ({ rule, args }))
+          .catch(() => {
+            throw { rule, args };
+          }),
+      )
+      .finally(() => {
+        this.state.loading = false;
+      });
+  }
+  parseRawError(rawError) {
+    this.loadRule(rawError)
+      .then(({ rule, args }) => {
+        this.setRule(rule.name, rule(...args));
+        this.addError(rule.name);
       })
-      .catch(() => {
-        this.addWarning(failedRule);
-      })
-      .then(() => {
-        this.loading = false;
+      .catch(rule => {
+        this.addWarning(rule);
       });
   }
   addError(rule) {
@@ -82,7 +91,6 @@ export default class ValidatemeItem {
     this.state.error = true;
 
     this.errors.push(rule);
-    this.stateChangeHandler();
   }
   removeError(rule) {
     const indexOfError = this.errors.indexOf(rule);
@@ -95,30 +103,30 @@ export default class ValidatemeItem {
       this.state.valid = true;
       this.state.error = false;
     }
-    this.stateChangeHandler();
   }
   firstError() {
     const error = this.errors[0];
     const args = this.rules[error].args || [];
 
-    return ValidatemeDictionary.getMessage(error, this.value, ...args);
+    return ValidatemeDictionary.getMessage(error, this.value, args);
   }
   addWarning(rule) {
     if (!this.state.warning) {
       this.state.warning = true;
     }
     this.warnings.push(rule);
-    this.stateChangeHandler();
   }
   clearWarnings() {
     this.state.warning = false;
     this.warnings = [];
-    this.stateChangeHandler();
   }
   firstWarning() {
+    const warning = this.warnings[0];
+
     return ValidatemeDictionary.getWarning(
-      this.warnings[0],
+      warning.rule,
       this.lastValueToServer,
+      warning.args,
     );
   }
   touchState() {
@@ -146,11 +154,10 @@ export default class ValidatemeItem {
     this.runRules();
   }
   validate() {
-    if (this.state.touched) {
-      return this.isSuccess();
+    if (!this.state.touched) {
+      this.touchState();
     }
 
-    this.state.touched = true;
-    this.runRules();
+    return this.isSuccess();
   }
 }
