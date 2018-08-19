@@ -3,7 +3,7 @@ const defaultConfig = {
   store: {
     fields: {},
   },
-  setField: field => {
+  setField(field) {
     this.store.fields[field.name] = field;
   },
   processErrorFromServer: f => f,
@@ -28,6 +28,11 @@ export default class Validateme {
     }
 
     this.handleSetField(field);
+  }
+  inputHasErrorOrWarning(name) {
+    const field = this.field(name);
+
+    return field && (field.hasErrors() || field.hasWarnings());
   }
   firstMessageOf(name) {
     const field = this.store.fields[name];
