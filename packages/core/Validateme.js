@@ -12,11 +12,12 @@ const defaultConfig = {
 
 export default class Validateme {
   constructor(newConfig) {
-    const configs = Object.assign(defaultConfig, newConfig);
+    const configs = Object.assign({}, defaultConfig, newConfig);
 
     this.store = configs.store;
     this.handleSetField = configs.setField;
-    this.serverErrorHandler = configs.serverErrorHandler;
+    this.serverErrorHandler =
+      configs.serverErrorHandler || defaultConfig.serverErrorHandler;
 
     configs.fields.forEach(field => this.setField(field));
   }
@@ -30,11 +31,15 @@ export default class Validateme {
 
     this.handleSetField(field);
   }
-  hasError(name) {
-    return this.field(name) && this.field(name).hasErrors();
+  hasErrors(name) {
+    const field = this.field(name);
+
+    return field && field.hasErrors();
   }
-  hasWarning(name) {
-    return this.field(name) && this.field(name).hasWarnings();
+  hasWarnings(name) {
+    const field = this.field(name);
+
+    return field && field.hasWarnings();
   }
   firstError(name) {
     const field = this.store.fields[name];
