@@ -1,3 +1,4 @@
+// TODO: validate the data structure?
 const defaultConfig = {
   fields: [],
   store: {
@@ -52,7 +53,6 @@ export default class Validateme {
     });
   }
   process(error) {
-    // TODO: validate the data structure?
     const failedFieldsRules = this.serverErrorHandler(error);
 
     Object.keys(failedFieldsRules).forEach(fieldName => {
