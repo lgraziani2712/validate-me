@@ -10,9 +10,8 @@
   },
   "dependencies": {
     "@validate-me/apollo-error-parser": "1.0.0-alpha.9",
-    "@validate-me/core": "1.0.0-alpha.9",
-    "@validate-me/vanilla-connector": "1.0.0-alpha.9",
-    "@validate-me/vue-plugin": "1.0.0-alpha.9"
+    "@validate-me/vanilla": "1.0.0-alpha.9",
+    "@validate-me/vue": "1.0.0-alpha.9"
   },
   "devDependencies": {
     "css-loader": "1.0.0",

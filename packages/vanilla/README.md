@@ -1,13 +1,13 @@
-# @validateme/vanilla-connector
+# @validateme/vanilla
 
-Right now this package is a simple example for the web of this library. I'm not using it any project.
+Basic example. I'm not using it any project.
 
 ## Usage
 
 ```js
 import Validateme from '@validate-me/core/Validateme';
 import ValidatemeItem from '@validate-me/core/ValidatemeItem';
-import vanillaConnector from '@validate-me/vanilla-connector';
+import vanillaConnector from '@validate-me/vanilla';
 
 window.addEventListener('load', () => {
   const myForm = document.getElementById('my-form');

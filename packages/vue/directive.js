@@ -18,7 +18,7 @@ export default {
     const rules = binding.value || [];
 
     if (elem.required) {
-      rules.push('required');
+      rules.unshift('required');
     }
 
     const field = new ValidatemeItem({
