@@ -31,6 +31,11 @@ export default class Validateme {
 
     this.handleSetField(field);
   }
+  isSuccess(name) {
+    const field = this.field(name);
+
+    return field && field.isSuccess();
+  }
   hasErrors(name) {
     const field = this.field(name);
 
@@ -51,12 +56,6 @@ export default class Validateme {
 
     return field && field.hasWarnings() ? field.firstWarning() : '';
   }
-  beforeSendToServer() {
-    Object.values(this.store.fields).forEach(field => {
-      field.setSentValue();
-      field.clearWarnings();
-    });
-  }
   process(error) {
     const failedFieldsRules = this.serverErrorHandler(error);
 
@@ -69,9 +68,18 @@ export default class Validateme {
     });
   }
   validate() {
-    return Object.values(this.store.fields).reduce(
+    const validation = Object.values(this.store.fields).reduce(
       (success, field) => field.validate() && success,
       true,
     );
+
+    if (validation) {
+      Object.values(this.store.fields).forEach(field => {
+        field.setSentValue();
+        field.clearWarnings();
+      });
+    }
+
+    return validation;
   }
 }
