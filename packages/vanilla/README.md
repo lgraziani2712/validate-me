@@ -1,23 +1,21 @@
 # @validateme/vanilla
 
-Basic example. I'm not using it any project.
-
 ## Usage
 
 ```js
 import Validateme from '@validate-me/core/Validateme';
-import ValidatemeItem from '@validate-me/core/ValidatemeItem';
+import ValidatemeField from '@validate-me/core/ValidatemeField';
 import vanillaConnector from '@validate-me/vanilla';
 
 window.addEventListener('load', () => {
   const myForm = document.getElementById('my-form');
   const resultMessage = document.getElementById('result-message');
   const inputName = 'name';
-  const validateme = new Validateme([new ValidatemeItem({ name: inputName })]);
+  const validateme = new Validateme([new ValidatemeField({ name: inputName })]);
 
-  vanillaConnector(validateme, form);
+  vanillaConnector(validateme, myForm);
 
-  form.addEventListener('submit' evt => {
+  myForm.addEventListener('submit' evt => {
     evt.preventDefault();
 
     if (!validateme.validate()) {

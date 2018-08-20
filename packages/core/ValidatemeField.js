@@ -1,7 +1,7 @@
-import ValidatemeRules from './ValidatemeRules';
-import ValidatemeDictionary from './ValidatemeDictionary';
+import ValidatemeRules from '@validate-me/core/ValidatemeRules';
+import ValidatemeDictionary from '@validate-me/core/ValidatemeDictionary';
 
-export default class ValidatemeItem {
+export default class ValidatemeField {
   constructor({ name, rules = [], value }) {
     this.name = name;
     this.rules = {};
@@ -15,7 +15,7 @@ export default class ValidatemeItem {
       warning: false,
     };
     this.value = value || '';
-    this.lastValueToServer = '';
+    this.lastValueToServer = value || '';
 
     rules.forEach(rawRule => {
       this.loadRule(rawRule)

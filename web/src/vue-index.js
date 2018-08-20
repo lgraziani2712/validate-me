@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import ValidatemePlugin from '@validate-me/vue-plugin';
+import ValidatemePlugin from '@validate-me/vue';
 
 import App from './App';
 

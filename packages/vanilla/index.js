@@ -1,7 +1,7 @@
 /**
  * Injects the message into label's innerHTML attr.
  *
- * @param {ValidatemeItem} field The validateme field instance.
+ * @param {ValidatemeField} field The validateme field instance.
  * @param {HTMLElement} label The element where can be rendered the messages.
  * @return {void}
  */

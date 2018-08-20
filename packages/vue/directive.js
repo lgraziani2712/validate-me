@@ -1,4 +1,4 @@
-import ValidatemeItem from '@validate-me/core/ValidatemeItem';
+import ValidatemeField from '@validate-me/core/ValidatemeField';
 
 export default {
   bind(elem, binding, vnode) {
@@ -21,7 +21,7 @@ export default {
       rules.unshift('required');
     }
 
-    const field = new ValidatemeItem({
+    const field = new ValidatemeField({
       name: elem.name,
       rules,
       value: elem.value,

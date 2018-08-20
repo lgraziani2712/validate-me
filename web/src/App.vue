@@ -15,16 +15,16 @@
         <p>
           <input
             v-validate-me
+            v-model="personal.surname"
             name="surname"
             required
-            v-model="personal.surname"
           /></p>
         <p>
-          <span v-show="$validateme.hasErrors('personal.surname')" style="color: red">
-            {{$validateme.firstError('personal.surname')}}
+          <span v-show="$validateme.hasErrors('surname')" style="color: red">
+            {{$validateme.firstError('surname')}}
           </span>
-          <span v-show="$validateme.hasWarnings('personal.surname')" style="color: orange">
-            {{$validateme.firstWarning('personal.surname')}}
+          <span v-show="$validateme.hasWarnings('surname')" style="color: orange">
+            {{$validateme.firstWarning('surname')}}
           </span>
         </p>
       </div>
@@ -57,7 +57,6 @@ export default {
       if (!this.$validateme.validate()) {
         return;
       }
-      this.$validateme.beforeSendToServer();
 
       this.$validateme.process({
         name: ['unexistingRule'],
