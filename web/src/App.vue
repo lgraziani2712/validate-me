@@ -6,17 +6,27 @@
         label="Name"
         name="name"
         :validateme-rules="['len:2:10']"
+        v-model="name"
         autofocus
         required
       />
       <div>
         <h3>Surname</h3>
-        <div>
-          <input v-validate-me name="surname" required>
-          <span v-show="$validateme.inputHasErrorOrWarning('surname')">
-            {{$validateme.firstMessageOf('surname')}}
+        <p>
+          <input
+            v-validate-me
+            name="surname"
+            required
+            v-model="surname"
+          /></p>
+        <p>
+          <span v-show="$validateme.hasError('surname')" style="color: red">
+            {{$validateme.firstError('surname')}}
           </span>
-        </div>
+          <span v-show="$validateme.hasWarning('surname')" style="color: orange">
+            {{$validateme.firstWarning('surname')}}
+          </span>
+        </p>
       </div>
       <br>
       <button>Submit form</button>
@@ -34,14 +44,18 @@ export default {
     InputString,
   },
   mixins: [ValidatemeMixin],
+  data() {
+    return {
+      name: '',
+      surname: '',
+    };
+  },
   methods: {
     handleSubmit() {
       if (!this.$validateme.validate()) {
         return;
       }
       this.$validateme.beforeSendToServer();
-
-      console.log(this.$validateme.data());
 
       this.$validateme.process({
         name: ['unexistingRule'],

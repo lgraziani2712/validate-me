@@ -4,11 +4,14 @@ export default {
   bind(elem, binding, vnode) {
     const validateme = vnode.context.$validateme;
 
+    if (!elem.name) {
+      throw new Error('[$validateme] "name" attribute not found.');
+    }
     if (!validateme) {
       throw new Error(
-        `@validate-me cannot be instanciated into "${
+        `[$validateme] Cannot be instanciated into "${
           elem.name
-        }" without the $validateme instance`,
+        }" without an instance`,
       );
     }
 
@@ -18,7 +21,11 @@ export default {
       rules.push('required');
     }
 
-    const field = new ValidatemeItem(elem.name, rules);
+    const field = new ValidatemeItem({
+      name: elem.name,
+      rules,
+      value: elem.value,
+    });
 
     validateme.setField(field);
 

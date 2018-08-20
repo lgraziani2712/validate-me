@@ -2,8 +2,8 @@ import ValidatemeRules from './ValidatemeRules';
 import ValidatemeDictionary from './ValidatemeDictionary';
 
 export default class ValidatemeItem {
-  constructor(field, rawRules = []) {
-    this.name = field;
+  constructor({ name, rules = [], value }) {
+    this.name = name;
     this.rules = {};
     this.errors = [];
     this.warnings = [];
@@ -14,10 +14,10 @@ export default class ValidatemeItem {
       error: false,
       warning: false,
     };
-    this.value = '';
+    this.value = value || '';
     this.lastValueToServer = '';
 
-    rawRules.forEach(rawRule => {
+    rules.forEach(rawRule => {
       this.loadRule(rawRule)
         .then(({ rule, args }) => {
           this.setRule(rule.name, rule(...args));

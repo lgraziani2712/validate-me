@@ -1,3 +1,4 @@
+// TODO: validate the data structure?
 const defaultConfig = {
   fields: [],
   store: {
@@ -6,7 +7,7 @@ const defaultConfig = {
   setField(field) {
     this.store.fields[field.name] = field;
   },
-  processErrorFromServer: f => f,
+  serverErrorHandler: f => f,
 };
 
 export default class Validateme {
@@ -15,7 +16,7 @@ export default class Validateme {
 
     this.store = configs.store;
     this.handleSetField = configs.setField;
-    this.processErrorFromServer = configs.processErrorFromServer;
+    this.serverErrorHandler = configs.serverErrorHandler;
 
     configs.fields.forEach(field => this.setField(field));
   }
@@ -29,23 +30,21 @@ export default class Validateme {
 
     this.handleSetField(field);
   }
-  inputHasErrorOrWarning(name) {
-    const field = this.field(name);
-
-    return field && (field.hasErrors() || field.hasWarnings());
+  hasError(name) {
+    return this.field(name) && this.field(name).hasErrors();
   }
-  firstMessageOf(name) {
+  hasWarning(name) {
+    return this.field(name) && this.field(name).hasWarnings();
+  }
+  firstError(name) {
     const field = this.store.fields[name];
 
-    if (!field) {
-      return;
-    }
-    if (field.hasErrors()) {
-      return field.firstError();
-    }
-    if (field.hasWarnings()) {
-      return field.firstWarning();
-    }
+    return field && field.hasErrors() ? field.firstError() : '';
+  }
+  firstWarning(name) {
+    const field = this.store.fields[name];
+
+    return field && field.hasWarnings() ? field.firstWarning() : '';
   }
   beforeSendToServer() {
     Object.values(this.store.fields).forEach(field => {
@@ -54,8 +53,7 @@ export default class Validateme {
     });
   }
   process(error) {
-    // TODO: validate the data structure?
-    const failedFieldsRules = this.processErrorFromServer(error);
+    const failedFieldsRules = this.serverErrorHandler(error);
 
     Object.keys(failedFieldsRules).forEach(fieldName => {
       const field = this.store.fields[fieldName];
@@ -70,12 +68,5 @@ export default class Validateme {
       (success, field) => field.validate() && success,
       true,
     );
-  }
-  data() {
-    return Object.values(this.store.fields).reduce((data, field) => {
-      data[field.name] = field.value;
-
-      return data;
-    }, {});
   }
 }
