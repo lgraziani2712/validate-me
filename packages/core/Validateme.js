@@ -31,10 +31,10 @@ export default class Validateme {
 
     this.handleSetField(field);
   }
-  isSuccess(name) {
+  isValid(name) {
     const field = this.field(name);
 
-    return field && field.isSuccess();
+    return field && field.isValid();
   }
   hasErrors(name) {
     const field = this.field(name);
@@ -69,7 +69,7 @@ export default class Validateme {
   }
   validate() {
     const validation = Object.values(this.store.fields).reduce(
-      (success, field) => field.validate() && success,
+      (valid, field) => field.validate() && valid,
       true,
     );
 

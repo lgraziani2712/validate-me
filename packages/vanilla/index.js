@@ -1,7 +1,7 @@
 /**
  * Injects the message into label's innerHTML attr.
  *
- * @param {ValidatemeItem} field The validateme field instance.
+ * @param {ValidatemeField} field The validateme field instance.
  * @param {HTMLElement} label The element where can be rendered the messages.
  * @return {void}
  */
@@ -14,7 +14,7 @@ function print(field, label) {
     label.innerHTML = field.firstError();
   } else if (field.hasWarnings()) {
     label.innerHTML = field.firstWarning();
-  } else if (field.isSuccess()) {
+  } else if (field.isValid()) {
     label.innerHTML = 'Success!';
   }
 }

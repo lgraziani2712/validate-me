@@ -1,7 +1,7 @@
-import ValidatemeRules from './ValidatemeRules';
-import ValidatemeDictionary from './ValidatemeDictionary';
+import ValidatemeRules from '@validate-me/core/ValidatemeRules';
+import ValidatemeDictionary from '@validate-me/core/ValidatemeDictionary';
 
-export default class ValidatemeItem {
+export default class ValidatemeField {
   constructor({ name, rules = [], value }) {
     this.name = name;
     this.rules = {};
@@ -15,7 +15,7 @@ export default class ValidatemeItem {
       warning: false,
     };
     this.value = value || '';
-    this.lastValueToServer = '';
+    this.lastValueToServer = value || '';
 
     rules.forEach(rawRule => {
       this.loadRule(rawRule)
@@ -44,7 +44,7 @@ export default class ValidatemeItem {
   setSentValue() {
     this.lastValueToServer = this.value;
   }
-  isSuccess() {
+  isValid() {
     return !this.state.loading && this.state.touched && this.state.valid;
   }
   hasErrors() {
@@ -137,27 +137,24 @@ export default class ValidatemeItem {
 
     this.run(this.value);
   }
-  runRules() {
-    Object.keys(this.rules).forEach(key => {
-      const success = this.rules[key].run(this.value);
+  run(value) {
+    this.value = value;
 
-      if (success) {
+    Object.keys(this.rules).forEach(key => {
+      const valid = this.rules[key].run(this.value);
+
+      if (valid) {
         this.removeError(key);
       } else {
         this.addError(key);
       }
     });
   }
-  run(value) {
-    this.value = value;
-
-    this.runRules();
-  }
   validate() {
     if (!this.state.touched) {
       this.touchState();
     }
 
-    return this.isSuccess();
+    return this.isValid();
   }
 }

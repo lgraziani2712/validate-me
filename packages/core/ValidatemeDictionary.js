@@ -44,22 +44,28 @@ function getMessage(rule, value, args) {
   return !fn ? '' : fn(value, ...args);
 }
 function loadMessage(name) {
+  if (dictionary[config.lang][name]) {
+    return Promise.resolve();
+  }
+  if (!extras[config.lang]) {
+    loadExtras();
+  }
+
   return config
     .clientDictionaryHandler(config.lang, name)
-    .catch(() => import(`./dictionaries/${config.lang}/rules/${name}`))
-    .catch(() => import(`./dictionaries/${config.lang}/unknownRule`))
-    .then(module => module.default)
-    .then(rule => {
-      dictionary[config.lang][rule.name] = rule;
-
-      loadExtras();
+    .catch(() => import(`./dictionaries/${config.lang}/${name}`))
+    .catch(() => config.clientDictionaryHandler(config.lang, '_unknownRule'))
+    .catch(() => import(`./dictionaries/${config.lang}/_unknownRule`))
+    .then(mod => {
+      dictionary[config.lang][name] = mod.default;
     });
 }
 function loadExtras() {
-  import(`./dictionaries/${config.lang}/extras`)
-    .then(module => module.default)
-    .then(newExtras => {
-      extras[config.lang] = newExtras;
+  config
+    .clientDictionaryHandler(config.lang, '_extras')
+    .catch(() => import(`./dictionaries/${config.lang}/_extras`))
+    .then(mod => {
+      extras[config.lang] = mod.default;
     });
 }
 
