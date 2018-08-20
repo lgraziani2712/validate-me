@@ -6,6 +6,8 @@
   "author": "Luciano Graziani @lgraziani2712",
   "license": "MIT",
   "scripts": {
+    "build:docs": "vuepress build docs",
+    "start:docs": "vuepress dev docs",
     "start": "webpack-dev-server --content-base dist"
   },
   "dependencies": {
@@ -18,6 +20,7 @@
     "style-loader": "0.22.1",
     "vue-loader": "15.3.0",
     "vue-template-compiler": "2.5.17",
+    "vuepress": "0.14.2",
     "webpack": "4.16.5",
     "webpack-cli": "3.1.0",
     "webpack-dev-server": "3.1.5",
