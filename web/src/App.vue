@@ -20,10 +20,10 @@
             v-model="surname"
           /></p>
         <p>
-          <span v-show="$validateme.inputHasError('surname')" style="color: red">
+          <span v-show="$validateme.hasError('surname')" style="color: red">
             {{$validateme.firstError('surname')}}
           </span>
-          <span v-show="$validateme.inputHasWarning('surname')" style="color: orange">
+          <span v-show="$validateme.hasWarning('surname')" style="color: orange">
             {{$validateme.firstWarning('surname')}}
           </span>
         </p>

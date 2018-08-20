@@ -29,10 +29,10 @@ export default class Validateme {
 
     this.handleSetField(field);
   }
-  inputHasError(name) {
+  hasError(name) {
     return this.field(name) && this.field(name).hasErrors();
   }
-  inputHasWarning(name) {
+  hasWarning(name) {
     return this.field(name) && this.field(name).hasWarnings();
   }
   firstError(name) {

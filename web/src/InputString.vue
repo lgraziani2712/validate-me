@@ -11,10 +11,10 @@
       />
     </p>
     <p>
-      <span v-show="$validateme.inputHasError(name)" style="color: red">
+      <span v-show="$validateme.hasError(name)" style="color: red">
         {{$validateme.firstError(name)}}
       </span>
-      <span v-show="$validateme.inputHasWarning(name)" style="color: orange">
+      <span v-show="$validateme.hasWarning(name)" style="color: orange">
         {{$validateme.firstWarning(name)}}
       </span>
     </p>
