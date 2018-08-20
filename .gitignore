@@ -12,8 +12,8 @@ reports/**/*
 !reports/simple.xsl
 
 # production
-temp/*
-dist/*
+temp
+dist
 
 # misc
 .DS_Store

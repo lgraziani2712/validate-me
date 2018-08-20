@@ -3,6 +3,7 @@
   "description": "Dynamic validation lib for hydrating server errors",
   "main": "index.js",
   "repository": "https://github.com/dimax/validate-me",
+  "homepage": "https://dimax.github.io/validate-me",
   "author": "Luciano Graziani @lgraziani2712",
   "license": "MIT",
   "private": true,
