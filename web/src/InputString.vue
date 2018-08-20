@@ -7,14 +7,13 @@
         :name="name"
         :autofocus="autofocus"
         :required="required"
-        @input.passive="handleInput"
       />
     </p>
     <p>
-      <span v-show="$validateme.hasError(name)" style="color: red">
+      <span v-show="$validateme.hasErrors(name)" style="color: red">
         {{$validateme.firstError(name)}}
       </span>
-      <span v-show="$validateme.hasWarning(name)" style="color: orange">
+      <span v-show="$validateme.hasWarnings(name)" style="color: orange">
         {{$validateme.firstWarning(name)}}
       </span>
     </p>
@@ -28,23 +27,10 @@ export default {
   inject: ['$validateme'],
   props: {
     label: VueTypes.string.isRequired,
+    name: VueTypes.string.isRequired,
     validatemeRules: VueTypes.arrayOf(String),
     autofocus: Boolean,
     required: Boolean,
-  },
-  computed: {
-    name() {
-      if (!this.$vnode.data.model) {
-        throw new Error('[$validateme] v-model not found and is required.');
-      }
-
-      return this.$vnode.data.model.expression;
-    },
-  },
-  methods: {
-    handleInput(evt) {
-      this.$emit('input', evt.target.value);
-    }
   },
 };
 </script>

@@ -4,9 +4,9 @@
     <form @submit.prevent="handleSubmit">
       <input-string
         label="Name"
-        name="name"
         :validateme-rules="['len:2:10']"
-        v-model="name"
+        name="name"
+        v-model="personal.name"
         autofocus
         required
       />
@@ -17,14 +17,14 @@
             v-validate-me
             name="surname"
             required
-            v-model="surname"
+            v-model="personal.surname"
           /></p>
         <p>
-          <span v-show="$validateme.hasError('surname')" style="color: red">
-            {{$validateme.firstError('surname')}}
+          <span v-show="$validateme.hasErrors('personal.surname')" style="color: red">
+            {{$validateme.firstError('personal.surname')}}
           </span>
-          <span v-show="$validateme.hasWarning('surname')" style="color: orange">
-            {{$validateme.firstWarning('surname')}}
+          <span v-show="$validateme.hasWarnings('personal.surname')" style="color: orange">
+            {{$validateme.firstWarning('personal.surname')}}
           </span>
         </p>
       </div>
@@ -46,8 +46,10 @@ export default {
   mixins: [ValidatemeMixin],
   data() {
     return {
-      name: '',
-      surname: '',
+      personal: {
+        name: '',
+        surname: '',
+      },
     };
   },
   methods: {

@@ -33,8 +33,17 @@ export default {
       once: true,
       passive: true,
     });
-    elem.addEventListener('input', evt => field.run(evt.target.value), {
-      passive: true,
-    });
+    elem.addEventListener(
+      'input',
+      evt => {
+        const value = evt.target.value;
+
+        field.run(value);
+        vnode.context.$emit('input', value);
+      },
+      {
+        passive: true,
+      },
+    );
   },
 };
