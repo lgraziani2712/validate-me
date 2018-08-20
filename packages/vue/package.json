@@ -1,5 +1,5 @@
 {
-  "name": "@validate-me/vue-plugin",
+  "name": "@validate-me/vue",
   "version": "1.0.0-alpha.9",
   "repository": "https://github.com/dimax/validate-me",
   "author": "Luciano Graziani @lgraziani2712",
@@ -12,8 +12,10 @@
   "files": [
     "*.js"
   ],
+  "dependencies": {
+    "@validate-me/core": "^1.0.0-alpha.5"
+  },
   "peerDependencies": {
-    "@validate-me/core": "^1.0.0-alpha.5",
     "vue": "^2.5.16"
   }
 }
