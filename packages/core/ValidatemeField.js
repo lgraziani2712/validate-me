@@ -44,7 +44,7 @@ export default class ValidatemeField {
   setSentValue() {
     this.lastValueToServer = this.value;
   }
-  isSuccess() {
+  isValid() {
     return !this.state.loading && this.state.touched && this.state.valid;
   }
   hasErrors() {
@@ -137,27 +137,24 @@ export default class ValidatemeField {
 
     this.run(this.value);
   }
-  runRules() {
-    Object.keys(this.rules).forEach(key => {
-      const success = this.rules[key].run(this.value);
+  run(value) {
+    this.value = value;
 
-      if (success) {
+    Object.keys(this.rules).forEach(key => {
+      const valid = this.rules[key].run(this.value);
+
+      if (valid) {
         this.removeError(key);
       } else {
         this.addError(key);
       }
     });
   }
-  run(value) {
-    this.value = value;
-
-    this.runRules();
-  }
   validate() {
     if (!this.state.touched) {
       this.touchState();
     }
 
-    return this.isSuccess();
+    return this.isValid();
   }
 }

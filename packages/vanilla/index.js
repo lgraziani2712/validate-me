@@ -14,7 +14,7 @@ function print(field, label) {
     label.innerHTML = field.firstError();
   } else if (field.hasWarnings()) {
     label.innerHTML = field.firstWarning();
-  } else if (field.isSuccess()) {
+  } else if (field.isValid()) {
     label.innerHTML = 'Success!';
   }
 }
