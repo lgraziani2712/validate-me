@@ -13,7 +13,7 @@ This approach is on purpose: **you have to explicitly determine which components
 There is nothing more than importing the mixin and setting it in the component!
 
 ```js
-import ValidatemeMixin from '@validate-me/vue-plugin/mixin';
+import ValidatemeMixin from '@validate-me/vue/mixin';
 
 export default {
   mixins: [ValidatemeMixin],

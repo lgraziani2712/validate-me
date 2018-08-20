@@ -26,7 +26,7 @@ Vue.use(ValidatemePlugin);
 ### 2. Instanciate it through the mixin
 
 ```js
-import ValidatemeMixin from '@validate-me/vue-plugin/mixin';
+import ValidatemeMixin from '@validate-me/vue/mixin';
 
 export default {
   mixins: [ValidatemeMixin],

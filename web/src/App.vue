@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import ValidatemeMixin from '@validate-me/vue-plugin/mixin';
+import ValidatemeMixin from '@validate-me/vue/mixin';
 
 import InputString from './InputString';
 
