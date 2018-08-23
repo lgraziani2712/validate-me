@@ -1,15 +1,12 @@
 import Validateme from '@validate-me/core/Validateme';
 import ValidatemeField from '@validate-me/core/ValidatemeField';
 import ValidatemeDictionary from '@validate-me/core/ValidatemeDictionary';
-import ValidatemeRules from '@validate-me/core/ValidatemeRules';
 import vanillaConnector from '@validate-me/vanilla';
 
 ValidatemeDictionary.setConfig({
-  clientDictionaryHandler: (lang, name) =>
-    import(`./dictionary/${lang}/${name}`),
-});
-ValidatemeRules.setConfig({
-  clientRulesHandler: name => import(`./rules/${name}`),
+  clientDictionaryHandler(lang, name) {
+    return import(`./dictionaries/${lang}/${name}`);
+  },
 });
 
 window.addEventListener('load', () => {

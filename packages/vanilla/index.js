@@ -6,7 +6,7 @@
  * @return {void}
  */
 export default function vanillaConnector(validateme, form) {
-  Object.keys(validateme.fields).forEach(key => {
+  Object.keys(validateme.store.fields).forEach(key => {
     const field = validateme.store.fields[key];
     const input = form[key];
 
