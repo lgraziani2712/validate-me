@@ -1,6 +1,6 @@
 {
   "name": "@validate-me/web",
-  "version": "1.0.0-alpha.11",
+  "version": "1.0.0-alpha.12",
   "private": true,
   "repository": "https://github.com/dimax/validate-me",
   "homepage": "https://dimax.github.io/validate-me",
@@ -10,9 +10,9 @@
     "start": "webpack-dev-server --content-base dist"
   },
   "dependencies": {
-    "@validate-me/apollo-error-parser": "1.0.0-alpha.11",
-    "@validate-me/vanilla": "1.0.0-alpha.11",
-    "@validate-me/vue": "1.0.0-alpha.11"
+    "@validate-me/apollo-error-parser": "1.0.0-alpha.12",
+    "@validate-me/vanilla": "1.0.0-alpha.12",
+    "@validate-me/vue": "1.0.0-alpha.12"
   },
   "devDependencies": {
     "css-loader": "1.0.0",
