@@ -22,7 +22,9 @@ import vanillaConnector from '@validate-me/vanilla';
 
 window.addEventListener('load', () => {
   const myForm = document.getElementById('my-form');
-  const validateme = new Validateme([new ValidatemeField({ name: 'name' })]);
+  const validateme = new Validateme({
+    fields: [new ValidatemeField({ name: 'name' })],
+  });
 
   vanillaConnector(validateme, myForm);
 

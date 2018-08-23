@@ -11,7 +11,9 @@ window.addEventListener('load', () => {
   const myForm = document.getElementById('my-form');
   const resultMessage = document.getElementById('result-message');
   const inputName = 'name';
-  const validateme = new Validateme([new ValidatemeField({ name: inputName })]);
+  const validateme = new Validateme({
+    fields: [new ValidatemeField({ name: inputName })],
+  });
 
   vanillaConnector(validateme, myForm);
 
