@@ -1,6 +1,6 @@
 {
   "name": "@validate-me/vue",
-  "version": "1.0.0-alpha.12",
+  "version": "1.0.0-alpha.13",
   "repository": "https://github.com/dimax/validate-me",
   "homepage": "https://dimax.github.io/validate-me",
   "author": "Luciano Graziani @lgraziani2712",
@@ -14,7 +14,7 @@
     "*.js"
   ],
   "dependencies": {
-    "@validate-me/core": "1.0.0-alpha.12"
+    "@validate-me/core": "1.0.0-alpha.13"
   },
   "peerDependencies": {
     "vue": "^2.5.16"
