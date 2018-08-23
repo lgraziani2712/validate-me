@@ -14,6 +14,10 @@ module.exports = {
         text: 'Changelog',
         link: 'https://github.com/dimax/validate-me/blob/master/CHANGELOG.md',
       },
+      {
+        text: 'Roadmap',
+        link: 'https://validate-me.canny.io/feature-requests',
+      },
     ],
     sidebar: {
       '/guide/': [''],
