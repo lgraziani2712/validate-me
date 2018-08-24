@@ -7,10 +7,6 @@ flow-typed/npm
 node_modules
 .yarn-cache
 
-# testing
-docs
-reports/**/*
-
 # production
 temp
 dist

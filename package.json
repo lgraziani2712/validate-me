@@ -12,6 +12,7 @@
     "playgrounds/*"
   ],
   "scripts": {
+    "lint": "eslint packages playgrounds .eslintrc.js",
     "build:docs": "vuepress build docs",
     "start:docs": "vuepress dev docs"
   },
