@@ -1,13 +1,6 @@
 import Validateme from '@validate-me/core/Validateme';
 import ValidatemeField from '@validate-me/core/ValidatemeField';
-import ValidatemeDictionary from '@validate-me/core/ValidatemeDictionary';
 import vanillaConnector from '@validate-me/vanilla';
-
-ValidatemeDictionary.setConfig({
-  clientDictionaryHandler(lang, name) {
-    return import(`./dictionaries/${lang}/${name}`);
-  },
-});
 
 window.addEventListener('load', () => {
   const form = document.getElementById('form');
