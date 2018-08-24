@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+
 const config = {
   lang: 'en',
   clientDictionaryHandler() {
@@ -28,7 +30,7 @@ function setConfig(newConfig) {
   }
 }
 function getWarning(rule, value, args) {
-  const unknownRule = dictionary[config.lang].unknownRule;
+  const unknownRule = dictionary[config.lang]._unknownRule;
   const fn = dictionary[config.lang][rule];
   const warning = extras[config.lang].preWarning || '';
 
@@ -57,7 +59,7 @@ function loadMessage(name) {
     .catch(() => config.clientDictionaryHandler(config.lang, '_unknownRule'))
     .catch(() => import(`./dictionaries/${config.lang}/_unknownRule`))
     .then(mod => {
-      dictionary[config.lang][name] = mod.default;
+      dictionary[config.lang][mod.default.name] = mod.default;
     });
 }
 function loadExtras() {
