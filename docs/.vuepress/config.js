@@ -5,6 +5,7 @@ module.exports = {
   themeConfig: {
     repo: 'dimax/validate-me',
     editLinks: true,
+    editLinkText: 'Help us improve this page!',
     lastUpdated: 'Last updated',
     nav: [
       { text: 'Quick starts', link: '/quick-starts/' },
@@ -20,7 +21,7 @@ module.exports = {
       },
     ],
     sidebar: {
-      '/guide/': [''],
+      '/guides/': ['', 'rules.html'],
       '/api/': [
         {
           title: 'Core API',
