@@ -1,6 +1,9 @@
 # Rules
 
-  > Every rule follows the next structure when using it: `rule:arg1:arg2:..:argN`.
+::: warning
+- To know how they are lazy loaded, go to the [ValidatemeRules](/api/core/validateme-rules.html) documentation.
+- To know how to write a custom rule, go to the [ValidatemeRule](/api/core/validateme-rule.html) documentation.
+:::
 
 ## contains
 
@@ -75,6 +78,24 @@ The field only accepts well structured urls. E.g. `http://my-awesome-site.com/`.
 new ValidatemeItem({
   name: 'field',
   rules: ['isUrl'],
+});
+```
+
+## len
+
+The field must be a string with a length between a range.
+
+| Parameters | Type   | Min values |
+| ---------- | :----: | ---------: |
+| first      | Number | 0          |
+| second     | Number | 0          |
+
+### Vanilla example
+
+```js
+new ValidatemeItem({
+  name: 'field',
+  rules: ['len:0:15'],
 });
 ```
 
