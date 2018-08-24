@@ -13,7 +13,8 @@ reports/**/*
 
 # production
 temp
-dist
+dist/**/*
+!dist/index.html
 
 # misc
 .DS_Store

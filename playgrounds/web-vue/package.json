@@ -1,5 +1,5 @@
 {
-  "name": "@validate-me/web",
+  "name": "@validate-me/web-vue",
   "version": "1.0.0-alpha.14",
   "private": true,
   "repository": "https://github.com/dimax/validate-me",
@@ -10,18 +10,12 @@
     "start": "webpack-dev-server --content-base dist"
   },
   "dependencies": {
-    "@validate-me/apollo-error-parser": "1.0.0-alpha.14",
-    "@validate-me/vanilla": "1.0.0-alpha.14",
     "@validate-me/vue": "1.0.0-alpha.14"
   },
   "devDependencies": {
     "css-loader": "1.0.0",
     "style-loader": "0.22.1",
     "vue-loader": "15.3.0",
-    "vue-template-compiler": "2.5.17",
-    "webpack": "4.16.5",
-    "webpack-cli": "3.1.0",
-    "webpack-dev-server": "3.1.5",
-    "webpack-serve": "2.0.2"
+    "vue-template-compiler": "2.5.17"
   }
 }
