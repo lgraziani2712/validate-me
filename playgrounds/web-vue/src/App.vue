@@ -59,7 +59,7 @@ export default {
       }
 
       this.$validateme.process({
-        name: ['unexistingRule'],
+        name: ['unexistingMessage'],
       });
     },
   },
