@@ -5,8 +5,9 @@ import vanillaConnector from '@validate-me/vanilla';
 window.addEventListener('load', () => {
   const form = document.getElementById('form');
   const result = document.getElementById('result');
+  const fieldName = 'name';
   const validateme = new Validateme({
-    fields: [new ValidatemeField({ name: 'name' })],
+    fields: [new ValidatemeField({ name: fieldName, rules: ['len:1:10'] })],
   });
 
   vanillaConnector(validateme, form);
@@ -18,12 +19,16 @@ window.addEventListener('load', () => {
     if (first) {
       first = false;
       validateme.process({
-        name: ['unexistingRule', 'required', 'len:0:10'],
+        name: ['unexistingRule', 'required'],
       });
     }
 
+    const errorMessage = validateme.hasErrors(fieldName)
+      ? validateme.firstError(fieldName)
+      : '';
+
     result.innerHTML = `Validation complete: ${
-      validateme.validate() ? 'Success!' : 'Errors!'
+      validateme.validate() ? 'Success!' : errorMessage || 'Loading messages...'
     }`;
   });
 });

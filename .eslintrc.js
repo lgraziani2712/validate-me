@@ -11,5 +11,6 @@ module.exports = {
   },
   rules: {
     'filenames/match-exported': 0,
+    eqeqeq: [1, 'always', { null: 'ignore' }],
   },
 };

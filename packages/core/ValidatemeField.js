@@ -140,14 +140,18 @@ export default class ValidatemeField {
   run(value) {
     this.value = value;
 
-    Object.keys(this.rules).forEach(key => {
-      const valid = this.rules[key].run(this.value);
-
-      if (valid) {
-        this.removeError(key);
-      } else {
-        this.addError(key);
+    if (value == null || value === '') {
+      if (this.rules.required) {
+        this.rules.required.run(value)
+          ? this.removeError('required')
+          : this.addError('required');
       }
+
+      return;
+    }
+
+    Object.keys(this.rules).forEach(key => {
+      this.rules[key].run(value) ? this.removeError(key) : this.addError(key);
     });
   }
   validate() {
