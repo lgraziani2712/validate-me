@@ -13,7 +13,8 @@ The field must contains the substring passed as first argument.
 | ---------- | :----: |
 | first      | String |
 
-### Vanilla example
+<tabs>
+<tab name="vanilla">
 
 ```js
 new ValidatemeItem({
@@ -21,6 +22,16 @@ new ValidatemeItem({
   rules: ['contains:st'],
 });
 ```
+
+</tab>
+<tab name="vue">
+
+```html
+<input v-validate-me="['contains:st']" name="field" />
+```
+
+</tab>
+</tabs>
 
 ## notContains
 
@@ -30,7 +41,8 @@ The field must _not_ contains the substring passed as first argument.
 | ---------- | :----: |
 | first      | String |
 
-### Vanilla example
+<tabs>
+<tab name="vanilla">
 
 ```js
 new ValidatemeItem({
@@ -39,11 +51,22 @@ new ValidatemeItem({
 });
 ```
 
+</tab>
+<tab name="vue">
+
+```html
+<input v-validate-me="['notContains:st']" name="field" />
+```
+
+</tab>
+</tabs>
+
 ## isAlpha
 
 The field accepts alphabetic characters only.
 
-### Vanilla example
+<tabs>
+<tab name="vanilla">
 
 ```js
 new ValidatemeItem({
@@ -52,11 +75,22 @@ new ValidatemeItem({
 });
 ```
 
+</tab>
+<tab name="vue">
+
+```html
+<input v-validate-me="['isAlpha']" name="field" />
+```
+
+</tab>
+</tabs>
+
 ## isAlphanumeric
 
 The field accepts alphabetic or numeric characters only.
 
-### Vanilla example
+<tabs>
+<tab name="vanilla">
 
 ```js
 new ValidatemeItem({
@@ -65,6 +99,16 @@ new ValidatemeItem({
 });
 ```
 
+</tab>
+<tab name="vue">
+
+```html
+<input v-validate-me="['isAlphanumeric']" name="field" />
+```
+
+</tab>
+</tabs>
+
 ## isUrl
 
 The field only accepts well structured urls. E.g. `http://my-awesome-site.com/`.
@@ -72,7 +116,8 @@ The field only accepts well structured urls. E.g. `http://my-awesome-site.com/`.
 - It doesn't accept IP's.
 - It accepts subdomains and urls with query strings.
 
-### Vanilla example
+<tabs>
+<tab name="vanilla">
 
 ```js
 new ValidatemeItem({
@@ -80,6 +125,16 @@ new ValidatemeItem({
   rules: ['isUrl'],
 });
 ```
+
+</tab>
+<tab name="vue">
+
+```html
+<input v-validate-me="['isUrl']" name="field" />
+```
+
+</tab>
+</tabs>
 
 ## len
 
@@ -90,7 +145,8 @@ The field must be a string with a length between a range.
 | first      | Number | 0          |
 | second     | Number | 0          |
 
-### Vanilla example
+<tabs>
+<tab name="vanilla">
 
 ```js
 new ValidatemeItem({
@@ -98,6 +154,16 @@ new ValidatemeItem({
   rules: ['len:0:15'],
 });
 ```
+
+</tab>
+<tab name="vue">
+
+```html
+<input v-validate-me="['len:0:15']" name="field" />
+```
+
+</tab>
+</tabs>
 
 ## max
 
@@ -107,7 +173,8 @@ The field must be a number equal or less than the argument.
 | ---------- | :----: |
 | first      | Number |
 
-### Vanilla example
+<tabs>
+<tab name="vanilla">
 
 ```js
 new ValidatemeItem({
@@ -115,6 +182,16 @@ new ValidatemeItem({
   rules: ['max:15'],
 });
 ```
+
+</tab>
+<tab name="vue">
+
+```html
+<input v-validate-me="['max:15']" name="field" />
+```
+
+</tab>
+</tabs>
 
 ## min
 
@@ -124,7 +201,8 @@ The field must be a number equal or greater than the argument.
 | ---------- | :----: |
 | first      | Number |
 
-### Vanilla example
+<tabs>
+<tab name="vanilla">
 
 ```js
 new ValidatemeItem({
@@ -133,11 +211,22 @@ new ValidatemeItem({
 });
 ```
 
+</tab>
+<tab name="vue">
+
+```html
+<input v-validate-me="['min:-15']" name="field" />
+```
+
+</tab>
+</tabs>
+
 ## required
 
 The field must contain something.
 
-### Vanilla example
+<tabs>
+<tab name="vanilla">
 
 ```js
 new ValidatemeItem({
@@ -145,3 +234,13 @@ new ValidatemeItem({
   rules: ['required'],
 });
 ```
+
+</tab>
+<tab name="vue">
+
+```html
+<input v-validate-me name="field" required />
+```
+
+</tab>
+</tabs>

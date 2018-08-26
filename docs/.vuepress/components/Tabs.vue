@@ -84,10 +84,15 @@ export default {
   },
   mounted() {
     const selectedLang = this.$selectedLang || this.tabs[0].name;
-
-    this.tabs.forEach(tab => {
+    const result = this.tabs.reduce((partial, tab) => {
       tab.isActive = tab.name === selectedLang;
-    });
+
+      return partial || tab.isActive;
+    }, false);
+
+    if (!result) {
+      this.tabs[0].isActive = true;
+    }
   },
   watch: {
     $selectedLang(lang) {
@@ -123,9 +128,10 @@ export default {
       border: 1px solid transparent;
       color: #bbb;
       display: inline-block;
-      padding: 11px 25px 7px;
+      padding: 11px 25px 6px;
       margin: 0 0 -1px;
       text-align: center;
+      text-decoration: none !important;
 
       &:hover {
         color: #888;
@@ -146,7 +152,7 @@ export default {
 
     &.is-active a {
       border: 1px solid #ddd;
-      border-bottom: 1px solid #fff;
+      border-bottom: 2px solid #fff;
       border-top: 2px solid goldenrod;
       color: #555;
 

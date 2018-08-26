@@ -22,7 +22,6 @@ features:
 ### Install
 
 <tabs>
-
 <tab name="vanilla">
 
 ```bash
@@ -34,7 +33,6 @@ yarn add @validate-me/vanilla
 ```
 
 </tab>
-
 <tab name="vue">
 
 ```bash
@@ -46,14 +44,12 @@ yarn add @validate-me/vue
 ```
 
 </tab>
-
 </tabs>
 
 ### Use
 
 
 <tabs>
-
 <tab name="vanilla">
 
 ```js
@@ -64,7 +60,12 @@ import vanillaConnector from '@validate-me/vanilla';
 window.addEventListener('load', () => {
   const myForm = document.getElementById('my-form');
   const validateme = new Validateme({
-    fields: [new ValidatemeField({ name: 'name' })],
+    fields: [
+      new ValidatemeField({
+        name: 'name',
+        rules: ['required', 'len:2:300'],
+      }),
+    ],
   });
 
   vanillaConnector(validateme, myForm);
@@ -81,7 +82,6 @@ window.addEventListener('load', () => {
 ```
 
 </tab>
-
 <tab name="vue">
 
 1. Load the plugin
@@ -125,5 +125,4 @@ export default {
 ```
 
 </tab>
-
 </tabs>

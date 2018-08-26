@@ -1,5 +1,6 @@
 ---
 title: Guides
+sidebarDepth: 0
 ---
 
 # Introduction
