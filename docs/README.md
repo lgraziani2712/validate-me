@@ -1,7 +1,7 @@
 ---
 home: true
-actionText: Quick starts →
-actionLink: /quick-starts/
+actionText: Guides →
+actionLink: /guides/
 meta:
   - name: og:title
     content: Validate-me
@@ -17,18 +17,113 @@ features:
   details: Stop reading docs and testing configurations until things work. Validate-me just works™!
 ---
 
-## Main diferences between other solutions
+## Quick start
 
-### Validate-me lazy loads everything
+### Install
 
-Rules and messages won't be loaded until are required.
+<tabs>
 
-### Rehidrates failed rules from server
+<tab name="vanilla">
 
-Validate-me can process an error sent by the server and instanciate the failed rules dynamically. This even makes possible to avoid configuring rules by hand in each input and let the server (in the first submit) return the failed rules.
+```bash
+# install with npm
+npm install --save @validate-me/vanilla
 
-This also eases the validation process between client and server. In a full stack JS environment, it makes possible to reuse the same validation functions in both sides.
+# install with yarn
+yarn add @validate-me/vanilla
+```
 
-### Warnings
+</tab>
 
-Unknown rules (e.g. server-side only rules) are rendered as warning messages so the user can pay attention before submitting the form. They don't prevent submitting, they are only informative.
+<tab name="vue">
+
+```bash
+# install with npm
+npm install --save @validate-me/vue
+
+# install with yarn
+yarn add @validate-me/vue
+```
+
+</tab>
+
+</tabs>
+
+### Use
+
+
+<tabs>
+
+<tab name="vanilla">
+
+```js
+import Validateme from '@validate-me/core/Validateme';
+import ValidatemeField from '@validate-me/core/ValidatemeField';
+import vanillaConnector from '@validate-me/vanilla';
+
+window.addEventListener('load', () => {
+  const myForm = document.getElementById('my-form');
+  const validateme = new Validateme({
+    fields: [new ValidatemeField({ name: 'name' })],
+  });
+
+  vanillaConnector(validateme, myForm);
+
+  myForm.addEventListener('submit' evt => {
+    evt.preventDefault();
+
+    if (!validateme.validate()) {
+      return;
+    }
+
+    // Send data to server
+});
+```
+
+</tab>
+
+<tab name="vue">
+
+1. Load the plugin
+
+```js
+import ValidatemePlugin from '@validate-me/vue';
+
+Vue.use(ValidatemePlugin);
+```
+
+2. Instanciate it through the mixin
+
+```js
+import ValidatemeMixin from '@validate-me/vue/mixin';
+
+export default {
+  mixins: [ValidatemeMixin],
+  data() {
+    return {
+      name: '',
+    };
+  },
+};
+```
+
+3. Configure the inputs with the directive
+
+```html
+<input
+  v-validate-me
+  v-model="name"
+  name="name"
+  required
+/>
+<span style="color: red">
+  {{ $validateme.firstError('name') }}
+</span>
+<span style="color: orange">
+  {{ $validateme.firstWarning('name') }}
+</span>
+```
+
+</tab>
+
+</tabs>
