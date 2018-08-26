@@ -1,6 +1,6 @@
 {
   "name": "@validate-me/web-vue",
-  "version": "1.0.0-alpha.15",
+  "version": "1.0.0-alpha.16",
   "private": true,
   "repository": "https://github.com/dimax/validate-me",
   "homepage": "https://dimax.github.io/validate-me",
@@ -10,7 +10,7 @@
     "start": "webpack-dev-server --content-base dist"
   },
   "dependencies": {
-    "@validate-me/vue": "1.0.0-alpha.15"
+    "@validate-me/vue": "1.0.0-alpha.16"
   },
   "devDependencies": {
     "css-loader": "1.0.0",
