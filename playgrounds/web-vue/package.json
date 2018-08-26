@@ -15,7 +15,7 @@
   "devDependencies": {
     "css-loader": "1.0.0",
     "style-loader": "0.22.1",
-    "vue-loader": "15.3.0",
+    "vue-loader": "^15.4.0",
     "vue-template-compiler": "2.5.17"
   }
 }

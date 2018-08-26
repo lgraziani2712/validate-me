@@ -8,7 +8,9 @@ It loads every rule. This module can be configured once for the entire app in th
 
 ## How it works
 
-1. If the user has setted the `clientDictionaryHandler` prop, it checks first if it exists there.
+When a rule is going to be loaded it follows the next steps:
+
+1. If the user has setted the `clientDictionaryHandler` prop, it invokes it.
 2. If the client code doesn't have that rule, it fallbacks to the default rules folder.
 3. If the rule still doesn't exists, it throws an exception.
 
@@ -20,4 +22,4 @@ It loads every rule. This module can be configured once for the entire app in th
 
 ### `clientRulesHandler(name: String): Promise<Module>`
 
-This function must import the dictionary file for the specific `rule` in the specific `lang`. This module file must export by default a [ValidatemeRule](./validateme-rule.html).
+This function imports the file `name` which must export by default a [ValidatemeRule](./validateme-rule.html).

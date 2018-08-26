@@ -5,9 +5,9 @@ module.exports = {
   themeConfig: {
     repo: 'dimax/validate-me',
     editLinks: true,
+    editLinkText: 'Help us improve this page!',
     lastUpdated: 'Last updated',
     nav: [
-      { text: 'Quick starts', link: '/quick-starts/' },
       { text: 'Guides', link: '/guides/' },
       { text: 'API', link: '/api/core/validateme.html' },
       {
@@ -20,7 +20,7 @@ module.exports = {
       },
     ],
     sidebar: {
-      '/guide/': [''],
+      '/guides/': ['', 'rules.html'],
       '/api/': [
         {
           title: 'Core API',
@@ -39,7 +39,6 @@ module.exports = {
           children: ['vue/plugin.html', 'vue/directive.html', 'vue/mixin.html'],
         },
       ],
-      '/quick-starts/': ['vanilla.html', 'vue.html'],
     },
   },
 };
