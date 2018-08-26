@@ -3,7 +3,13 @@ import Vue from 'vue';
 const DEFAULT_LANG = 'DEFAULT_LANG';
 const storage = new Vue({
   data() {
-    const name = localStorage.getItem(DEFAULT_LANG);
+    let name;
+
+    try {
+      name = localStorage.getItem(DEFAULT_LANG);
+    } catch (err) {
+
+    }
 
     return {
       selectedLang: name || '',
