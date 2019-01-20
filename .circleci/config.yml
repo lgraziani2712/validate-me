@@ -29,5 +29,6 @@ jobs:
       - save_cache:
           paths:
             - node_modules
+            - ~/.cache/yarn
             - .eslintcache
           key: v1-dependencies-{{ checksum "package.json" }}
