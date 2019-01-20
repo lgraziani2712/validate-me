@@ -1,9 +1,8 @@
 module.exports = {
   title: 'Validate-me',
   description: 'Blazing fast validation library',
-  base: '/validate-me/',
   themeConfig: {
-    repo: 'dimax/validate-me',
+    repo: 'lgraziani2712/validate-me',
     editLinks: true,
     editLinkText: 'Help us improve this page!',
     lastUpdated: 'Last updated',
