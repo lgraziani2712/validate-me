@@ -12,8 +12,10 @@
     "playgrounds/*"
   ],
   "scripts": {
-    "lint": "eslint docs/.vuepress/**/* packages playgrounds .eslintrc.js --fix --cache",
-    "prettify": "prettier docs packages/**/* playgrounds/**/* ./**/*.json --write",
+    "check:lint": "eslint docs/.vuepress/**/* packages playgrounds .eslintrc.js --cache",
+    "check:prettify": "prettier .circleci/**/* docs/**/* packages/**/* playgrounds/**/* ./**/*.json -c",
+    "lint": "eslint docs/.vuepress/**/* packages playgrounds .eslintrc.js --cache --fix",
+    "prettify": "prettier .circleci/**/* docs/**/* packages/**/* playgrounds/**/* ./**/*.json -c --write",
     "build:docs": "vuepress build docs",
     "start:docs": "vuepress dev docs"
   },
