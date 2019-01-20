@@ -74,6 +74,7 @@ export default {
     },
   },
   mounted() {
+    console.log('adiós');
     const tabs = this.tabs;
     const selectedLang = this.$selectedLang || tabs[0].name;
     const result = tabs.reduce((partial, tab) => {

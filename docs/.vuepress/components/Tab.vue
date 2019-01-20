@@ -5,11 +5,12 @@
 </template>
 
 <script>
-import VueTypes from 'vue-types';
-
 export default {
   props: {
-    name: VueTypes.string.isRequired,
+    name: String,
+  },
+  mounted() {
+    console.log('hola');
   },
   data() {
     return {

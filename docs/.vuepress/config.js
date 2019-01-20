@@ -1,3 +1,6 @@
+// process.env.NODE_ENV = 'development';
+process.env.VUE_CLI_MODERN_BUILD = true;
+
 module.exports = {
   title: 'Validate-me',
   description: 'Blazing fast validation library',
@@ -39,5 +42,42 @@ module.exports = {
         },
       ],
     },
+  },
+  configureWebpack(config, isServer) {
+    if (isServer) {
+      return;
+    }
+
+    config.optimization.splitChunks.cacheGroups.vuepress = {
+      test: /vuepress/,
+      chunks: 'initial',
+      name: 'vuepress',
+      priority: 20,
+      enforce: true,
+    };
+
+    config.optimization.splitChunks.cacheGroups['vue-router'] = {
+      test: /vue-router/,
+      chunks: 'initial',
+      name: 'vue-router',
+      priority: 20,
+      enforce: true,
+    };
+
+    config.optimization.splitChunks.cacheGroups.vue = {
+      test: /vue/,
+      chunks: 'initial',
+      name: 'vue',
+      priority: 10,
+      enforce: true,
+    };
+
+    config.optimization.splitChunks.cacheGroups.vendor = {
+      test: /node_modules/,
+      chunks: 'initial',
+      name: 'vendor',
+      priority: 0,
+      enforce: true,
+    };
   },
 };
