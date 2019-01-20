@@ -21,8 +21,8 @@ features:
 
 ### Install
 
-<tabs>
-<tab name="vanilla">
+<Tabs>
+<Tab name="vanilla">
 
 ```bash
 # install with npm
@@ -32,8 +32,8 @@ npm install --save @validate-me/vanilla
 yarn add @validate-me/vanilla
 ```
 
-</tab>
-<tab name="vue">
+</Tab>
+<Tab name="vue">
 
 ```bash
 # install with npm
@@ -43,13 +43,13 @@ npm install --save @validate-me/vue
 yarn add @validate-me/vue
 ```
 
-</tab>
-</tabs>
+</Tab>
+</Tabs>
 
 ### Use
 
-<tabs>
-<tab name="vanilla">
+<Tabs>
+<Tab name="vanilla">
 
 ```js
 import Validateme from '@validate-me/core/Validateme';
@@ -80,8 +80,8 @@ window.addEventListener('load', () => {
 });
 ```
 
-</tab>
-<tab name="vue">
+</Tab>
+<Tab name="vue">
 
 1. Load the plugin
 
@@ -114,5 +114,5 @@ export default {
 <span style="color: orange"> {{ $validateme.firstWarning('name') }} </span>
 ```
 
-</tab>
-</tabs>
+</Tab>
+</Tabs>
