@@ -1,4 +1,6 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
+!.eslintrc.js
+!.*
 
 # Type definitions
 flow-typed/npm
@@ -11,5 +13,3 @@ node_modules
 temp
 dist
 .gitignore
-
-!.eslintrc.js
