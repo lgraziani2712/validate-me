@@ -1,15 +1,17 @@
 # Rules
 
 ::: warning
+
 - To know how they are lazy loaded, go to the [ValidatemeRules](/api/core/validateme-rules.html) documentation.
 - To know how to write a custom rule, go to the [ValidatemeRule](/api/core/validateme-rule.html) documentation.
+
 :::
 
 ## contains
 
 The field must contains the substring passed as first argument.
 
-| Parameters | Type   |
+| Parameters |  Type  |
 | ---------- | :----: |
 | first      | String |
 
@@ -37,7 +39,7 @@ new ValidatemeItem({
 
 The field must _not_ contains the substring passed as first argument.
 
-| Parameters | Type   |
+| Parameters |  Type  |
 | ---------- | :----: |
 | first      | String |
 
@@ -140,10 +142,10 @@ new ValidatemeItem({
 
 The field must be a string with a length between a range.
 
-| Parameters | Type   | Min values |
+| Parameters |  Type  | Min values |
 | ---------- | :----: | ---------: |
-| first      | Number | 0          |
-| second     | Number | 0          |
+| first      | Number |          0 |
+| second     | Number |          0 |
 
 <tabs>
 <tab name="vanilla">
@@ -169,7 +171,7 @@ new ValidatemeItem({
 
 The field must be a number equal or less than the argument.
 
-| Parameters | Type   |
+| Parameters |  Type  |
 | ---------- | :----: |
 | first      | Number |
 
@@ -197,7 +199,7 @@ new ValidatemeItem({
 
 The field must be a number equal or greater than the argument.
 
-| Parameters | Type   |
+| Parameters |  Type  |
 | ---------- | :----: |
 | first      | Number |
 

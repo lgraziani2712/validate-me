@@ -17,17 +17,11 @@
         />
       </li>
     </ul>
-    <div class="panels">
-      <slot/>
-    </div>
+    <div class="panels"><slot /></div>
   </div>
 </template>
 
 <script>
-import VueTypes from 'vue-types';
-
-import Tab from './Tab';
-
 const languages = {
   vanilla: `
     <svg viewBox="0 0 630 630" width="24">
@@ -69,9 +63,6 @@ const languages = {
 };
 
 export default {
-  components: {
-    Tab,
-  },
   data() {
     return {
       tabs: this.$children,
@@ -83,15 +74,16 @@ export default {
     },
   },
   mounted() {
-    const selectedLang = this.$selectedLang || this.tabs[0].name;
-    const result = this.tabs.reduce((partial, tab) => {
+    const tabs = this.tabs;
+    const selectedLang = this.$selectedLang || tabs[0].name;
+    const result = tabs.reduce((partial, tab) => {
       tab.isActive = tab.name === selectedLang;
 
       return partial || tab.isActive;
     }, false);
 
     if (!result) {
-      this.tabs[0].isActive = true;
+      tabs[0].isActive = true;
     }
   },
   watch: {

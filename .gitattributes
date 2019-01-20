@@ -83,12 +83,13 @@ TODO         text eol=lf
 *.tmpl       text eol=lf
 
 ## LINTERS
-.csslintrc    text eol=lf
-.eslintrc     text eol=lf
-.jscsrc       text eol=lf
-.jshintrc     text eol=lf
-.jshintignore text eol=lf
-.stylelintrc  text eol=lf
+.csslintrc      text eol=lf
+.eslintrc       text eol=lf
+.jscsrc         text eol=lf
+.jshintrc       text eol=lf
+.jshintignore   text eol=lf
+.prettierignore text eol=lf
+.stylelintrc    text eol=lf
 
 ## CONFIGS
 .babelrc       text eol=lf

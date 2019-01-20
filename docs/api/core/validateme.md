@@ -8,12 +8,12 @@ It's the main class. Offers the interface between fields and plugins/client code
 
 ## Props
 
-| Name                 | Type                     | Required |
+| Name                 |           Type           | Required |
 | -------------------- | :----------------------: | :------: |
-| fields               | `Array<ValidatemeField>` | No       |
-| store                | `{ fields: {} }`         | No       |
-| `setField`           | Function                 | No       |
-| `serverErrorHandler` | Function                 | No       |
+| fields               | `Array<ValidatemeField>` |    No    |
+| store                |     `{ fields: {} }`     |    No    |
+| `setField`           |         Function         |    No    |
+| `serverErrorHandler` |         Function         |    No    |
 
 ### `setField(field: ValidatemeField): void`
 

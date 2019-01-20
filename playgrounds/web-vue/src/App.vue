@@ -2,7 +2,7 @@
   <div>
     <h2>Form</h2>
     <form @submit.prevent="handleSubmit">
-      <input-string
+      <InputString
         label="Name"
         :validateme-rules="['len:2:10']"
         name="name"
@@ -18,17 +18,21 @@
             v-model="personal.surname"
             name="surname"
             required
-          /></p>
+          />
+        </p>
         <p>
           <span v-show="$validateme.hasErrors('surname')" style="color: red">
-            {{$validateme.firstError('surname')}}
+            {{ $validateme.firstError('surname') }}
           </span>
-          <span v-show="$validateme.hasWarnings('surname')" style="color: orange">
-            {{$validateme.firstWarning('surname')}}
+          <span
+            v-show="$validateme.hasWarnings('surname')"
+            style="color: orange"
+          >
+            {{ $validateme.firstWarning('surname') }}
           </span>
         </p>
       </div>
-      <br>
+      <br />
       <button>Submit form</button>
     </form>
   </div>
@@ -54,11 +58,13 @@ export default {
   },
   methods: {
     handleSubmit() {
-      if (!this.$validateme.validate()) {
+      const $validateme = this.$validateme;
+
+      if (!$validateme.validate()) {
         return;
       }
 
-      this.$validateme.process({
+      $validateme.process({
         name: ['unexistingMessage'],
       });
     },

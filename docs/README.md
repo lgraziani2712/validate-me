@@ -9,12 +9,12 @@ meta:
     content: Input validation library
 footer: MIT Licensed | Copyright © 2018-present Luciano Graziani
 features:
-- title: ⚡️ Blazing fast
-  details: The client only loads what it needs. Stop parsing rules you won't never use!
-- title: 🔌 Extensible
-  details: You use Vue.js? React? Svelte? Vanilla? The core is written in ES6++ and can be used with(out) any framework!
-- title: 🙅‍ No configuration
-  details: Stop reading docs and testing configurations until things work. Validate-me just works™!
+  - title: ⚡️ Blazing fast
+    details: The client only loads what it needs. Stop parsing rules you won't never use!
+  - title: 🔌 Extensible
+    details: You use Vue.js? React? Svelte? Vanilla? The core is written in ES6++ and can be used with(out) any framework!
+  - title: 🙅‍ No configuration
+    details: Stop reading docs and testing configurations until things work. Validate-me just works™!
 ---
 
 ## Quick start
@@ -47,7 +47,6 @@ yarn add @validate-me/vue
 </tabs>
 
 ### Use
-
 
 <tabs>
 <tab name="vanilla">
@@ -110,18 +109,9 @@ export default {
 3. Configure the inputs with the directive
 
 ```html
-<input
-  v-validate-me
-  v-model="name"
-  name="name"
-  required
-/>
-<span style="color: red">
-  {{ $validateme.firstError('name') }}
-</span>
-<span style="color: orange">
-  {{ $validateme.firstWarning('name') }}
-</span>
+<input v-validate-me v-model="name" name="name" required />
+<span style="color: red"> {{ $validateme.firstError('name') }} </span>
+<span style="color: orange"> {{ $validateme.firstWarning('name') }} </span>
 ```
 
 </tab>

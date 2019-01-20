@@ -1,16 +1,13 @@
 module.exports = {
-  extends: ['@dimax-ar/dimax'],
-  plugins: ['prettier'],
-  parserOptions: {
-    parser: 'babel-eslint',
-    ecmaVersion: 8,
-    sourceType: 'module',
-  },
-  env: {
-    browser: true,
+  extends: ['@dimax-ar/dimax/vue', 'plugin:react/recommended'],
+  settings: {
+    react: {
+      createClass: 'createReactClass',
+      version: '16',
+    },
   },
   rules: {
     'filenames/match-exported': 0,
-    eqeqeq: [1, 'always', { null: 'ignore' }],
+    'prettier/prettier': 0,
   },
 };

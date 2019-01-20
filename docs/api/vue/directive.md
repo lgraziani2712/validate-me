@@ -20,11 +20,10 @@ The `v-validate-me` directive accepts an array of strings as value. Each string 
 
 ## Attributes used by the directive
 
-| Name       | Type    | Example         |
+| Name       |  Type   | Example         |
 | ---------- | :-----: | --------------- |
 | name       | String  | name="title"    |
-| [value]    | Any     | value="Pow pow" |
+| [value]    |   Any   | value="Pow pow" |
 | [required] | Boolean | required        |
 
 - `required` adds the `'required'` rule.
-

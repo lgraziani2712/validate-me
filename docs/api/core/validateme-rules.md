@@ -16,9 +16,9 @@ When a rule is going to be loaded it follows the next steps:
 
 ## Props
 
-| Name                 | Type     | Required | Default  |
+| Name                 |   Type   | Required | Default  |
 | -------------------- | :------: | :------: | -------- |
-| `clientRulesHandler` | Function | No       | Function |
+| `clientRulesHandler` | Function |    No    | Function |
 
 ### `clientRulesHandler(name: String): Promise<Module>`
 

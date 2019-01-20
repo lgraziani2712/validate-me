@@ -8,7 +8,7 @@ const storage = new Vue({
     try {
       name = localStorage.getItem(DEFAULT_LANG);
     } catch (err) {
-
+      // Do nothing
     }
 
     return {
@@ -24,7 +24,7 @@ const storage = new Vue({
   },
 });
 
-export default ({ Vue }) => {
+export default function enhanceApp({ Vue }) {
   Vue.mixin({
     computed: {
       $selectedLang() {
@@ -35,4 +35,4 @@ export default ({ Vue }) => {
       this.$updateSelectedLang = storage.updateSelectedLang;
     },
   });
-};
+}

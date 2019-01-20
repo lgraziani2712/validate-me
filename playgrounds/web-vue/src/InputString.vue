@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>{{label}}</h3>
+    <h3>{{ label }}</h3>
     <p>
       <input
         v-validate-me="validatemeRules"
@@ -11,10 +11,10 @@
     </p>
     <p>
       <span v-show="$validateme.hasErrors(name)" style="color: red">
-        {{$validateme.firstError(name)}}
+        {{ $validateme.firstError(name) }}
       </span>
       <span v-show="$validateme.hasWarnings(name)" style="color: orange">
-        {{$validateme.firstWarning(name)}}
+        {{ $validateme.firstWarning(name) }}
       </span>
     </p>
   </div>
@@ -34,4 +34,3 @@ export default {
   },
 };
 </script>
-

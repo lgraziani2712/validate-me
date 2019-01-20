@@ -81,8 +81,8 @@ If, for some reason, lerna fails, but the commit was made, do the following:
 
 1. Report the bug and copy the `lerna-debug.log` file.
 2. Try to publish with the command that lerna tried to do (it will be written in the `lerna-debug.log` file). If for some reason that fails too:
-  1. Add the console log to the issue.
-  2. Revert the commits made by lerna.
+   1. Add the console log to the issue.
+   2. Revert the commits made by lerna.
 
 ### How to generate changelog
 

@@ -13,16 +13,16 @@ This module can be configured once for the entire app in the main file. The foll
 1. If the user has setted the `clientDictionaryHandler` prop, it checks first if it exists there.
 2. If the client code doesn't have that rule, it fallbacks to the default dictionary folder.
 3. If the rule still doesn't exists, it fallbacks to the `_unknownRule`. Which:
-  1. First tries to get it through `clientDictionaryHandler` prop.
-  2. But it fallbacks to the `_unknownRule` from the library.
+   1. First tries to get it through `clientDictionaryHandler` prop.
+   2. But it fallbacks to the `_unknownRule` from the library.
 4. It caches the message function.
 
 ## Props
 
-| Name                      | Type     | Required | Default  |
+| Name                      |   Type   | Required | Default  |
 | ------------------------- | :------: | :------: | -------- |
-| lang                      | String   | No       | `'en'`   |
-| `clientDictionaryHandler` | Function | No       | Function |
+| lang                      |  String  |    No    | `'en'`   |
+| `clientDictionaryHandler` | Function |    No    | Function |
 
 ### `clientDictionaryHandler(lang: String, rule: String): Promise<Module>`
 

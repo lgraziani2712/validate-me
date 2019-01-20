@@ -11,9 +11,9 @@ It has two objectives:
 
 ## Props
 
-| Name                 | Type     | Required |
+| Name                 |   Type   | Required |
 | -------------------- | :------: | :------: |
-| `serverErrorHandler` | Function | No       |
+| `serverErrorHandler` | Function |    No    |
 
 ### serverErrorHandler(error): FailedFields
 

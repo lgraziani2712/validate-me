@@ -2,8 +2,8 @@
   "name": "validate-me",
   "description": "Dynamic validation lib for hydrating server errors",
   "main": "index.js",
-  "repository": "https://github.com/dimax/validate-me",
-  "homepage": "https://dimax.github.io/validate-me",
+  "repository": "https://github.com/lgraziani2712/validate-me",
+  "homepage": "https://lgraziani2712.github.io/validate-me/",
   "author": "Luciano Graziani @lgraziani2712",
   "license": "MIT",
   "private": true,
@@ -12,24 +12,28 @@
     "playgrounds/*"
   ],
   "scripts": {
-    "lint": "eslint packages playgrounds .eslintrc.js",
+    "lint": "eslint docs/.vuepress/**/* packages playgrounds .eslintrc.js --fix --cache",
+    "prettify": "prettier docs packages/**/* playgrounds/**/* ./**/*.json --write",
     "build:docs": "vuepress build docs",
     "start:docs": "vuepress dev docs"
   },
   "devDependencies": {
-    "@dimax-ar/eslint-config-dimax": "1.0.2",
-    "eslint": "5.4.0",
-    "jest": "23.5.0",
-    "lerna": "3.1.4",
-    "node-sass": "4.9.3",
-    "prettier": "1.14.2",
+    "@dimax-ar/eslint-config-dimax": "3.1.0",
+    "eslint": "5.12.1",
+    "eslint-plugin-react": "7.12.4",
+    "jest": "23.6.0",
+    "lerna": "3.10.6",
+    "node-sass": "4.11.0",
+    "prettier": "1.16.0",
+    "react": "16.7.0",
+    "react-dom": "16.7.0",
     "sass-loader": "7.1.0",
-    "vue": "2.5.17",
-    "vue-types": "1.3.2",
-    "vuepress": "0.14.2",
-    "webpack": "4.17.1",
-    "webpack-cli": "3.1.0",
-    "webpack-dev-server": "3.1.5",
-    "webpack-serve": "2.0.2"
+    "vue": "2.5.22",
+    "vue-types": "1.3.4",
+    "vuepress": "0.14.8",
+    "webpack": "4.28.4",
+    "webpack-cli": "3.2.1",
+    "webpack-dev-server": "3.1.14",
+    "webpack-serve": "2.0.3"
   }
 }

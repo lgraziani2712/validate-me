@@ -22,4 +22,3 @@ This also eases the validation process between client and server. In a full stac
 ### Warnings
 
 Unknown rules (e.g. server-side only rules) are rendered as warning messages so the user can pay attention before submitting the form. They don't prevent submitting, they are only informative.
-

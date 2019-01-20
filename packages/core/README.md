@@ -13,7 +13,7 @@ The main objective of `validate-me` is to enforce server side validations. There
 
 ## 🚀 Roadmap
 
-We still have a *long road to go*, this is just the beginning. So to further improve **validate-me** we've created a roadmap so that you can see the next features and improvements and **give your feedback about**:
+We still have a _long road to go_, this is just the beginning. So to further improve **validate-me** we've created a roadmap so that you can see the next features and improvements and **give your feedback about**:
 
 <a href="https://validate-me.canny.io/feature-requests" target="_blank">
   <img src="https://cdn-std.dprcdn.net/files/acc_649651/ogSCYY" alt="Validateme Roadmap" width="300">

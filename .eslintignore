@@ -10,5 +10,6 @@ node_modules
 # production
 temp
 dist
+.gitignore
 
 !.eslintrc.js

@@ -8,12 +8,12 @@ This class is responsible to run the validation, store errors and warnings, and 
 
 ## Props
 
-| Name        | Type                    | Required |
+| Name        |          Type           | Required |
 | ----------- | :---------------------: | :------: |
-| props       | Object                  | Yes      |
-| props.name  | String                  | Yes      |
-| props.value | Any                     | No       |
-| props.rules | `Array<ValidatemeRule>` | No       |
+| props       |         Object          |   Yes    |
+| props.name  |         String          |   Yes    |
+| props.value |           Any           |    No    |
+| props.rules | `Array<ValidatemeRule>` |    No    |
 
 ## Methods
 
