@@ -9,9 +9,6 @@ export default {
   props: {
     name: String,
   },
-  mounted() {
-    console.log('hola');
-  },
   data() {
     return {
       isActive: false,

@@ -1,4 +1,3 @@
-// process.env.NODE_ENV = 'development';
 process.env.VUE_CLI_MODERN_BUILD = true;
 
 module.exports = {
@@ -44,7 +43,7 @@ module.exports = {
     },
   },
   configureWebpack(config, isServer) {
-    if (isServer) {
+    if (process.env.NODE_ENV !== 'production' || isServer) {
       return;
     }
 
