@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>Form</h2>
-    <form @submit.prevent="handleSubmit">
+    <form @submit.prevent="handleSubmit" data-cy="form">
       <InputString
         label="Name"
         :validateme-rules="['len:2:10']"
@@ -9,8 +9,9 @@
         v-model="personal.name"
         autofocus
         required
+        data-cy="name"
       />
-      <div>
+      <div data-cy="surname">
         <h3>Surname</h3>
         <p>
           <input
@@ -33,7 +34,7 @@
         </p>
       </div>
       <br />
-      <button>Submit form</button>
+      <button data-cy="submit-button" :disabled="isValid != null && !isValid">Submit form</button>
     </form>
   </div>
 </template>
@@ -54,13 +55,16 @@ export default {
         name: '',
         surname: '',
       },
+      isValid: null,
     };
   },
   methods: {
     handleSubmit() {
       const $validateme = this.$validateme;
 
-      if (!$validateme.validate()) {
+      this.isValid = $validateme.validate();
+
+      if (!this.isValid) {
         return;
       }
 
