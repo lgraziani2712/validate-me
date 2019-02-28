@@ -34,7 +34,9 @@
         </p>
       </div>
       <br />
-      <button data-cy="submit-button" :disabled="isValid != null && !isValid">Submit form</button>
+      <button data-cy="submit-button" :disabled="isValid === false">
+        Submit form
+      </button>
     </form>
   </div>
 </template>
