@@ -1,38 +1,44 @@
 /* eslint-disable no-underscore-dangle */
 
-const config = {
-  lang: 'en',
-  clientDictionaryHandler() {
-    if (process.env.NODE_ENV !== 'production') {
-      // eslint-disable-next-line no-console
-      console.warn(
-        "[dev-only] @validate-me: Client's dictionary handler not found.",
-      );
-    }
+// Dev/Test only
+let toCall = true;
 
-    return Promise.reject();
-  },
+/**
+ * @type {ClientRuleHandler} client handler
+ * @return {ModulePromise} Returns a validator
+ */
+let clientHandler = () => {
+  if (process.env.NODE_ENV !== 'production' && toCall) {
+    // eslint-disable-next-line no-console
+    console.warn(
+      "[dev-only] @validate-me: Client's dictionary handler not found.",
+    );
+
+    toCall = false;
+  }
+
+  return Promise.reject();
 };
+
+let lang = 'en';
 const dictionary = { en: {} };
 const extras = { en: {} };
 
-// TODO: validate the data structure? See https://www.npmjs.com/package/validated
-function setConfig(newConfig) {
-  Object.keys(newConfig).forEach(key => {
-    config[key] = newConfig[key];
-  });
+function setConfig(newLang, newHandler) {
+  lang = newLang;
 
-  if (!dictionary[config.lang]) {
-    dictionary[config.lang] = {};
+  if (newHandler) {
+    clientHandler = newHandler;
   }
-  if (!extras[config.lang]) {
-    extras[config.lang] = {};
+  if (!dictionary[newLang]) {
+    dictionary[newLang] = {};
+    extras[newLang] = {};
   }
 }
 function getWarning(rule, value, args) {
-  const unknownRule = dictionary[config.lang]._unknownRule;
-  const fn = dictionary[config.lang][rule];
-  const warning = extras[config.lang].preWarning || '';
+  const unknownRule = dictionary[lang]._unknownRule;
+  const fn = dictionary[lang][rule];
+  const warning = extras[lang].preWarning || '';
 
   if (!fn && !unknownRule) {
     return '';
@@ -41,33 +47,31 @@ function getWarning(rule, value, args) {
   return warning + (!fn ? unknownRule(rule, value) : fn(value, ...args));
 }
 function getMessage(rule, value, args) {
-  const fn = dictionary[config.lang][rule];
+  const fn = dictionary[lang][rule];
 
   return !fn ? '' : fn(value, ...args);
 }
 function loadMessage(name) {
-  if (dictionary[config.lang][name]) {
+  if (dictionary[lang][name]) {
     return Promise.resolve();
   }
-  if (!extras[config.lang]) {
+  if (!extras[lang]) {
     loadExtras();
   }
 
-  return config
-    .clientDictionaryHandler(config.lang, name)
-    .catch(() => import(`./dictionaries/${config.lang}/${name}`))
-    .catch(() => config.clientDictionaryHandler(config.lang, '_unknownRule'))
-    .catch(() => import(`./dictionaries/${config.lang}/_unknownRule`))
+  return clientHandler(lang, name)
+    .catch(() => import(`./dictionaries/${lang}/${name}`))
+    .catch(() => clientHandler(lang, '_unknownRule'))
+    .catch(() => import(`./dictionaries/${lang}/_unknownRule`))
     .then(mod => {
-      dictionary[config.lang][mod.default.name] = mod.default;
+      dictionary[lang][mod.default.name] = mod.default;
     });
 }
 function loadExtras() {
-  config
-    .clientDictionaryHandler(config.lang, '_extras')
-    .catch(() => import(`./dictionaries/${config.lang}/_extras`))
+  clientHandler(lang, '_extras')
+    .catch(() => import(`./dictionaries/${lang}/_extras`))
     .then(mod => {
-      extras[config.lang] = mod.default;
+      extras[lang] = mod.default;
     });
 }
 

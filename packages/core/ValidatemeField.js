@@ -1,5 +1,5 @@
-import ValidatemeRules from '@validate-me/core/ValidatemeRules';
-import ValidatemeDictionary from '@validate-me/core/ValidatemeDictionary';
+import { loadRule } from './ValidatemeRules';
+import ValidatemeDictionary from './ValidatemeDictionary';
 
 export default class ValidatemeField {
   constructor({ name, rules = [], value }) {
@@ -45,33 +45,26 @@ export default class ValidatemeField {
     this.lastValueToServer = this.value;
   }
   isValid() {
-    return !this.state.loading && this.state.touched && this.state.valid;
+    const state = this.state;
+
+    return !state.loading && state.touched && state.valid;
   }
   hasErrors() {
-    return !this.state.loading && this.state.touched && this.state.error;
+    const state = this.state;
+
+    return !state.loading && state.touched && state.error;
   }
   hasWarnings() {
-    return !this.state.loading && this.state.touched && this.state.warning;
+    const state = this.state;
+
+    return !state.loading && state.touched && state.warning;
   }
   loadRule(rawRule) {
-    const [rule, ...args] = rawRule.split(':');
-
-    if (this.rules[rule]) {
-      return Promise.resolve({ rule, args });
-    }
     this.state.loading = true;
 
-    return ValidatemeDictionary.loadMessage(rule)
-      .then(() =>
-        ValidatemeRules.getRule(rule)
-          .then(rule => ({ rule, args }))
-          .catch(() => {
-            throw { rule, args };
-          }),
-      )
-      .finally(() => {
-        this.state.loading = false;
-      });
+    return loadRule(rawRule).finally(() => {
+      this.state.loading = false;
+    });
   }
   parseRawError(rawError) {
     this.loadRule(rawError)

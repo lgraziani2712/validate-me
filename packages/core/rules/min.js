@@ -1,5 +1,5 @@
-const min = minValue => instance => {
-  instance.setArgsToRule('min', [minValue]);
+const min = rawMinValue => {
+  const minValue = parseInt(rawMinValue);
 
   return value => value >= minValue;
 };

@@ -6,8 +6,10 @@
  * @return {void}
  */
 export default function vanillaConnector(validateme, form) {
-  Object.keys(validateme.store.fields).forEach(key => {
-    const field = validateme.store.fields[key];
+  const fields = validateme.store.fields;
+
+  Object.keys(fields).forEach(key => {
+    const field = fields[key];
     const input = form[key];
 
     input.addEventListener('blur', () => field.touchState(), {

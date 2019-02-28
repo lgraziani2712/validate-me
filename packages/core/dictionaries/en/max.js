@@ -1,4 +1,4 @@
-const contains = (value, max) =>
+const max = (value, max) =>
   `The value "${value}" must be less or equal than "${max}".`;
 
-export default contains;
+export default max;

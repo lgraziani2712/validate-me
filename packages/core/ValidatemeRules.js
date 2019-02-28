@@ -1,30 +1,60 @@
-const config = {
-  clientRulesHandler() {
-    if (process.env.NODE_ENV !== 'production') {
-      // eslint-disable-next-line no-console
-      console.warn(
-        "[dev-only] @validate-me: Client's rules handler not found.",
-      );
-    }
+import ValidatemeDictionary from './ValidatemeDictionary';
 
-    return Promise.reject();
-  },
+const cachedRules = {};
+
+// Dev/Test only
+let toCall = true;
+
+/**
+ * @type {ClientRuleHandler} client handler
+ * @return {ModulePromise} Returns a validator
+ */
+let clientHandler = () => {
+  if (process.env.NODE_ENV !== 'production' && toCall) {
+    // eslint-disable-next-line no-console
+    console.warn("[dev-only] @validate-me: Client's rules handler not found.");
+
+    toCall = false;
+  }
+
+  return Promise.reject();
 };
 
-// TODO: validate the data structure? See https://www.npmjs.com/package/validated
-function setConfig(newConfig) {
-  Object.keys(newConfig).forEach(key => {
-    config[key] = newConfig[key];
-  });
-}
-function getRule(name) {
-  return config
-    .clientRulesHandler(name)
-    .catch(() => import(`./rules/${name}`))
-    .then(module => module.default);
+/**
+ *
+ * @param {ClientRuleHandler} newHandler Rules' client handler
+ * @return {void}
+ */
+export function setHandler(newHandler) {
+  clientHandler = newHandler;
 }
 
-export default {
-  setConfig,
-  getRule,
-};
+export function loadRule(rawRule) {
+  const [rule, ...args] = rawRule.split(':');
+
+  const validator = cachedRules[rule];
+
+  if (validator) {
+    return Promise.resolve({ name: rule.name, run: rule(args), args });
+  }
+
+  return Promise.all([
+    ValidatemeDictionary.loadMessage(rule),
+    clientHandler(rule)
+      .catch(() => import(`./rules/${rule}`))
+      .then(mod => mod.default)
+      .then(rule => {
+        cachedRules[rule.name] = rule;
+
+        return { name: rule.name, run: rule(args), args };
+      })
+      .catch(() => {
+        throw { rule, args };
+      }),
+  ]).then(result => result[1]);
+}
+
+/**
+ * @typedef {Promise<{default: Function}>} ModulePromise
+ * @typedef {(name: string) => ModulePromise} ClientRuleHandler
+ */

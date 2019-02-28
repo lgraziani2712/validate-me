@@ -1,5 +1,5 @@
-const max = maxValue => instance => {
-  instance.setArgsToRule('max', [maxValue]);
+const max = rawMaxValue => {
+  const maxValue = parseInt(rawMaxValue);
 
   return value => value <= maxValue;
 };

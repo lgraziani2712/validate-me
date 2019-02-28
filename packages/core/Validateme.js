@@ -12,7 +12,7 @@ const defaultConfig = {
 
 export default class Validateme {
   constructor(newConfig) {
-    const configs = Object.assign({}, defaultConfig, newConfig);
+    const configs = { ...defaultConfig, ...newConfig };
 
     this.store = configs.store;
     this.handleSetField = configs.setField;
