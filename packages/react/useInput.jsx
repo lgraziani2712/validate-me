@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from 'react';
-import ValidatemeDictionary from '@validate-me/core/ValidatemeDictionary';
 import { loadRule } from '@validate-me/core/ValidatemeRules';
+import { getMessage } from '@validate-me/core/ValidatemeDictionary';
 
 import { FieldContext } from './ValidatemeForm';
 
@@ -37,9 +37,7 @@ export default function useInput({ validations, value, name, type, required }) {
       const isValid = rule.run(newValue);
 
       if (!isValid) {
-        setError(
-          ValidatemeDictionary.getMessage(rule.name, newValue, rule.args),
-        );
+        setError(getMessage(rule.name, newValue, rule.args));
 
         return;
       }

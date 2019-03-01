@@ -1,85 +1,48 @@
-// TODO: validate the data structure?
-const defaultConfig = {
-  fields: [],
-  store: {
-    fields: {},
-  },
-  setField(field) {
-    this.store.fields[field.name] = field;
-  },
-  serverErrorHandler: f => f,
-};
+const errorHandler = f => f;
 
 export default class Validateme {
-  constructor(newConfig) {
-    const configs = { ...defaultConfig, ...newConfig };
-
-    this.store = configs.store;
-    this.handleSetField = configs.setField;
-    this.serverErrorHandler =
-      configs.serverErrorHandler || defaultConfig.serverErrorHandler;
-
-    configs.fields.forEach(field => this.setField(field));
-  }
-  field(name) {
-    return this.store.fields[name];
+  constructor(newErrorHandler) {
+    this.fields = {};
+    this.errorHandler = newErrorHandler || errorHandler;
   }
   setField(field) {
-    if (this.store.fields[field.name]) {
-      throw new Error(`Field "${field.name}" already exists.`);
+    const name = field.name;
+
+    if (this.fields[name]) {
+      throw new Error(`Field "${name}" already exists.`);
     }
 
-    this.handleSetField(field);
-  }
-  isValid(name) {
-    const field = this.field(name);
-
-    return field && field.isValid();
-  }
-  hasErrors(name) {
-    const field = this.field(name);
-
-    return field && field.hasErrors();
-  }
-  hasWarnings(name) {
-    const field = this.field(name);
-
-    return field && field.hasWarnings();
-  }
-  firstError(name) {
-    const field = this.store.fields[name];
-
-    return field && field.hasErrors() ? field.firstError() : '';
-  }
-  firstWarning(name) {
-    const field = this.store.fields[name];
-
-    return field && field.hasWarnings() ? field.firstWarning() : '';
+    this.fields[name] = field;
   }
   process(error) {
-    const failedFieldsRules = this.serverErrorHandler(error);
+    const failedFieldsRules = this.errorHandler(error);
+    const fields = this.fields;
 
-    Object.keys(failedFieldsRules).forEach(fieldName => {
-      const field = this.store.fields[fieldName];
+    return Promise.all(
+      Object.keys(failedFieldsRules).map(fieldName => {
+        const field = fields[fieldName];
 
-      failedFieldsRules[fieldName].forEach(rawError => {
-        field.parseRawError(rawError);
-      });
-    });
+        return field.parseError(failedFieldsRules[fieldName]);
+      }),
+    );
   }
   validate() {
-    const validation = Object.values(this.store.fields).reduce(
-      (valid, field) => field.validate() && valid,
-      true,
-    );
+    let isValid = true;
 
-    if (validation) {
-      Object.values(this.store.fields).forEach(field => {
+    for (const field of Object.values(this.fields)) {
+      if (!field.validate()) {
+        isValid = false;
+
+        break;
+      }
+    }
+
+    if (isValid) {
+      Object.values(this.fields).forEach(field => {
         field.setSentValue();
-        field.clearWarnings();
       });
     }
 
-    return validation;
+    return isValid;
   }
 }

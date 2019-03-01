@@ -13,7 +13,10 @@
       <span v-show="$validateme.hasErrors(name)" style="color: red">
         {{ $validateme.firstError(name) }}
       </span>
-      <span v-show="$validateme.hasWarnings(name)" style="color: orange">
+      <span
+        v-show="$validateme.isValid(name) && $validateme.hasWarnings(name)"
+        style="color: orange"
+      >
         {{ $validateme.firstWarning(name) }}
       </span>
     </p>

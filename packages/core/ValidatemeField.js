@@ -1,155 +1,80 @@
 import { loadRule } from './ValidatemeRules';
-import ValidatemeDictionary from './ValidatemeDictionary';
+import { getMessage, getWarning } from './ValidatemeDictionary';
+
+function unknownRuleErrorOnInit({ name, args }) {
+  throw new Error(`Unknown rule "${name}" with args "${args.join(', ')}".`);
+}
 
 export default class ValidatemeField {
-  constructor({ name, rules = [], value }) {
+  constructor({ name, rules, value }) {
     this.name = name;
-    this.rules = {};
-    this.errors = [];
-    this.warnings = [];
-    this.state = {
-      loading: false,
-      touched: false,
-      valid: true,
-      error: false,
-      warning: false,
-    };
+    this.rules = [];
+
+    this.error = '';
+    this.warning = '';
+
+    this.isLoading = false;
+    this.isTouched = false;
+
     this.value = value || '';
     this.lastValueToServer = value || '';
 
-    rules.forEach(rawRule => {
-      this.loadRule(rawRule)
-        .then(({ rule, args }) => {
-          this.setRule(rule.name, rule(...args));
+    if (rules) {
+      this.isLoading = true;
+
+      Promise.all(rules.map(rawRule => loadRule(rawRule)))
+        .then(rules => {
+          this.rules = rules;
         })
-        .catch(({ rule, args }) => {
-          throw new Error(
-            `Unknown rule "${rule}" with args "${args.join(', ')}".`,
-          );
+        .catch(unknownRuleErrorOnInit)
+        .finally(() => {
+          this.isLoading = false;
         });
-    });
-  }
-  setRule(name, rule) {
-    this.rules[name] = {};
-    this.rules[name].run = rule(this);
-  }
-  setArgsToRule(name, args) {
-    if (!this.rules[name]) {
-      throw new Error(
-        `Rule "${name}" doesn't exists for the field "${this.name}".`,
-      );
     }
-    this.rules[name].args = args;
   }
   setSentValue() {
     this.lastValueToServer = this.value;
+    this.warning = '';
   }
   isValid() {
-    const state = this.state;
+    const { isLoading, isTouched, error } = this;
 
-    return !state.loading && state.touched && state.valid;
+    return !isLoading && isTouched && !error;
   }
-  hasErrors() {
-    const state = this.state;
-
-    return !state.loading && state.touched && state.error;
-  }
-  hasWarnings() {
-    const state = this.state;
-
-    return !state.loading && state.touched && state.warning;
-  }
-  loadRule(rawRule) {
-    this.state.loading = true;
-
-    return loadRule(rawRule).finally(() => {
-      this.state.loading = false;
-    });
-  }
-  parseRawError(rawError) {
-    this.loadRule(rawError)
-      .then(({ rule, args }) => {
-        this.setRule(rule.name, rule(...args));
-        this.addError(rule.name);
+  parseError(rawError) {
+    return loadRule(rawError)
+      .then(rule => {
+        this.rules.push(rule);
+        this.error = getMessage(rule, this.value);
       })
       .catch(rule => {
-        this.addWarning(rule);
+        this.warning = getWarning(rule, this.lastValueToServer);
       });
   }
-  addError(rule) {
-    if (this.errors.includes(rule)) {
+  touch() {
+    if (this.isTouched) {
       return;
     }
-    this.state.valid = false;
-    this.state.error = true;
-
-    this.errors.push(rule);
-  }
-  removeError(rule) {
-    const indexOfError = this.errors.indexOf(rule);
-
-    if (indexOfError !== -1) {
-      this.errors.splice(indexOfError, 1);
-    }
-
-    if (!this.errors.length) {
-      this.state.valid = true;
-      this.state.error = false;
-    }
-  }
-  firstError() {
-    const error = this.errors[0];
-    const args = this.rules[error].args || [];
-
-    return ValidatemeDictionary.getMessage(error, this.value, args);
-  }
-  addWarning(rule) {
-    if (!this.state.warning) {
-      this.state.warning = true;
-    }
-    this.warnings.push(rule);
-  }
-  clearWarnings() {
-    this.state.warning = false;
-    this.warnings = [];
-  }
-  firstWarning() {
-    const warning = this.warnings[0];
-
-    return ValidatemeDictionary.getWarning(
-      warning.rule,
-      this.lastValueToServer,
-      warning.args,
-    );
-  }
-  touchState() {
-    if (this.state.touched) {
-      return;
-    }
-    this.state.touched = true;
+    this.isTouched = true;
 
     this.run(this.value);
   }
   run(value) {
     this.value = value;
 
-    if (value == null || value === '') {
-      if (this.rules.required) {
-        this.rules.required.run(value)
-          ? this.removeError('required')
-          : this.addError('required');
-      }
+    for (const rule of this.rules) {
+      if (!rule.run(value)) {
+        this.error = getMessage(rule, value);
 
-      return;
+        return;
+      }
     }
 
-    Object.keys(this.rules).forEach(key => {
-      this.rules[key].run(value) ? this.removeError(key) : this.addError(key);
-    });
+    this.error = '';
   }
   validate() {
-    if (!this.state.touched) {
-      this.touchState();
+    if (!this.isTouched) {
+      this.touch();
     }
 
     return this.isValid();

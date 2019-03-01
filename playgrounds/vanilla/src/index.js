@@ -5,30 +5,35 @@ import vanillaConnector from '@validate-me/vanilla';
 window.addEventListener('load', () => {
   const form = document.getElementById('form');
   const result = document.getElementById('result');
-  const fieldName = 'name';
-  const validateme = new Validateme({
-    fields: [new ValidatemeField({ name: fieldName, rules: ['len:1:10'] })],
+  const nameField = new ValidatemeField({
+    name: 'name',
+    rules: ['required', 'len:2:10'],
   });
+  const nameInput = document.getElementsByName('name')[0];
+  const validateme = new Validateme();
 
-  vanillaConnector(validateme, form);
+  vanillaConnector(nameField, validateme, nameInput);
   let first = true;
 
   form.addEventListener('submit', evt => {
     evt.preventDefault();
 
-    if (first) {
-      first = false;
-      validateme.process({
-        name: ['unexistingRule', 'required'],
-      });
-    }
-
-    const errorMessage = validateme.hasErrors(fieldName)
-      ? validateme.firstError(fieldName)
-      : '';
+    const success = validateme.validate();
 
     result.innerHTML = `Validation complete: ${
-      validateme.validate() ? 'Success!' : errorMessage || 'Loading messages...'
+      success ? 'Success!' : nameField.error || 'Loading messages...'
     }`;
+
+    if (success && first) {
+      first = false;
+      validateme
+        .process({
+          name: 'unexistingRule',
+        })
+        .then(() => {
+          result.innerHTML += `\n\nServer response: ${nameField.warning ||
+            'Success!'}`;
+        });
+    }
   });
 });

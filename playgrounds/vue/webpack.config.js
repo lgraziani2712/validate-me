@@ -19,10 +19,16 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
+        options: {
+          rootMode: 'upward',
+        },
       },
       {
         test: /\.vue$/,
         loader: 'vue-loader',
+        options: {
+          rootMode: 'upward',
+        },
       },
       {
         test: /\.css$/,

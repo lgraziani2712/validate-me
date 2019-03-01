@@ -1,4 +1,4 @@
-import ValidatemeDictionary from './ValidatemeDictionary';
+import { loadMessage } from './ValidatemeDictionary';
 
 const cachedRules = {};
 
@@ -35,23 +35,26 @@ export function loadRule(rawRule) {
   const validator = cachedRules[rule];
 
   if (validator) {
-    return Promise.resolve({ name: rule.name, run: rule(args), args });
+    return Promise.resolve({
+      name: rule.name,
+      run: rule.apply(null, args),
+      args,
+    });
   }
 
-  return Promise.all([
-    ValidatemeDictionary.loadMessage(rule),
+  return loadMessage(rule).then(() =>
     clientHandler(rule)
       .catch(() => import(`./rules/${rule}`))
       .then(mod => mod.default)
       .then(rule => {
         cachedRules[rule.name] = rule;
 
-        return { name: rule.name, run: rule(args), args };
+        return { name: rule.name, run: rule.apply(null, args), args };
       })
       .catch(() => {
-        throw { rule, args };
+        throw { name: rule, args };
       }),
-  ]).then(result => result[1]);
+  );
 }
 
 /**

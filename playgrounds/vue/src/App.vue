@@ -71,7 +71,7 @@ export default {
       }
 
       $validateme.process({
-        name: ['unexistingMessage'],
+        name: ['unexistingRule'],
       });
     },
   },

@@ -24,34 +24,49 @@ let lang = 'en';
 const dictionary = { en: {} };
 const extras = { en: {} };
 
-function setConfig(newLang, newHandler) {
-  lang = newLang;
+/**
+ *
+ * @param {Object} config The new configuration.
+ * @param {string} [config.lang] The new language.
+ * @param {Function} [config.handler] The client's handler.
+ *
+ * @return {void}
+ */
+export function setConfig(config) {
+  if (config.lang) {
+    lang = config.lang;
 
-  if (newHandler) {
-    clientHandler = newHandler;
+    if (!dictionary[lang]) {
+      dictionary[lang] = {};
+      extras[lang] = {};
+    }
   }
-  if (!dictionary[newLang]) {
-    dictionary[newLang] = {};
-    extras[newLang] = {};
+  if (config.handler) {
+    clientHandler = config.handler;
   }
 }
-function getWarning(rule, value, args) {
+
+export function getWarning(rule, value) {
   const unknownRule = dictionary[lang]._unknownRule;
-  const fn = dictionary[lang][rule];
+  const fn = dictionary[lang][rule.name];
   const warning = extras[lang].preWarning || '';
 
-  if (!fn && !unknownRule) {
+  if (!(fn || unknownRule)) {
     return '';
   }
 
-  return warning + (!fn ? unknownRule(rule, value) : fn(value, ...args));
+  return (
+    warning + (fn ? fn(value, ...rule.args) : unknownRule(rule.name, value))
+  );
 }
-function getMessage(rule, value, args) {
-  const fn = dictionary[lang][rule];
 
-  return !fn ? '' : fn(value, ...args);
+export function getMessage(rule, value) {
+  const fn = dictionary[lang][rule.name];
+
+  return fn ? fn(value, ...rule.args) : '';
 }
-function loadMessage(name) {
+
+export function loadMessage(name) {
   if (dictionary[lang][name]) {
     return Promise.resolve();
   }
@@ -67,6 +82,7 @@ function loadMessage(name) {
       dictionary[lang][mod.default.name] = mod.default;
     });
 }
+
 function loadExtras() {
   clientHandler(lang, '_extras')
     .catch(() => import(`./dictionaries/${lang}/_extras`))
@@ -74,10 +90,3 @@ function loadExtras() {
       extras[lang] = mod.default;
     });
 }
-
-export default {
-  setConfig,
-  loadMessage,
-  getMessage,
-  getWarning,
-};

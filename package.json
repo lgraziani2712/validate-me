@@ -12,10 +12,10 @@
     "playgrounds/*"
   ],
   "scripts": {
-    "check:lint": "eslint docs/.vuepress/**/* packages playgrounds .eslintrc.js --cache",
-    "check:prettify": "prettier .circleci/**/* docs/**/* packages/**/* playgrounds/**/* ./**/*.json -c",
-    "lint": "eslint docs/.vuepress/**/* packages playgrounds .eslintrc.js --cache --fix",
-    "prettify": "prettier .circleci/**/* docs/**/* packages/**/* playgrounds/**/* ./**/*.json -c --write",
+    "check:lint": "eslint \"docs/.vuepress/**/*\" packages playgrounds .eslintrc.js --cache",
+    "check:prettify": "prettier \".circleci/**/*\" \"docs/**/*\" \"packages/**/*\" \"playgrounds/**/*\" \"./**/*.json\" -c",
+    "lint": "eslint \"docs/.vuepress/**/*\" packages playgrounds .eslintrc.js --cache --fix",
+    "prettify": "prettier \".circleci/**/*\" \"docs/**/*\" \"packages/**/*\" \"playgrounds/**/*\" \"./**/*.json\" -c --write",
     "build:docs": "vuepress build docs",
     "start:docs": "vuepress dev docs",
     "version": "lerna version --github-release"
@@ -51,7 +51,7 @@
     "vue-template-compiler": "2.6.7",
     "vue-types": "1.5.0",
     "vuepress": "1.0.0-alpha.39",
-    "webpack": "4.29.5",
+    "webpack": "4.29.6",
     "webpack-bundle-analyzer": "3.0.4",
     "webpack-cli": "3.2.3",
     "webpack-dev-server": "3.2.1"

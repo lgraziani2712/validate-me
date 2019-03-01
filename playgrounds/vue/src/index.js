@@ -6,9 +6,7 @@ import App from './App';
 
 ValidatemeDictionary.setConfig({
   lang: 'es',
-  clientDictionaryHandler(lang, name) {
-    return import(`./dictionaries/${lang}/${name}`);
-  },
+  handler: (lang, name) => import(`./dictionaries/${lang}/${name}`),
 });
 
 Vue.use(ValidatemePlugin);
