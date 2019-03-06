@@ -1,40 +1,17 @@
 <template>
   <div>
     <h2>Form</h2>
-    <form @submit.prevent="handleSubmit" data-cy="form">
+    <form autocomplete="off" @submit.prevent="handleSubmit" data-cy="form">
       <InputString
         label="Name"
         :validateme-rules="['len:2:10']"
         name="name"
-        v-model="personal.name"
-        autofocus
-        required
         data-cy="name"
+        required
       />
-      <div data-cy="surname">
-        <h3>Surname</h3>
-        <p>
-          <input
-            v-validate-me
-            v-model="personal.surname"
-            name="surname"
-            required
-          />
-        </p>
-        <p>
-          <span v-show="$validateme.hasErrors('surname')" style="color: red">
-            {{ $validateme.firstError('surname') }}
-          </span>
-          <span
-            v-show="$validateme.hasWarnings('surname')"
-            style="color: orange"
-          >
-            {{ $validateme.firstWarning('surname') }}
-          </span>
-        </p>
-      </div>
+      <InputString label="Surname" name="surname" data-cy="surname" required />
       <br />
-      <button data-cy="submit-button" :disabled="isValid === false">
+      <button data-cy="submit-button" :disabled="touched && invalid">
         Submit form
       </button>
     </form>
@@ -42,7 +19,7 @@
 </template>
 
 <script>
-import ValidatemeMixin from '@validate-me/vue/mixin';
+import FormMixin from '@validate-me/vue/FormMixin';
 
 import InputString from './InputString';
 
@@ -50,28 +27,15 @@ export default {
   components: {
     InputString,
   },
-  mixins: [ValidatemeMixin],
-  data() {
-    return {
-      personal: {
-        name: '',
-        surname: '',
-      },
-      isValid: null,
-    };
-  },
+  mixins: [FormMixin],
   methods: {
     handleSubmit() {
-      const $validateme = this.$validateme;
-
-      this.isValid = $validateme.validate();
-
-      if (!this.isValid) {
+      if (!this.validate()) {
         return;
       }
 
-      $validateme.process({
-        name: ['unexistingRule'],
+      this.process({
+        name: 'unexistingRule',
       });
     },
   },

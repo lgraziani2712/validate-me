@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import ValidatemePlugin from '@validate-me/vue';
-import ValidatemeDictionary from '@validate-me/core/ValidatemeDictionary';
+import { setConfig } from '@validate-me/core/dictionary';
 
 import App from './App';
 
-ValidatemeDictionary.setConfig({
+setConfig({
   lang: 'es',
   handler: (lang, name) => import(`./dictionaries/${lang}/${name}`),
 });

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, StrictMode } from 'react';
 import ReactDOM from 'react-dom';
 import ValidatemeForm, {
   SubmittableForm,
@@ -46,4 +46,9 @@ function App() {
 
 const rootElement = document.getElementById('react');
 
-ReactDOM.render(<App />, rootElement);
+ReactDOM.render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+  rootElement,
+);

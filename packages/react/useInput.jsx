@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from 'react';
-import { loadRule } from '@validate-me/core/ValidatemeRules';
-import { getMessage } from '@validate-me/core/ValidatemeDictionary';
+import { loadRule } from '@validate-me/core/rules';
+import { getMessage } from '@validate-me/core/dictionary';
 
 import { FieldContext } from './ValidatemeForm';
 
@@ -48,16 +48,14 @@ export default function useInput({ validations, value, name, type, required }) {
 
   // 3. Le pasa su estado al form.
   useEffect(() => {
-    const field = {
-      isInvalid: pristine || error,
-    };
+    const field = { invalid: pristine || error };
 
     if (pristine) {
       field.touch = () => setPristine(false);
     }
 
     setField({ name, field });
-  }, [name, setField, error, pristine]);
+  }, [name, error, pristine, setField]);
 
   return [
     {

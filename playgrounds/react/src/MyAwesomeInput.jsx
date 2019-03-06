@@ -16,12 +16,10 @@ export default function MyAwesomeInput(props) {
   );
 }
 
-if (process.env.NODE_ENV !== 'production') {
-  MyAwesomeInput.propTypes = {
-    validations: PropTypes.arrayOf(PropTypes.string),
-    name: PropTypes.string.isRequired,
-    value: PropTypes.string,
-    required: PropTypes.bool,
-    type: PropTypes.oneOf(['number', 'checkbox', 'date']),
-  };
-}
+MyAwesomeInput.propTypes = {
+  validations: PropTypes.arrayOf(PropTypes.string),
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string,
+  required: PropTypes.bool,
+  type: PropTypes.oneOf(['number', 'checkbox', 'date']),
+};

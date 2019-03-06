@@ -1,5 +1,5 @@
-import { loadRule } from './ValidatemeRules';
-import { getMessage, getWarning } from './ValidatemeDictionary';
+import { loadRule } from '@validate-me/core/rules';
+import { getMessage, getWarning } from '@validate-me/core/dictionary';
 
 function unknownRuleErrorOnInit({ name, args }) {
   throw new Error(`Unknown rule "${name}" with args "${args.join(', ')}".`);

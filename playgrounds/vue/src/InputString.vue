@@ -5,33 +5,30 @@
       <input
         v-validate-me="validatemeRules"
         :name="name"
+        :value="value"
         :autofocus="autofocus"
         :required="required"
       />
     </p>
-    <p>
-      <span v-show="$validateme.hasErrors(name)" style="color: red">
-        {{ $validateme.firstError(name) }}
-      </span>
-      <span
-        v-show="$validateme.isValid(name) && $validateme.hasWarnings(name)"
-        style="color: orange"
-      >
-        {{ $validateme.firstWarning(name) }}
-      </span>
+    <p style="min-height: 1.15em">
+      <span v-show="!pristine && error" style="color: red">{{ error }}</span>
+      <span v-show="!error && warning" style="color: orange">{{
+        warning
+      }}</span>
     </p>
   </div>
 </template>
 
 <script>
 import VueTypes from 'vue-types';
+import FieldMixin from '@validate-me/vue/FieldMixin';
 
 export default {
-  inject: ['$validateme'],
+  mixins: [FieldMixin],
   props: {
     label: VueTypes.string.isRequired,
     name: VueTypes.string.isRequired,
-    validatemeRules: VueTypes.arrayOf(String),
+    validatemeRules: VueTypes.arrayOf(VueTypes.string),
     autofocus: Boolean,
     required: Boolean,
   },

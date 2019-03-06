@@ -1,4 +1,4 @@
-import { loadMessage } from './ValidatemeDictionary';
+import { loadMessage } from './dictionary';
 
 const cachedRules = {};
 
@@ -30,6 +30,15 @@ export function setHandler(newHandler) {
 }
 
 export function loadRule(rawRule) {
+  if (process.env.NODE_ENV !== 'production') {
+    const type = typeof rawRule;
+
+    if (type !== 'string') {
+      throw new Error(
+        `[dev-only] @validate-me: "loadRule" accepts only strings, received "${type}" instead.`,
+      );
+    }
+  }
   const [rule, ...args] = rawRule.split(':');
 
   const validator = cachedRules[rule];

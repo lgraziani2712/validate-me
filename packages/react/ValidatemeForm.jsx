@@ -24,7 +24,7 @@ export default function ValidatemeForm({ children, onSubmit, ...props }) {
     let isValid = true;
 
     for (const field of Object.values(fields)) {
-      if (field.isInvalid) {
+      if (field.invalid) {
         isValid = false;
 
         break;
@@ -64,12 +64,10 @@ export default function ValidatemeForm({ children, onSubmit, ...props }) {
   );
 }
 
-if (process.env.NODE_ENV !== 'production') {
-  const Element = PropTypes.element;
-
-  ValidatemeForm.propTypes = {
-    children: PropTypes.oneOfType([Element, PropTypes.arrayOf(Element)])
-      .isRequired,
-    onSubmit: PropTypes.func.isRequired,
-  };
-}
+ValidatemeForm.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]).isRequired,
+  onSubmit: PropTypes.func.isRequired,
+};

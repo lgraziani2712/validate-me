@@ -28,8 +28,9 @@ export default class Validateme {
   }
   validate() {
     let isValid = true;
+    const fields = Object.values(this.fields);
 
-    for (const field of Object.values(this.fields)) {
+    for (const field of fields) {
       if (!field.validate()) {
         isValid = false;
 
@@ -38,9 +39,7 @@ export default class Validateme {
     }
 
     if (isValid) {
-      Object.values(this.fields).forEach(field => {
-        field.setSentValue();
-      });
+      fields.forEach(field => field.setSentValue());
     }
 
     return isValid;

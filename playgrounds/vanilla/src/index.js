@@ -1,5 +1,5 @@
-import Validateme from '@validate-me/core/Validateme';
-import ValidatemeField from '@validate-me/core/ValidatemeField';
+import Validateme from '@validate-me/vanilla/Validateme';
+import ValidatemeField from '@validate-me/vanilla/ValidatemeField';
 import vanillaConnector from '@validate-me/vanilla';
 
 window.addEventListener('load', () => {
