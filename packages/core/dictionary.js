@@ -25,7 +25,6 @@ const dictionary = { en: {} };
 const extras = { en: {} };
 
 /**
- *
  * @param {Object} config The new configuration.
  * @param {string} [config.lang] The new language.
  * @param {Function} [config.handler] The client's handler.

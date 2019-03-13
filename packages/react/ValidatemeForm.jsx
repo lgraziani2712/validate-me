@@ -4,6 +4,12 @@ import PropTypes from 'prop-types';
 export const FieldContext = React.createContext();
 export const SubmittableForm = React.createContext();
 
+let errorHandler = f => f;
+
+export function setErrorHandler(handler) {
+  errorHandler = handler;
+}
+
 /**
  * @param {Array<string>} fields Fields
  * @param {Object} newField Field
@@ -13,18 +19,18 @@ function fieldHandlersReducer(fields, newField) {
   return { ...fields, ...newField };
 }
 
-// TODO: useMemo for the validation
 export default function ValidatemeForm({ children, onSubmit, ...props }) {
+  const [fieldStates, setFieldState] = useReducer(fieldHandlersReducer, {});
   const [fields, setField] = useReducer(fieldHandlersReducer, {});
   const [isValid, setValidity] = useState(true);
   const [pristine, setPristine] = useState(true);
 
-  // 1. Verifica si todos los inputs son válidos
+  // 1. Verifies if every input is valid
   useEffect(() => {
     let isValid = true;
 
-    for (const field of Object.values(fields)) {
-      if (field.invalid) {
+    for (const fieldInvalid of Object.values(fieldStates)) {
+      if (fieldInvalid) {
         isValid = false;
 
         break;
@@ -32,29 +38,55 @@ export default function ValidatemeForm({ children, onSubmit, ...props }) {
     }
 
     setValidity(isValid);
-  }, [fields]);
+  }, [fieldStates]);
 
-  // 2. Ejecuta el evento de submit, el cual "toca" todos
-  // los campos que no hayan sido "tocados"
+  // 2. Executes the submit event. Touches every pristine input.
   const handleSubmit = useCallback(
     evt => {
       evt.preventDefault();
 
+      let firstValidation = false;
+      const fieldsValue = Object.values(fields);
+
       if (pristine) {
-        for (const field of Object.values(fields)) {
-          field.touch && field.touch();
-        }
+        firstValidation = fieldsValue.reduce(
+          (valid, field) => !field.touch() && valid,
+          true,
+        );
 
         setPristine(false);
       }
 
-      onSubmit(isValid);
+      if (isValid) {
+        fieldsValue.forEach(field => field.clearWarning());
+      }
+
+      onSubmit(firstValidation || isValid, error => {
+        const failedFieldsRules = errorHandler(error);
+
+        return Promise.all(
+          Object.keys(failedFieldsRules).map(name => {
+            const field = fields[name];
+
+            if (process.env.NODE_ENV !== 'production' && !field) {
+              // eslint-disable-next-line no-console
+              console.warn(
+                `[dev-only] @validate-me: Unknown field "${name}" while parsing errors from server.`,
+              );
+
+              return name;
+            }
+
+            return field.parseError(failedFieldsRules[name]);
+          }),
+        );
+      });
     },
     [fields, isValid, onSubmit, pristine],
   );
 
   return (
-    <FieldContext.Provider value={setField}>
+    <FieldContext.Provider value={{ setField, setFieldState }}>
       <SubmittableForm.Provider value={pristine || isValid}>
         <form {...props} onSubmit={handleSubmit}>
           {children}

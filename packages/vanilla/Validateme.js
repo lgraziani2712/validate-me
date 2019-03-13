@@ -39,7 +39,7 @@ export default class Validateme {
     }
 
     if (isValid) {
-      fields.forEach(field => field.setSentValue());
+      fields.forEach(field => field.clearWarning());
     }
 
     return isValid;

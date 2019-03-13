@@ -9,7 +9,10 @@ export default function MyAwesomeInput(props) {
     <div>
       <input {...inputProps} />
       <div>
-        Is valid? {inputState.pristine ? '' : inputState.error || 'yes'}
+        Is valid?{' '}
+        {inputState.pristine
+          ? ''
+          : inputState.error || inputState.warning || 'yes'}
       </div>
       <div>Value: {inputProps.value}</div>
     </div>

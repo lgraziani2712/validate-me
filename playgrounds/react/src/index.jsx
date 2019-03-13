@@ -14,13 +14,30 @@ function Button() {
   return <button disabled={!canSubmit}>Guardar!</button>;
 }
 
+let alreadyProcessed = false;
+
 function App() {
   const [success, setSuccess] = useState(false);
 
   return (
     <div className="App">
       <h1>Hello CodeSandbox</h1>
-      <ValidatemeForm onSubmit={setSuccess}>
+      <ValidatemeForm
+        onSubmit={(success, processError) => {
+          setSuccess(success);
+
+          if (!success || alreadyProcessed) {
+            return;
+          }
+
+          alreadyProcessed = true;
+
+          processError({
+            asd1: 'unexistingRule',
+            unexistingField: 'withInvalidRule(Wtf)',
+          });
+        }}
+      >
         <MyAwesomeInput
           validations={validations}
           name="asd1"

@@ -1,22 +1,57 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, useCallback } from 'react';
 import { loadRule } from '@validate-me/core/rules';
-import { getMessage } from '@validate-me/core/dictionary';
+import { getMessage, getWarning } from '@validate-me/core/dictionary';
 
 import { FieldContext } from './ValidatemeForm';
 
 export default function useInput({ validations, value, name, type, required }) {
-  // Context para pasar el callback al form
-  const setField = useContext(FieldContext);
-  // Estados propios del input
+  const { setField, setFieldState } = useContext(FieldContext);
+
   const [pristine, setPristine] = useState(true);
   const [error, setError] = useState();
+  const [warning, setWarning] = useState();
   const [rules, setRules] = useState([]);
   const [newValue, onChangeValue] = useState(value);
 
-  // Efectos que se invocan al montarse y en cada actualización
-  // (siempre y cuando cambiaron los valores de los que depende)
+  const runRules = useCallback(() => {
+    for (const rule of rules) {
+      const isValid = rule.run(newValue);
 
-  // 1. Instancia todas las reglas de validación
+      if (!isValid) {
+        setError(getMessage(rule, newValue));
+
+        return true;
+      }
+    }
+
+    setError();
+  }, [newValue, rules]);
+
+  useEffect(
+    () =>
+      setField({
+        [name]: {
+          touch() {
+            setPristine(false);
+
+            return runRules();
+          },
+          clearWarning: setWarning,
+          parseError: rawError =>
+            loadRule(rawError)
+              .then(rule => {
+                setRules(rules.concat(rule));
+                setError(getMessage(rule, this.value));
+              })
+              .catch(rule => {
+                setWarning(getWarning(rule, newValue));
+              }),
+        },
+      }),
+    [name, newValue, rules, runRules, setField],
+  );
+
+  // 1. Instanciates every rule
   useEffect(() => {
     const baseValidations = required ? ['required'] : [];
 
@@ -31,36 +66,21 @@ export default function useInput({ validations, value, name, type, required }) {
     Promise.all(allRules.map(loadRule)).then(setRules);
   }, [required, type, validations]);
 
-  // 2. Ejecuta las reglas
+  // 2. Executes every rule
   useEffect(() => {
-    for (const rule of rules) {
-      const isValid = rule.run(newValue);
+    runRules();
+  }, [runRules]);
 
-      if (!isValid) {
-        setError(getMessage(rule.name, newValue, rule.args));
-
-        return;
-      }
-    }
-
-    setError();
-  }, [newValue, rules]);
-
-  // 3. Le pasa su estado al form.
+  // 3. Pass its state to the form
   useEffect(() => {
-    const field = { invalid: pristine || error };
-
-    if (pristine) {
-      field.touch = () => setPristine(false);
-    }
-
-    setField({ name, field });
-  }, [name, error, pristine, setField]);
+    setFieldState({ [name]: pristine || error });
+  }, [name, error, pristine, setFieldState]);
 
   return [
     {
       pristine,
       error,
+      warning,
     },
     {
       required,

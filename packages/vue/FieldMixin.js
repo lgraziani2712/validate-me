@@ -18,7 +18,6 @@ export default {
       loading: false,
       pristine: true,
       value: '',
-      valueSent: '',
       rules: [],
     };
   },
@@ -28,9 +27,9 @@ export default {
         `[dev-only] @validate-me: Field cannot be instanciated without an instance`,
       );
     }
-    const { name, setField, setSentValue, parseError, touch } = this;
+    const { name, setField, clearWarning, parseError, touch } = this;
 
-    setField(name, { setSentValue, parseError, touch });
+    setField(name, { clearWarning, parseError, touch });
   },
   watch: {
     error(error) {
@@ -62,8 +61,7 @@ export default {
           this.loading = false;
         });
     },
-    setSentValue() {
-      this.valueSent = this.value;
+    clearWarning() {
       this.warning = '';
     },
     parseError(rawError) {
@@ -73,7 +71,7 @@ export default {
           this.error = getMessage(rule, this.value);
         })
         .catch(rule => {
-          this.warning = getWarning(rule, this.valueSent);
+          this.warning = getWarning(rule, this.value);
         });
     },
     touch() {

@@ -55,6 +55,15 @@ export default {
         Object.keys(failedFieldsRules).map(name => {
           const field = fields[name];
 
+          if (process.env.NODE_ENV !== 'production' && !field) {
+            // eslint-disable-next-line no-console
+            console.warn(
+              `[dev-only] @validate-me: Unknown field "${name}" while parsing errors from server.`,
+            );
+
+            return name;
+          }
+
           return field.parseError(failedFieldsRules[name]);
         }),
       );
@@ -72,7 +81,7 @@ export default {
       if (invalid && this.invalid) {
         return false;
       }
-      fields.forEach(field => field.setSentValue());
+      fields.forEach(field => field.clearWarning());
 
       return true;
     },

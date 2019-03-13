@@ -17,7 +17,6 @@ export default class ValidatemeField {
     this.isTouched = false;
 
     this.value = value || '';
-    this.lastValueToServer = value || '';
 
     if (rules) {
       this.isLoading = true;
@@ -32,8 +31,7 @@ export default class ValidatemeField {
         });
     }
   }
-  setSentValue() {
-    this.lastValueToServer = this.value;
+  clearWarning() {
     this.warning = '';
   }
   isValid() {
@@ -48,7 +46,7 @@ export default class ValidatemeField {
         this.error = getMessage(rule, this.value);
       })
       .catch(rule => {
-        this.warning = getWarning(rule, this.lastValueToServer);
+        this.warning = getWarning(rule, this.value);
       });
   }
   touch() {
