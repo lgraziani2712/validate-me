@@ -26,7 +26,7 @@ jobs:
             - v1-dependencies-
       - run: yarn install
       - run: yarn check:lint && yarn check:prettify
-      - run: yarn size
+      - run: yarn bundlesize
       - save_cache:
           paths:
             - node_modules
