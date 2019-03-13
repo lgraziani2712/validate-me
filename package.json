@@ -16,6 +16,7 @@
     "check:prettify": "prettier \".circleci/**/*\" \"docs/**/*\" \"packages/**/*\" \"playgrounds/**/*\" \"./**/*.json\" -c",
     "lint": "eslint \"docs/.vuepress/**/*\" packages playgrounds .eslintrc.js --cache --fix",
     "prettify": "prettier \".circleci/**/*\" \"docs/**/*\" \"packages/**/*\" \"playgrounds/**/*\" \"./**/*.json\" -c --write",
+    "size": "lerna run size --stream --parallel",
     "build:docs": "vuepress build docs",
     "start:docs": "vuepress dev docs",
     "version": "lerna version --github-release"
@@ -60,11 +61,5 @@
     "webpack-bundle-analyzer": "3.1.0",
     "webpack-cli": "3.2.3",
     "webpack-dev-server": "3.2.1"
-  },
-  "bundlesize": [
-    {
-      "path": "./packages/**/*.js",
-      "maxSize": "3 kB"
-    }
-  ]
+  }
 }

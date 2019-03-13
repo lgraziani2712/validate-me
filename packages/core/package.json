@@ -10,5 +10,14 @@
   },
   "files": [
     "**/*.js"
+  ],
+  "scripts": {
+    "size": "bundlesize"
+  },
+  "bundlesize": [
+    {
+      "path": "./**/*.js",
+      "maxSize": "1 kb"
+    }
   ]
 }
