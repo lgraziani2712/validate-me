@@ -16,7 +16,7 @@ export default {
       warning: '',
       loading: false,
       pristine: true,
-      value: '',
+      localValue: this.value || '',
       rules: [],
     };
   },
@@ -36,15 +36,15 @@ export default {
         loadRule(rawError)
           .then(rule => {
             this.rules.push(rule);
-            this.error = getMessage(rule, this.value);
+            this.error = getMessage(rule, this.localValue);
           })
           .catch(rule => {
-            this.warning = getWarning(rule, this.value);
+            this.warning = getWarning(rule, this.localValue);
           }),
       touch: () => {
         this.pristine = false;
 
-        return this.run(this.value);
+        return this.run(this.localValue);
       },
     });
   },
@@ -74,7 +74,10 @@ export default {
         });
     },
     run(value) {
-      this.value = value;
+      if (this.localValue !== value) {
+        this.localValue = value;
+        this.$emit('input', value);
+      }
 
       for (const rule of this.rules) {
         if (!rule.run(value)) {

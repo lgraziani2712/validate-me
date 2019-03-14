@@ -54,7 +54,7 @@ export default {
       return processErrors(this.fieldMethods, errorHandler(error));
     },
     validate() {
-      let invalid = true;
+      let invalid = false;
       const fields = Object.values(this.fieldMethods);
 
       if (!this.touched) {
@@ -65,7 +65,7 @@ export default {
 
         this.touched = true;
       }
-      if (invalid && this.invalid) {
+      if (invalid || this.invalid) {
         return false;
       }
       fields.forEach(field => field.clearWarning());

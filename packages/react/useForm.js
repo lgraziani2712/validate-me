@@ -35,7 +35,7 @@ export default function useForm() {
 
   // 2. Executes the submit event. Touches every pristine input.
   const validate = useCallback(() => {
-    let localInvalid = true;
+    let localInvalid = false;
     const fieldsValue = Object.values(fields.current);
 
     if (!touched) {
@@ -47,7 +47,7 @@ export default function useForm() {
       setTouch(true);
     }
 
-    if (localInvalid && invalid) {
+    if (localInvalid || invalid) {
       return false;
     }
     fieldsValue.forEach(field => field.clearWarning());

@@ -82,7 +82,7 @@ window.addEventListener('load', () => {
   vanillaConnector(nameField, validateme, nameInput);
 
   // 4. Listen to the submit action
-  myForm.addEventListener('submit' evt => {
+  myForm.addEventListener('submit', evt => {
     evt.preventDefault();
 
     if (!validateme.validate()) {
@@ -102,10 +102,6 @@ window.addEventListener('load', () => {
 </Tab>
 <Tab name="vue">
 
-::: tip
-The data for each input is injected through the mixins!
-:::
-
 1. Load the plugin
 
 ```js
@@ -118,7 +114,12 @@ Vue.use(ValidatemePlugin);
 
 ```html
 <form autocomplete="off" @submit.prevent="handleSubmit">
-  <MyAwesomeInput :validateme-rules="['len:2:10']" name="name" required />
+  <MyAwesomeInput
+    :validateme-rules="['len:2:10']"
+    name="name"
+    v-model="name"
+    required
+  />
   <button :disabled="touched && invalid">
     Submit form
   </button>
@@ -133,6 +134,11 @@ import MyAwesomeInput from './MyAwesomeInput';
 export default {
   components: [MyAwesomeInput],
   mixins: [FormMixin],
+  data() {
+    return {
+      name: '',
+    };
+  },
   methods: {
     handleSubmit() {
       if (!this.validate()) {
@@ -172,6 +178,7 @@ export default {
   mixins: [FieldMixin],
   props: {
     name: VueTypes.string.isRequired,
+    value: String,
     validatemeRules: VueTypes.arrayOf(VueTypes.string),
     autofocus: Boolean,
     required: Boolean,

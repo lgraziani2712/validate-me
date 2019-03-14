@@ -7,9 +7,16 @@
         :validateme-rules="['len:2:10']"
         name="name"
         data-cy="name"
+        v-model="name"
         required
       />
-      <InputString label="Surname" name="surname" data-cy="surname" required />
+      <InputString
+        label="Surname"
+        name="surname"
+        data-cy="surname"
+        v-model="surname"
+        required
+      />
       <br />
       <button data-cy="submit-button" :disabled="touched && invalid">
         Submit form
@@ -28,6 +35,12 @@ export default {
     InputString,
   },
   mixins: [FormMixin],
+  data() {
+    return {
+      name: 'a',
+      surname: '',
+    };
+  },
   methods: {
     handleSubmit() {
       if (!this.validate()) {
