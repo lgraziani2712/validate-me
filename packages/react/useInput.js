@@ -1,10 +1,6 @@
 import { useState, useEffect, useCallback, useReducer } from 'react';
-import { loadRule } from '@validate-me/core/rules';
+import { loadRule, processRawRules } from '@validate-me/core/rules';
 import { getMessage, getWarning } from '@validate-me/core/dictionary';
-
-function unknownRuleErrorOnInit({ name, args }) {
-  throw new Error(`Unknown rule "${name}" with args "${args.join(', ')}".`);
-}
 
 export default function useInput({
   form: { setField, setFieldState },
@@ -14,12 +10,12 @@ export default function useInput({
   type,
   required,
 }) {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState();
   const [pristine, setPristine] = useState(true);
   const [error, setError] = useState();
   const [warning, setWarning] = useState();
   const [ruleRunners, setRules] = useReducer(
-    (rules, rule) => (Array.isArray(rule) ? rule : rules.concat(rule)),
+    (rules, rule) => (rule.length ? rule : rules.concat(rule)),
     [],
   );
   const [newValue, onChangeValue] = useState(value);
@@ -27,9 +23,7 @@ export default function useInput({
   const runRules = useCallback(
     value => {
       if (value === '' && ruleRunners[0].name !== 'required') {
-        setError();
-
-        return false;
+        return setError();
       }
       for (const rule of ruleRunners) {
         const isValid = rule.run(value);
@@ -50,7 +44,7 @@ export default function useInput({
     () =>
       setField(name, {
         touch() {
-          setPristine(false);
+          setPristine();
 
           return runRules(newValue);
         },
@@ -79,10 +73,7 @@ export default function useInput({
 
     const allRules = rules ? baseRules.concat(rules) : baseRules;
 
-    Promise.all(allRules.map(loadRule))
-      .then(setRules)
-      .catch(unknownRuleErrorOnInit)
-      .finally(() => setLoading(false));
+    processRawRules(allRules, setRules, setLoading);
   }, [required, rules, type]);
 
   // 2. Executes every rule
@@ -109,7 +100,7 @@ export default function useInput({
       value: newValue,
       onChange: evt => onChangeValue(evt.target.value),
       // onBlur.once
-      onBlur: pristine ? () => setPristine(false) : undefined,
+      onBlur: pristine ? () => setPristine() : undefined,
     },
   ];
 }

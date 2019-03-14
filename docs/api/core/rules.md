@@ -54,11 +54,12 @@ When a rule is going to be loaded it follows these steps:
 
 ## Exports
 
-| Name            |   Type   | Used by end user |
-| --------------- | :------: | :--------------: |
-| `setHandler`    | Function |       Yes        |
-| `processErrors` | Function |        No        |
-| `loadRule`      | Function |        No        |
+| Name              | Used by end user |
+| ----------------- | :--------------: |
+| `setHandler`      |       Yes        |
+| `processErrors`   |        No        |
+| `loadRule`        |        No        |
+| `processRawRules` |        No        |
 
 ### setHandler
 
@@ -98,3 +99,18 @@ loadRule(
 ```
 
 Used by every package. It's called when the input's rules prop change dinamically or when parsing new rules thrown by the server.
+
+### processRawRules
+
+- Firm:
+
+```ts
+processRawRules(
+  rawRules: Array<string>,
+  // async callback
+  onSuccess: (rules: Array<Rule>) => void,
+  onFinally: () => void,
+): void
+```
+
+Used by every package. It's called everytime the input's rules change dinamically.

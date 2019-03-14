@@ -1,9 +1,5 @@
-import { loadRule } from '@validate-me/core/rules';
+import { loadRule, processRawRules } from '@validate-me/core/rules';
 import { getMessage, getWarning } from '@validate-me/core/dictionary';
-
-function unknownRuleErrorOnInit({ name, args }) {
-  throw new Error(`Unknown rule "${name}" with args "${args.join(', ')}".`);
-}
 
 export default class ValidatemeField {
   constructor({ name, rules, value }) {
@@ -21,14 +17,15 @@ export default class ValidatemeField {
     if (rules) {
       this.isLoading = true;
 
-      Promise.all(rules.map(rawRule => loadRule(rawRule)))
-        .then(rules => {
+      processRawRules(
+        rules,
+        rules => {
           this.rules = rules;
-        })
-        .catch(unknownRuleErrorOnInit)
-        .finally(() => {
+        },
+        () => {
           this.isLoading = false;
-        });
+        },
+      );
     }
   }
   clearWarning() {

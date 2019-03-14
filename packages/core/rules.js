@@ -83,6 +83,17 @@ export async function loadRule(rawRule) {
     });
 }
 
+function unknownRuleErrorOnInit({ name, args }) {
+  throw new Error(`Unknown rule "${name}" with args "${args.join(', ')}".`);
+}
+
+export async function processRawRules(rawRules, onSuccess, onFinally) {
+  return Promise.all(rawRules.map(loadRule))
+    .then(onSuccess)
+    .catch(unknownRuleErrorOnInit)
+    .finally(onFinally);
+}
+
 /**
  * @typedef {Promise<{default: Function}>} ModulePromise
  * @typedef {(name: string) => ModulePromise} ClientRuleHandler

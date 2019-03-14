@@ -1,9 +1,5 @@
-import { loadRule } from '@validate-me/core/rules';
+import { loadRule, processRawRules } from '@validate-me/core/rules';
 import { getMessage, getWarning } from '@validate-me/core/dictionary';
-
-function unknownRuleErrorOnInit({ name, args }) {
-  throw new Error(`Unknown rule "${name}" with args "${args.join(', ')}".`);
-}
 
 export default {
   inject: ['setField', 'updateField'],
@@ -64,14 +60,15 @@ export default {
     setRules(rawRules) {
       this.loading = true;
 
-      return Promise.all(rawRules.map(rawRule => loadRule(rawRule)))
-        .then(rules => {
+      return processRawRules(
+        rawRules,
+        rules => {
           this.rules = rules;
-        })
-        .catch(unknownRuleErrorOnInit)
-        .finally(() => {
+        },
+        () => {
           this.loading = false;
-        });
+        },
+      );
     },
     run(value) {
       if (this.localValue !== value) {
