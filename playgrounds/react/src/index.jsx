@@ -14,7 +14,6 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Hello CodeSandbox</h1>
       <form
         onSubmit={evt => {
           evt.preventDefault();
@@ -54,8 +53,8 @@ function App() {
           required
         />
         <hr />
-        <button disabled={form.touched && form.invalid}>Guardar!</button>
-        <div>Persistió? {success ? 'yes' : 'no'}</div>
+        <button disabled={form.touched && form.invalid}>Save!</button>
+        <div>Persisted? {success ? 'yes' : 'no'}</div>
       </form>
     </div>
   );
