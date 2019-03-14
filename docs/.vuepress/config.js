@@ -10,7 +10,7 @@ module.exports = {
     lastUpdated: 'Last updated',
     nav: [
       { text: 'Guides', link: '/guides/' },
-      { text: 'API', link: '/api/core/validateme.html' },
+      { text: 'API', link: '/api/core/rules.html' },
       {
         text: 'Changelog',
         link:
@@ -27,18 +27,21 @@ module.exports = {
         {
           title: 'Core API',
           collapsable: false,
-          children: [
-            'core/validateme-rule.html',
-            'core/validateme-rules.html',
-            'core/validateme-dictionary.html',
-            'core/validateme.html',
-            'core/validateme-field.html',
-          ],
+          children: ['core/rules.html', 'core/dictionary.html'],
+        },
+        {
+          title: 'Vanilla API',
+          collapsable: false,
+          children: ['vanilla/form.html', 'vanilla/field.html'],
         },
         {
           title: 'Vue API',
           collapsable: false,
-          children: ['vue/plugin.html', 'vue/directive.html', 'vue/mixin.html'],
+          children: [
+            'vue/plugin.html',
+            'vue/directive.html',
+            'vue/mixins.html',
+          ],
         },
       ],
     },

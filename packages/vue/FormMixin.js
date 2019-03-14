@@ -16,8 +16,19 @@ export default {
   },
   provide() {
     return {
-      setField: this.setField,
-      updateField: this.updateField,
+      setField: (name, methods) => {
+        if (this.fieldMethods[name]) {
+          throw new Error(`Field "${name}" already exists.`);
+        }
+
+        this.fieldMethods[name] = methods;
+      },
+      updateField: (name, state) => {
+        if (this.fields[name] === state) {
+          return;
+        }
+        this.fields = { ...this.fields, [name]: state };
+      },
     };
   },
   watch: {
@@ -37,19 +48,6 @@ export default {
     this.fieldMethods = {};
   },
   methods: {
-    setField(name, methods) {
-      if (this.fieldMethods[name]) {
-        throw new Error(`Field "${name}" already exists.`);
-      }
-
-      this.fieldMethods[name] = methods;
-    },
-    updateField(name, state) {
-      if (this.fields[name] === state) {
-        return;
-      }
-      this.fields = { ...this.fields, [name]: state };
-    },
     process(error) {
       return processErrors(this.fieldMethods, errorHandler(error));
     },

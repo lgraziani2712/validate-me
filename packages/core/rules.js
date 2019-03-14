@@ -40,7 +40,7 @@ export function processErrors(fields, failedFields) {
           `[dev-only] @validate-me: Unknown field "${name}" while parsing errors from server.`,
         );
 
-        return name;
+        return undefined;
       }
 
       return field.parseError(failedFields[name]);

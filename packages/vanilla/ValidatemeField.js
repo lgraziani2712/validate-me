@@ -59,8 +59,14 @@ export default class ValidatemeField {
   }
   run(value) {
     this.value = value;
+    const rules = this.rules;
 
-    for (const rule of this.rules) {
+    if (value === '' && rules[0].name !== 'required') {
+      this.error = '';
+
+      return false;
+    }
+    for (const rule of rules) {
       if (!rule.run(value)) {
         this.error = getMessage(rule, value);
 

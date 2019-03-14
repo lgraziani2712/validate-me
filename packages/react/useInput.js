@@ -26,6 +26,11 @@ export default function useInput({
 
   const runRules = useCallback(
     value => {
+      if (value === '' && ruleRunners[0].name !== 'required') {
+        setError();
+
+        return false;
+      }
       for (const rule of ruleRunners) {
         const isValid = rule.run(value);
 

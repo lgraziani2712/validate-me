@@ -5,17 +5,17 @@
       <InputString
         label="Name"
         :validateme-rules="['len:2:10']"
+        v-model="name"
         name="name"
         data-cy="name"
-        v-model="name"
         required
       />
       <InputString
         label="Surname"
         name="surname"
-        data-cy="surname"
         v-model="surname"
-        required
+        :validateme-rules="['len:2:10']"
+        data-cy="surname"
       />
       <br />
       <button data-cy="submit-button" :disabled="touched && invalid">
