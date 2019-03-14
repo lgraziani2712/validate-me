@@ -1,29 +1,26 @@
-import React, { useContext, useState, StrictMode } from 'react';
+import React, { StrictMode, useState } from 'react';
 import ReactDOM from 'react-dom';
-import ValidatemeForm, {
-  SubmittableForm,
-} from '@validate-me/react/ValidatemeForm';
+import useForm from '@validate-me/react/useForm';
 
 import MyAwesomeInput from './MyAwesomeInput';
 
-const validations = ['min:0', 'max:10'];
-
-function Button() {
-  const canSubmit = useContext(SubmittableForm);
-
-  return <button disabled={!canSubmit}>Guardar!</button>;
-}
+const rules = ['min:0', 'max:10'];
 
 let alreadyProcessed = false;
 
 function App() {
   const [success, setSuccess] = useState(false);
+  const form = useForm();
 
   return (
     <div className="App">
       <h1>Hello CodeSandbox</h1>
-      <ValidatemeForm
-        onSubmit={(success, processError) => {
+      <form
+        onSubmit={evt => {
+          evt.preventDefault();
+
+          const success = form.validate();
+
           setSuccess(success);
 
           if (!success || alreadyProcessed) {
@@ -32,14 +29,16 @@ function App() {
 
           alreadyProcessed = true;
 
-          processError({
+          form.process({
             asd1: 'unexistingRule',
+            asd2: 'min:10',
             unexistingField: 'withInvalidRule(Wtf)',
           });
         }}
       >
         <MyAwesomeInput
-          validations={validations}
+          form={form}
+          rules={rules}
           name="asd1"
           value="12"
           type="number"
@@ -47,16 +46,17 @@ function App() {
         />
         <hr />
         <MyAwesomeInput
-          validations={validations}
+          form={form}
+          rules={rules}
           name="asd2"
           value="5"
           type="number"
           required
         />
         <hr />
-        <Button />
+        <button disabled={form.touched && form.invalid}>Guardar!</button>
         <div>Persistió? {success ? 'yes' : 'no'}</div>
-      </ValidatemeForm>
+      </form>
     </div>
   );
 }

@@ -65,10 +65,6 @@
     {
       "path": "./packages/**/!(.eslintrc).js",
       "maxSize": "1 kb"
-    },
-    {
-      "path": "./packages/**/*.jsx",
-      "maxSize": "1 kb"
     }
   ]
 }

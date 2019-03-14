@@ -29,7 +29,26 @@ export function setHandler(newHandler) {
   clientHandler = newHandler;
 }
 
-export function loadRule(rawRule) {
+export function processErrors(fields, failedFields) {
+  return Promise.all(
+    Object.keys(failedFields).map(name => {
+      const field = fields[name];
+
+      if (process.env.NODE_ENV !== 'production' && !field) {
+        // eslint-disable-next-line no-console
+        console.warn(
+          `[dev-only] @validate-me: Unknown field "${name}" while parsing errors from server.`,
+        );
+
+        return name;
+      }
+
+      return field.parseError(failedFields[name]);
+    }),
+  );
+}
+
+export async function loadRule(rawRule) {
   if (process.env.NODE_ENV !== 'production') {
     const type = typeof rawRule;
 
@@ -39,31 +58,29 @@ export function loadRule(rawRule) {
       );
     }
   }
-  const [rule, ...args] = rawRule.split(':');
+  const [name, ...args] = rawRule.split(':');
+  const rule = cachedRules[name];
 
-  const validator = cachedRules[rule];
-
-  if (validator) {
-    return Promise.resolve({
-      name: rule.name,
+  if (rule) {
+    return {
+      name,
       run: rule.apply(null, args),
       args,
-    });
+    };
   }
 
-  return loadMessage(rule).then(() =>
-    clientHandler(rule)
-      .catch(() => import(`./rules/${rule}`))
-      .then(mod => mod.default)
-      .then(rule => {
-        cachedRules[rule.name] = rule;
+  await loadMessage(name);
 
-        return { name: rule.name, run: rule.apply(null, args), args };
-      })
-      .catch(() => {
-        throw { name: rule, args };
-      }),
-  );
+  return clientHandler(name)
+    .catch(() => import(`./rules/${name}`))
+    .then(({ default: rule }) => {
+      cachedRules[name] = rule;
+
+      return { name, run: rule.apply(null, args), args };
+    })
+    .catch(() => {
+      throw { name, args };
+    });
 }
 
 /**

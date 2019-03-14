@@ -1,3 +1,5 @@
+import { processErrors } from '@validate-me/core/rules';
+
 let errorHandler = f => f;
 
 export function setErrorHandler(handler) {
@@ -16,14 +18,11 @@ export default {
     return {
       setField: this.setField,
       updateField: this.updateField,
-      touchForm: this.touchForm,
     };
   },
   watch: {
     fields(newFields) {
-      const fields = Object.values(newFields);
-
-      for (const state of fields) {
+      for (const state of Object.values(newFields)) {
         if (state) {
           this.invalid = true;
 
@@ -39,34 +38,20 @@ export default {
   },
   methods: {
     setField(name, methods) {
+      if (this.fieldMethods[name]) {
+        throw new Error(`Field "${name}" already exists.`);
+      }
+
       this.fieldMethods[name] = methods;
     },
     updateField(name, state) {
+      if (this.fields[name] === state) {
+        return;
+      }
       this.fields = { ...this.fields, [name]: state };
     },
-    touchForm() {
-      this.touched = true;
-    },
     process(error) {
-      const failedFieldsRules = errorHandler(error);
-      const fields = this.fieldMethods;
-
-      return Promise.all(
-        Object.keys(failedFieldsRules).map(name => {
-          const field = fields[name];
-
-          if (process.env.NODE_ENV !== 'production' && !field) {
-            // eslint-disable-next-line no-console
-            console.warn(
-              `[dev-only] @validate-me: Unknown field "${name}" while parsing errors from server.`,
-            );
-
-            return name;
-          }
-
-          return field.parseError(failedFieldsRules[name]);
-        }),
-      );
+      return processErrors(this.fieldMethods, errorHandler(error));
     },
     validate() {
       let invalid = true;
@@ -77,6 +62,8 @@ export default {
           (invalid, field) => field.touch() || invalid,
           true,
         );
+
+        this.touched = true;
       }
       if (invalid && this.invalid) {
         return false;

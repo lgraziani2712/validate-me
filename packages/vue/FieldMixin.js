@@ -1,4 +1,3 @@
-import VueTypes from 'vue-types';
 import { loadRule } from '@validate-me/core/rules';
 import { getMessage, getWarning } from '@validate-me/core/dictionary';
 
@@ -7,9 +6,9 @@ function unknownRuleErrorOnInit({ name, args }) {
 }
 
 export default {
-  inject: ['setField', 'updateField', 'touchForm'],
+  inject: ['setField', 'updateField'],
   props: {
-    name: VueTypes.string.isRequired,
+    name: { type: String, require: true },
   },
   data() {
     return {
@@ -24,23 +23,36 @@ export default {
   created() {
     if (process.env.NODE_ENV !== 'production' && !this.setField) {
       throw new Error(
-        `[dev-only] @validate-me: Field cannot be instanciated without an instance`,
+        '[dev-only] @validate-me: Field cannot be instanciated without an instance.',
       );
     }
-    const { name, setField, clearWarning, parseError, touch } = this;
+    const { name, setField } = this;
 
-    setField(name, { clearWarning, parseError, touch });
+    setField(name, {
+      clearWarning: () => {
+        this.warning = '';
+      },
+      parseError: rawError =>
+        loadRule(rawError)
+          .then(rule => {
+            this.rules.push(rule);
+            this.error = getMessage(rule, this.value);
+          })
+          .catch(rule => {
+            this.warning = getWarning(rule, this.value);
+          }),
+      touch: () => {
+        this.pristine = false;
+
+        return this.run(this.value);
+      },
+    });
   },
   watch: {
     error(error) {
       const { name, updateField, loading } = this;
 
       updateField(name, Boolean(loading || error));
-    },
-    pristine(pristine) {
-      if (!pristine) {
-        this.touchForm();
-      }
     },
     loading(loading) {
       const { name, updateField, error } = this;
@@ -60,27 +72,6 @@ export default {
         .finally(() => {
           this.loading = false;
         });
-    },
-    clearWarning() {
-      this.warning = '';
-    },
-    parseError(rawError) {
-      return loadRule(rawError)
-        .then(rule => {
-          this.rules.push(rule);
-          this.error = getMessage(rule, this.value);
-        })
-        .catch(rule => {
-          this.warning = getWarning(rule, this.value);
-        });
-    },
-    touch() {
-      if (!this.pristine) {
-        return;
-      }
-      this.pristine = false;
-
-      return this.run(this.value);
     },
     run(value) {
       this.value = value;

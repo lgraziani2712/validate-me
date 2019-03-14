@@ -1,9 +1,14 @@
-const errorHandler = f => f;
+import { processErrors } from '@validate-me/core/rules';
+
+let errorHandler = f => f;
+
+export function setErrorHandler(handler) {
+  errorHandler = handler;
+}
 
 export default class Validateme {
-  constructor(newErrorHandler) {
+  constructor() {
     this.fields = {};
-    this.errorHandler = newErrorHandler || errorHandler;
   }
   setField(field) {
     const name = field.name;
@@ -15,16 +20,7 @@ export default class Validateme {
     this.fields[name] = field;
   }
   process(error) {
-    const failedFieldsRules = this.errorHandler(error);
-    const fields = this.fields;
-
-    return Promise.all(
-      Object.keys(failedFieldsRules).map(fieldName => {
-        const field = fields[fieldName];
-
-        return field.parseError(failedFieldsRules[fieldName]);
-      }),
-    );
+    return processErrors(this.fields, errorHandler(error));
   }
   validate() {
     let isValid = true;
