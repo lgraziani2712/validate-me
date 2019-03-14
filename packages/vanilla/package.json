@@ -1,8 +1,8 @@
 {
   "name": "@validate-me/vanilla",
   "version": "1.0.0-alpha.16",
-  "repository": "https://github.com/dimax/validate-me",
-  "homepage": "https://dimax.github.io/validate-me",
+  "repository": "https://github.com/lgraziani2712/validate-me",
+  "homepage": "https://validate-me.netlify.com",
   "author": "Luciano Graziani @lgraziani2712",
   "license": "MIT",
   "main": "index.js",

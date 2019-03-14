@@ -1,4 +1,3 @@
-const required = () => () => value =>
-  value !== undefined && value !== null && value !== '';
+const required = () => value => value != null && value !== '';
 
 export default required;

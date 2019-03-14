@@ -13,7 +13,8 @@ module.exports = {
       { text: 'API', link: '/api/core/validateme.html' },
       {
         text: 'Changelog',
-        link: 'https://github.com/dimax/validate-me/blob/master/CHANGELOG.md',
+        link:
+          'https://github.com/lgraziani2712/validate-me/blob/master/CHANGELOG.md',
       },
       {
         text: 'Roadmap',

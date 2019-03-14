@@ -1,10 +1,10 @@
 import directive from './directive';
-import { setServerErrorHandler } from './mixin';
+import { setErrorHandler } from './FormMixin';
 
 const ValidatemePlugin = {
   install(Vue, props) {
-    if (props && props.serverErrorHandler) {
-      setServerErrorHandler(props.serverErrorHandler);
+    if (props && props.errorHandler) {
+      setErrorHandler(props.errorHandler);
     }
 
     Vue.directive('validate-me', directive);

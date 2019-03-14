@@ -1,5 +1,5 @@
 {
-  "name": "@validate-me/apollo-error-parser",
+  "name": "@validate-me/react",
   "version": "1.0.0-alpha.16",
   "repository": "https://github.com/lgraziani2712/validate-me",
   "homepage": "https://validate-me.netlify.com",
@@ -12,5 +12,12 @@
   },
   "files": [
     "*.js"
-  ]
+  ],
+  "dependencies": {
+    "@validate-me/core": "1.0.0-alpha.16"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0-alpha.1",
+    "react-dom": "^16.8.0-alpha.1"
+  }
 }

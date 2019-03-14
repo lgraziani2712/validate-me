@@ -1,16 +1,15 @@
 {
-  "name": "@validate-me/apollo-error-parser",
+  "name": "@validate-me/web-vanilla",
   "version": "1.0.0-alpha.16",
+  "private": true,
   "repository": "https://github.com/lgraziani2712/validate-me",
   "homepage": "https://validate-me.netlify.com",
   "author": "Luciano Graziani @lgraziani2712",
   "license": "MIT",
-  "main": "index.js",
-  "module": "index.js",
-  "publishConfig": {
-    "access": "public"
+  "scripts": {
+    "start": "webpack-dev-server --content-base dist"
   },
-  "files": [
-    "*.js"
-  ]
+  "dependencies": {
+    "@validate-me/vanilla": "1.0.0-alpha.16"
+  }
 }

@@ -1,3 +1,3 @@
-const isAlpha = () => () => /^([a-z]|\d)+$/i.test;
+const isAlpha = () => /^([a-z]|\d)+$/i.test;
 
 export default isAlpha;

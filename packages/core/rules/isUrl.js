@@ -1,3 +1,3 @@
-const isUrl = () => () => /^https?:\/\/([\w-]+\.)+\w{2,}(\/.+)?$/.test;
+const isUrl = () => /^https?:\/\/([\w-]+\.)+\w{2,}(\/.+)?$/.test;
 
 export default isUrl;
