@@ -1,6 +1,6 @@
-# @validate-me/vanilla
+# @validate-me/react
 
-VanillaJS version of `validate-me`.
+React version of `validate-me`.
 
 > validate-me stands for "client asking the server to validate its data"
 
