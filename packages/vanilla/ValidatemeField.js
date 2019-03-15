@@ -1,9 +1,5 @@
-import { loadRule } from '@validate-me/core/rules';
+import { loadRule, processRawRules } from '@validate-me/core/rules';
 import { getMessage, getWarning } from '@validate-me/core/dictionary';
-
-function unknownRuleErrorOnInit({ name, args }) {
-  throw new Error(`Unknown rule "${name}" with args "${args.join(', ')}".`);
-}
 
 export default class ValidatemeField {
   constructor({ name, rules, value }) {
@@ -13,31 +9,29 @@ export default class ValidatemeField {
     this.error = '';
     this.warning = '';
 
-    this.isLoading = false;
-    this.isTouched = false;
-
     this.value = value || '';
 
     if (rules) {
-      this.isLoading = true;
+      this.loading = true;
 
-      Promise.all(rules.map(rawRule => loadRule(rawRule)))
-        .then(rules => {
+      processRawRules(
+        rules,
+        rules => {
           this.rules = rules;
-        })
-        .catch(unknownRuleErrorOnInit)
-        .finally(() => {
-          this.isLoading = false;
-        });
+        },
+        () => {
+          this.loading = false;
+        },
+      );
     }
   }
   clearWarning() {
     this.warning = '';
   }
-  isValid() {
-    const { isLoading, isTouched, error } = this;
+  valid() {
+    const { loading, touched, error } = this;
 
-    return !isLoading && isTouched && !error;
+    return !loading && touched && !error;
   }
   parseError(rawError) {
     return loadRule(rawError)
@@ -50,17 +44,23 @@ export default class ValidatemeField {
       });
   }
   touch() {
-    if (this.isTouched) {
+    if (this.touched) {
       return;
     }
-    this.isTouched = true;
+    this.touched = true;
 
     this.run(this.value);
   }
   run(value) {
     this.value = value;
+    const rules = this.rules;
 
-    for (const rule of this.rules) {
+    if (value === '' && rules[0].name !== 'required') {
+      this.error = '';
+
+      return false;
+    }
+    for (const rule of rules) {
       if (!rule.run(value)) {
         this.error = getMessage(rule, value);
 
@@ -71,10 +71,10 @@ export default class ValidatemeField {
     this.error = '';
   }
   validate() {
-    if (!this.isTouched) {
+    if (!this.touched) {
       this.touch();
     }
 
-    return this.isValid();
+    return this.valid();
   }
 }

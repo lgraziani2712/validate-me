@@ -12,5 +12,13 @@
   },
   "files": [
     "*.js"
+  ],
+  "keywords": [
+    "validation",
+    "server",
+    "blazing",
+    "fast",
+    "rule",
+    "apollo"
   ]
 }

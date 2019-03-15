@@ -11,12 +11,21 @@
     "access": "public"
   },
   "files": [
+    "README.md",
     "*.js"
+  ],
+  "keywords": [
+    "validation",
+    "server",
+    "blazing",
+    "fast",
+    "rule",
+    "vue"
   ],
   "dependencies": {
     "@validate-me/core": "1.0.0-alpha.16"
   },
   "peerDependencies": {
-    "vue": "^2.5.16"
+    "vue": "^2"
   }
 }

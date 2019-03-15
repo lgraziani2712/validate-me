@@ -44,6 +44,17 @@ yarn add @validate-me/vue
 ```
 
 </Tab>
+<Tab name="react">
+
+```bash
+# install with npm
+npm install --save @validate-me/react
+
+# install with yarn
+yarn add @validate-me/react
+```
+
+</Tab>
 </Tabs>
 
 ### Use
@@ -52,24 +63,26 @@ yarn add @validate-me/vue
 <Tab name="vanilla">
 
 ```js
-import Validateme from '@validate-me/core/Validateme';
-import ValidatemeField from '@validate-me/core/ValidatemeField';
+import Validateme from '@validate-me/vanilla/Validateme';
+import ValidatemeField from '@validate-me/vanilla/ValidatemeField';
 import vanillaConnector from '@validate-me/vanilla';
 
 window.addEventListener('load', () => {
   const myForm = document.getElementById('my-form');
-  const validateme = new Validateme({
-    fields: [
-      new ValidatemeField({
-        name: 'name',
-        rules: ['required', 'len:2:300'],
-      }),
-    ],
+  // 1. Create the form object
+  const validateme = new Validateme();
+  // 2. Create each field object
+  const nameField = new ValidatemeField({
+    name: 'name',
+    rules: ['required', 'len:2:10'],
   });
+  const nameInput = document.getElementsByName('name')[0];
 
-  vanillaConnector(validateme, myForm);
+  // 3. Add the field to the form. Add input listeners to the input.
+  vanillaConnector(nameField, validateme, nameInput);
 
-  myForm.addEventListener('submit' evt => {
+  // 4. Listen to the submit action
+  myForm.addEventListener('submit', evt => {
     evt.preventDefault();
 
     if (!validateme.validate()) {
@@ -77,6 +90,12 @@ window.addEventListener('load', () => {
     }
 
     // Send data to server
+    // ...
+    // And if the server returns new invalid rules...
+    const errorsFromServer = {
+      name: 'isAlpha',
+    };
+    validateme.process(errorsFromServer);
 });
 ```
 
@@ -91,27 +110,136 @@ import ValidatemePlugin from '@validate-me/vue';
 Vue.use(ValidatemePlugin);
 ```
 
-2. Instanciate it through the mixin
+2. Instanciate the form mixin in the form component
+
+```html
+<form autocomplete="off" @submit.prevent="handleSubmit">
+  <MyAwesomeInput
+    :validateme-rules="['len:2:10']"
+    name="name"
+    v-model="name"
+    required
+  />
+  <button :disabled="touched && invalid">
+    Submit form
+  </button>
+</form>
+```
 
 ```js
-import ValidatemeMixin from '@validate-me/vue/mixin';
+import FormMixin from '@validate-me/vue/FormMixin';
+
+import MyAwesomeInput from './MyAwesomeInput';
 
 export default {
-  mixins: [ValidatemeMixin],
+  components: [MyAwesomeInput],
+  mixins: [FormMixin],
   data() {
     return {
       name: '',
     };
   },
+  methods: {
+    handleSubmit() {
+      if (!this.validate()) {
+        return;
+      }
+
+      // Send data to server
+      // ...
+      // And if the server returns new invalid rules...
+      const errorsFromServer = {
+        name: 'isAlpha',
+      };
+
+      this.process(errorsFromServer);
+    },
+  },
 };
 ```
 
-3. Configure the inputs with the directive
+3. Instanciate the input mixin
 
 ```html
-<input v-validate-me v-model="name" name="name" required />
-<span style="color: red"> {{ $validateme.firstError('name') }} </span>
-<span style="color: orange"> {{ $validateme.firstWarning('name') }} </span>
+<input
+  v-validate-me="['len:2:10']"
+  :name="name"
+  :value="value"
+  :autofocus="autofocus"
+  :required="required"
+/>
+```
+
+```js
+import VueTypes from 'vue-types';
+import FieldMixin from '@validate-me/vue/FieldMixin';
+
+export default {
+  mixins: [FieldMixin],
+  props: {
+    name: VueTypes.string.isRequired,
+    value: String,
+    validatemeRules: VueTypes.arrayOf(VueTypes.string),
+    autofocus: Boolean,
+    required: Boolean,
+  },
+};
+```
+
+</Tab>
+<Tab name="react">
+
+::: warning
+This implementation is written with hooks.
+It works with `react@^16.8.0`
+:::
+
+1. Import the form hook:
+
+```jsx
+import React from 'react';
+import useForm from '@validate-me/react/useForm';
+
+export default function MyAwesomeForm() {
+  const form = useForm();
+
+  return (
+    <form
+      onSubmit={evt => {
+        evt.preventDefault();
+
+        if (!form.validate()) {
+          return;
+        }
+
+        // Send data to server
+        // ...
+        // And if the server returns new invalid rules...
+        const errorsFromServer = {
+          name: 'isAlpha',
+        };
+
+        form.process(errorsFromServer);
+      }}
+    >
+      <MyAwesomeInput form={form} rules={['len:2:10']} name="name" required />
+      <button disabled={form.touched && form.invalid}>Submit form</button>
+    </form>
+  );
+}
+```
+
+2. Import the field hook:
+
+```jsx
+import React from 'react';
+import useField from '@validate-me/react/useField';
+
+export default function MyAwesomeInput(props) {
+  const [fieldState, inputProps] = useField(props);
+
+  return <input {...inputProps} />;
+}
 ```
 
 </Tab>

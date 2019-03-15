@@ -45,24 +45,22 @@ export function setConfig(config) {
   }
 }
 
-export function getWarning(rule, value) {
+export function getWarning({ name, args }, value) {
   const unknownRule = dictionary[lang]._unknownRule;
-  const fn = dictionary[lang][rule.name];
+  const fn = dictionary[lang][name];
   const warning = extras[lang].preWarning || '';
 
   if (!(fn || unknownRule)) {
     return '';
   }
 
-  return (
-    warning + (fn ? fn(value, ...rule.args) : unknownRule(rule.name, value))
-  );
+  return warning + (fn ? fn(value, ...args) : unknownRule(name, value));
 }
 
-export function getMessage(rule, value) {
-  const fn = dictionary[lang][rule.name];
+export function getMessage({ name, args }, value) {
+  const fn = dictionary[lang][name];
 
-  return fn ? fn(value, ...rule.args) : '';
+  return fn ? fn(value, ...args) : '';
 }
 
 export function loadMessage(name) {
@@ -77,8 +75,8 @@ export function loadMessage(name) {
     .catch(() => import(`./dictionaries/${lang}/${name}`))
     .catch(() => clientHandler(lang, '_unknownRule'))
     .catch(() => import(`./dictionaries/${lang}/_unknownRule`))
-    .then(mod => {
-      dictionary[lang][mod.default.name] = mod.default;
+    .then(({ default: rule }) => {
+      dictionary[lang][rule.name] = rule;
     });
 }
 

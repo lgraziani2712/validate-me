@@ -13,6 +13,14 @@
   "files": [
     "*.js"
   ],
+  "keywords": [
+    "validation",
+    "server",
+    "blazing",
+    "fast",
+    "rule",
+    "vanilla"
+  ],
   "dependencies": {
     "@validate-me/core": "1.0.0-alpha.16"
   }

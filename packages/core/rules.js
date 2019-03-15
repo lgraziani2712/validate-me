@@ -40,7 +40,7 @@ export function processErrors(fields, failedFields) {
           `[dev-only] @validate-me: Unknown field "${name}" while parsing errors from server.`,
         );
 
-        return name;
+        return undefined;
       }
 
       return field.parseError(failedFields[name]);
@@ -81,6 +81,17 @@ export async function loadRule(rawRule) {
     .catch(() => {
       throw { name, args };
     });
+}
+
+function unknownRuleErrorOnInit({ name, args }) {
+  throw new Error(`Unknown rule "${name}" with args "${args.join(', ')}".`);
+}
+
+export async function processRawRules(rawRules, onSuccess, onFinally) {
+  return Promise.all(rawRules.map(loadRule))
+    .then(onSuccess)
+    .catch(unknownRuleErrorOnInit)
+    .finally(onFinally);
 }
 
 /**

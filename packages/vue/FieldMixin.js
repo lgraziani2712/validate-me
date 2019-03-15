@@ -1,9 +1,5 @@
-import { loadRule } from '@validate-me/core/rules';
+import { loadRule, processRawRules } from '@validate-me/core/rules';
 import { getMessage, getWarning } from '@validate-me/core/dictionary';
-
-function unknownRuleErrorOnInit({ name, args }) {
-  throw new Error(`Unknown rule "${name}" with args "${args.join(', ')}".`);
-}
 
 export default {
   inject: ['setField', 'updateField'],
@@ -16,7 +12,7 @@ export default {
       warning: '',
       loading: false,
       pristine: true,
-      value: '',
+      localValue: this.value || '',
       rules: [],
     };
   },
@@ -36,15 +32,15 @@ export default {
         loadRule(rawError)
           .then(rule => {
             this.rules.push(rule);
-            this.error = getMessage(rule, this.value);
+            this.error = getMessage(rule, this.localValue);
           })
           .catch(rule => {
-            this.warning = getWarning(rule, this.value);
+            this.warning = getWarning(rule, this.localValue);
           }),
       touch: () => {
         this.pristine = false;
 
-        return this.run(this.value);
+        return this.run(this.localValue);
       },
     });
   },
@@ -64,19 +60,30 @@ export default {
     setRules(rawRules) {
       this.loading = true;
 
-      return Promise.all(rawRules.map(rawRule => loadRule(rawRule)))
-        .then(rules => {
+      return processRawRules(
+        rawRules,
+        rules => {
           this.rules = rules;
-        })
-        .catch(unknownRuleErrorOnInit)
-        .finally(() => {
+        },
+        () => {
           this.loading = false;
-        });
+        },
+      );
     },
     run(value) {
-      this.value = value;
+      if (this.localValue !== value) {
+        this.localValue = value;
+        this.$emit('input', value);
+      }
+      const rules = this.rules;
 
-      for (const rule of this.rules) {
+      if (value === '' && rules[0].name !== 'required') {
+        this.error = '';
+
+        return false;
+      }
+
+      for (const rule of rules) {
         if (!rule.run(value)) {
           this.error = getMessage(rule, value);
 

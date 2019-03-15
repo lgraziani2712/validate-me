@@ -28,6 +28,7 @@ export default {
   props: {
     label: VueTypes.string.isRequired,
     name: VueTypes.string.isRequired,
+    value: String,
     validatemeRules: VueTypes.arrayOf(VueTypes.string),
     autofocus: Boolean,
     required: Boolean,

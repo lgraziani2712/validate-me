@@ -1,5 +1,5 @@
 ---
-sidebarDepth: 0
+sidebarDepth: -1
 ---
 
 # `v-validate-me` directive
@@ -23,7 +23,9 @@ The `v-validate-me` directive accepts an array of strings as value. Each string 
 | Name       |  Type   | Example         |
 | ---------- | :-----: | --------------- |
 | name       | String  | name="title"    |
-| [value]    |   Any   | value="Pow pow" |
+| value      |   Any   | value="Pow pow" |
 | [required] | Boolean | required        |
+| type       | String  | type="number"   |
 
 - `required` adds the `'required'` rule.
+- `type` adds its value as a rule (except for "text").

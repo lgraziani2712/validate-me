@@ -11,13 +11,22 @@
     "access": "public"
   },
   "files": [
+    "README.md",
     "*.js"
+  ],
+  "keywords": [
+    "validation",
+    "server",
+    "blazing",
+    "fast",
+    "rule",
+    "react"
   ],
   "dependencies": {
     "@validate-me/core": "1.0.0-alpha.16"
   },
   "peerDependencies": {
-    "react": "^16.8.0-alpha.1",
-    "react-dom": "^16.8.0-alpha.1"
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0"
   }
 }

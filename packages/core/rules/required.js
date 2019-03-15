@@ -1,3 +1,3 @@
-const required = () => value => value != null && value !== '';
+const required = () => value => value !== '';
 
 export default required;

@@ -1,18 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import useInput from '@validate-me/react/useInput';
+import useField from '@validate-me/react/useField';
 
 export default function MyAwesomeInput(props) {
-  const [inputState, inputProps] = useInput(props);
+  const [fieldState, inputProps] = useField(props);
 
   return (
     <div>
       <input {...inputProps} />
       <div>
         Is valid?{' '}
-        {inputState.pristine
+        {fieldState.pristine
           ? ''
-          : inputState.error || inputState.warning || 'yes'}
+          : fieldState.error || fieldState.warning || 'yes'}
       </div>
       <div>Value: {inputProps.value}</div>
     </div>
