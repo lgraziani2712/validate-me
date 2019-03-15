@@ -9,13 +9,10 @@ export default class ValidatemeField {
     this.error = '';
     this.warning = '';
 
-    this.isLoading = false;
-    this.isTouched = false;
-
     this.value = value || '';
 
     if (rules) {
-      this.isLoading = true;
+      this.loading = true;
 
       processRawRules(
         rules,
@@ -23,7 +20,7 @@ export default class ValidatemeField {
           this.rules = rules;
         },
         () => {
-          this.isLoading = false;
+          this.loading = false;
         },
       );
     }
@@ -31,10 +28,10 @@ export default class ValidatemeField {
   clearWarning() {
     this.warning = '';
   }
-  isValid() {
-    const { isLoading, isTouched, error } = this;
+  valid() {
+    const { loading, touched, error } = this;
 
-    return !isLoading && isTouched && !error;
+    return !loading && touched && !error;
   }
   parseError(rawError) {
     return loadRule(rawError)
@@ -47,10 +44,10 @@ export default class ValidatemeField {
       });
   }
   touch() {
-    if (this.isTouched) {
+    if (this.touched) {
       return;
     }
-    this.isTouched = true;
+    this.touched = true;
 
     this.run(this.value);
   }
@@ -74,10 +71,10 @@ export default class ValidatemeField {
     this.error = '';
   }
   validate() {
-    if (!this.isTouched) {
+    if (!this.touched) {
       this.touch();
     }
 
-    return this.isValid();
+    return this.valid();
   }
 }

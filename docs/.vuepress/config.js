@@ -43,6 +43,11 @@ module.exports = {
             'vue/mixins.html',
           ],
         },
+        {
+          title: 'React API',
+          collapsable: false,
+          children: ['react/useForm.html', 'react/useField.html'],
+        },
       ],
     },
   },

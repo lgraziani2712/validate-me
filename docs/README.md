@@ -233,10 +233,10 @@ export default function MyAwesomeForm() {
 
 ```jsx
 import React from 'react';
-import useInput from '@validate-me/react/useInput';
+import useField from '@validate-me/react/useField';
 
 export default function MyAwesomeInput(props) {
-  const [inputState, inputProps] = useInput(props);
+  const [fieldState, inputProps] = useField(props);
 
   return <input {...inputProps} />;
 }

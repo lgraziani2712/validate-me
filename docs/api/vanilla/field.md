@@ -1,5 +1,5 @@
 ---
-sidebarDepth: 3
+sidebarDepth: -1
 ---
 
 # ValidatemeField
@@ -8,60 +8,35 @@ This class is responsible to run the validation, store errors and warnings, and 
 
 ## Props
 
-| Name        |          Type           | Required |
-| ----------- | :---------------------: | :------: |
-| props       |         Object          |   Yes    |
-| props.name  |         String          |   Yes    |
-| props.value |           Any           |    No    |
-| props.rules | `Array<ValidatemeRule>` |    No    |
+| Name        |     Type      | Required |
+| ----------- | :-----------: | :------: |
+| props       |    Object     |   Yes    |
+| props.name  |    string     |   Yes    |
+| props.rules | `Array<Rule>` |    No    |
+| props.value |      any      |    No    |
 
 ## Methods
 
-### `setRule(name: String, rule: ValidatemeRule): void`
+### `clearWarning(): void`
 
-Adds a new rule to the collection of executable rules.
+Removes the warning when the form is valid and attempts to submit.
 
-### `setArgsToRule(name: String, args: Array<String>): void`
-
-Sometimes, a rule requires arguments. This function is only for `ValidatemeRule` functions to set arguments to the rule.
-
-### `loadRule(rawRule: String): Promise<{ rule, args }>`
-
-1. Processes the raw rule.
-2. Requires the rule and its message to the server.
-3. Returns the rule and its args.
-4. If the rule doesn't exists, throw the following object: `{ rule, args }`.
-
-### `parseRawError(rawError: String): void`
-
-Similar to `loadRule` but it also adds the rule in the error collection. It's used when processing the errors thrown by the server.
-
-If the rule doesn't exists, it adds it as a warning.
-
-### `isValid(): Boolean`
+### `valid(): boolean`
 
 Returns `true` if (1) is not loading, (2) has been touched AND (3) is valid.
 
-### `hasErrors(): Boolean`
+### `parseError(rawError: string): Promise<void>`
 
-Returns `true` if (1) is not loading, (2) has been touched AND (3) has errors.
+It parse the failed rule from the server and adds it to the field's rules collection. If the rule doesn't exists, it adds it as a warning.
 
-### `hasWarnings(): Boolean`
+### `touch(): void`
 
-Returns `true` if (1) is not loading, (2) has been touched AND (3) has warnings.
-
-### `firstError(): String`
-
-Returns the message associated to the first failed rule.
-
-### `firstWarning(): String`
-
-Returns the message associated to the first warning.
+If the field is pristine, it touches and runs its validations.
 
 ### `run(value: any): void`
 
 Execute every rule against the new value.
 
-### `validate(): Boolean`
+### `validate(): boolean`
 
-Touches the field and executes its rules if hasn't been touched. Then returns if it's valid or not.
+If the field is pristine, it touches it. Then returns its validity state.

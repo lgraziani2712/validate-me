@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useReducer } from 'react';
 import { loadRule, processRawRules } from '@validate-me/core/rules';
 import { getMessage, getWarning } from '@validate-me/core/dictionary';
 
-export default function useInput({
+export default function useField({
   form: { setField, setFieldState },
   rules,
   value,
