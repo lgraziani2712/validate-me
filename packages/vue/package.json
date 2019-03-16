@@ -1,6 +1,6 @@
 {
   "name": "@validate-me/vue",
-  "version": "1.0.0-alpha.16",
+  "version": "1.0.0-alpha.17",
   "repository": "https://github.com/lgraziani2712/validate-me",
   "homepage": "https://validate-me.netlify.com",
   "author": "Luciano Graziani @lgraziani2712",
@@ -23,7 +23,7 @@
     "vue"
   ],
   "dependencies": {
-    "@validate-me/core": "1.0.0-alpha.16"
+    "@validate-me/core": "1.0.0-alpha.17"
   },
   "peerDependencies": {
     "vue": "^2"

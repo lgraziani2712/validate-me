@@ -1,6 +1,6 @@
 {
   "name": "@validate-me/web-vue",
-  "version": "1.0.0-alpha.16",
+  "version": "1.0.0-alpha.17",
   "private": true,
   "repository": "https://github.com/lgraziani2712/validate-me",
   "homepage": "https://validate-me.netlify.com",
@@ -10,6 +10,6 @@
     "start": "webpack-dev-server --content-base dist"
   },
   "dependencies": {
-    "@validate-me/vue": "1.0.0-alpha.16"
+    "@validate-me/vue": "1.0.0-alpha.17"
   }
 }
