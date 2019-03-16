@@ -10,7 +10,7 @@ let alreadyProcessed = false;
 
 function App() {
   const [success, setSuccess] = useState(false);
-  const form = useForm();
+  const [formState, form] = useForm();
 
   return (
     <div className="App">
@@ -53,7 +53,7 @@ function App() {
           required
         />
         <hr />
-        <button disabled={form.touched && form.invalid}>Save!</button>
+        <button disabled={formState.touched && formState.invalid}>Save!</button>
         <div>Persisted? {success ? 'yes' : 'no'}</div>
       </form>
     </div>

@@ -1,7 +1,20 @@
-import { useReducer, useState, useEffect, useCallback, useRef } from 'react';
+import { useReducer, useEffect, useCallback, useRef } from 'react';
 import { processErrors } from '@validate-me/core/rules';
 
 let errorHandler = f => f;
+const INIT_STATE = { invalid: true };
+const invalidAction = ['invalid', true];
+const validAction = ['invalid'];
+const touchAction = ['touched', true];
+
+export function handleState(state, [type, value]) {
+  return state[type] === value
+    ? state
+    : {
+        ...state,
+        [type]: value,
+      };
+}
 
 export function setErrorHandler(handler) {
   errorHandler = handler;
@@ -9,57 +22,51 @@ export function setErrorHandler(handler) {
 
 export default function useForm() {
   const fields = useRef({});
-  const [fieldStates, setFieldState] = useReducer(
-    (fields, { name, value }) =>
-      fields[name] === value ? fields : { ...fields, [name]: value },
-    {},
-  );
-  const [invalid, setValidity] = useState(true);
-  const [touched, setTouch] = useState(false);
+  const [state, setState] = useReducer(handleState, INIT_STATE);
+  const [fieldStates, setFieldState] = useReducer(handleState, {});
   const setField = useCallback((name, field) => {
     fields.current[name] = field;
   }, []);
-
-  // 1. Verifies if every input is valid
-  useEffect(() => {
-    for (const fieldInvalid of Object.values(fieldStates)) {
-      if (fieldInvalid) {
-        setValidity(true);
-
-        return;
-      }
-    }
-
-    setValidity(false);
-  }, [fieldStates]);
-
-  // 2. Executes the submit event. Touches every pristine input.
+  // Executes the submit event. Touches every pristine input.
   const validate = useCallback(() => {
-    let localInvalid = false;
+    let localInvalid;
     const fieldsValue = Object.values(fields.current);
 
-    if (!touched) {
+    if (!state.touched) {
       localInvalid = fieldsValue.reduce(
         (invalid, field) => field.touch() || invalid,
         true,
       );
 
-      setTouch(true);
+      setState(touchAction);
     }
 
-    if (localInvalid || invalid) {
+    if (localInvalid || state.invalid) {
       return false;
     }
+
     fieldsValue.forEach(field => field.clearWarning());
 
     return true;
-  }, [invalid, touched]);
-
-  // 3. Process errors from server
+  }, [state.invalid, state.touched]);
+  // Process errors from server
   const process = useCallback(
     error => processErrors(fields.current, errorHandler(error)),
     [],
   );
 
-  return { setField, setFieldState, validate, process, touched, invalid };
+  // Verifies if every input is valid
+  useEffect(() => {
+    for (const fieldInvalid of Object.values(fieldStates)) {
+      if (fieldInvalid) {
+        setState(invalidAction);
+
+        return;
+      }
+    }
+
+    setState(validAction);
+  }, [fieldStates]);
+
+  return [state, { setField, setFieldState, validate, process }];
 }
