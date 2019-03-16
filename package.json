@@ -27,8 +27,7 @@
     "lint": "eslint \"docs/.vuepress/**/*\" packages playgrounds .eslintrc.js --cache --fix",
     "prettify": "prettier \".circleci/**/*\" \"docs/**/*\" \"packages/**/*\" \"playgrounds/**/*\" \"./**/*.json\" -c --write",
     "build:docs": "vuepress build docs",
-    "start:docs": "vuepress dev docs",
-    "version": "lerna version --github-release"
+    "start:docs": "vuepress dev docs"
   },
   "devDependencies": {
     "@babel/cli": "7.2.3",
