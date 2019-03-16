@@ -201,7 +201,7 @@ import React from 'react';
 import useForm from '@validate-me/react/useForm';
 
 export default function MyAwesomeForm() {
-  const form = useForm();
+  const [formState, form] = useForm();
 
   return (
     <form
@@ -223,7 +223,9 @@ export default function MyAwesomeForm() {
       }}
     >
       <MyAwesomeInput form={form} rules={['len:2:10']} name="name" required />
-      <button disabled={form.touched && form.invalid}>Submit form</button>
+      <button disabled={formState.touched && formState.invalid}>
+        Submit form
+      </button>
     </form>
   );
 }

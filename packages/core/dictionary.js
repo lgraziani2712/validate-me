@@ -23,6 +23,10 @@ let clientHandler = () => {
 let lang = 'en';
 const dictionary = { en: {} };
 const extras = { en: {} };
+/**
+ * @type {{[key: string]: string[]}}
+ */
+const loadingCache = { en: [] };
 
 /**
  * @param {Object} config The new configuration.
@@ -38,6 +42,7 @@ export function setConfig(config) {
     if (!dictionary[lang]) {
       dictionary[lang] = {};
       extras[lang] = {};
+      loadingCache[lang] = {};
     }
   }
   if (config.handler) {
@@ -64,12 +69,15 @@ export function getMessage({ name, args }, value) {
 }
 
 export function loadMessage(name) {
-  if (dictionary[lang][name]) {
+  if (dictionary[lang][name] || loadingCache[lang][name]) {
     return Promise.resolve();
   }
   if (!extras[lang]) {
     loadExtras();
   }
+  const cache = loadingCache[lang];
+
+  cache[name] = true;
 
   return clientHandler(lang, name)
     .catch(() => import(`./dictionaries/${lang}/${name}`))
@@ -77,6 +85,9 @@ export function loadMessage(name) {
     .catch(() => import(`./dictionaries/${lang}/_unknownRule`))
     .then(({ default: rule }) => {
       dictionary[lang][rule.name] = rule;
+    })
+    .finally(() => {
+      cache[name] = false;
     });
 }
 

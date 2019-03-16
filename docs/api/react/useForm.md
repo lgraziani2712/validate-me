@@ -14,31 +14,28 @@ Configures the error handler for parsing the errors thrown by the server.
 
 Does not receives any props.
 
-## Public API
+## Returns
 
-The hook returns an object with the following public functionality
+An array of two objects
 
-### `touched: boolean`
+### First element: form state
 
-State describing if the form is pristine or not.
+| Name         |  Type   |
+| ------------ | :-----: |
+| form         | Object  |
+| form.touched | boolean |
+| form.invalid | boolean |
 
-### `invalid: boolean`
+### Second element: methods
 
-State describing if the form is valid or not.
+#### Public API
 
-### `validate(): boolean`
+- `validate(): boolean`: If the form is pristine, it touches every field. Finally, returns `true | false`.
+- `process(error: any): void`: Processes the server error and injects the new errors and warnings to every failed field.
 
-If the form is pristine, it touches every field.
+#### "Private" API
 
-Finally, returns `true | false`.
-
-### `process(error: any): void`
-
-Processes the server error and injects the new errors and warnings to every failed field.
-
-## "Private" API
-
-The same returned object has the following props used _only_ by `useField`.
+The same object has the following props used _only_ by `useField`.
 
 - `setField(name: string, field: Field): void`
-- `setFieldState(fields: FieldState | Array<FieldState>): void`
+- `setFieldState([name: string, state: boolean]): void`
