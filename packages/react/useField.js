@@ -60,15 +60,17 @@ export default function useField({ form, rules, value, name, type, required }) {
   // 1. Instanciates every rule
   useEffect(() => {
     setState(loadingAction);
-    const baseRules = required ? ['required'] : [];
+    const finalRules = rules || [];
+    const unshift = finalRules.unshift;
 
     if (type) {
-      baseRules.push(type);
+      unshift(type);
+    }
+    if (required) {
+      unshift('required');
     }
 
-    processRawRules(rules ? baseRules.concat(rules) : baseRules, setRules, () =>
-      setState(notLoadingAction),
-    );
+    processRawRules(finalRules, setRules, () => setState(notLoadingAction));
   }, [required, rules, type]);
 
   // 2. Executes every rule

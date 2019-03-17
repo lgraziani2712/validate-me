@@ -71,17 +71,19 @@ export default {
     },
   },
   mounted() {
-    const tabs = this.tabs;
-    const selectedLang = this.$selectedLang || tabs[0].name;
-    const result = tabs.reduce((partial, tab) => {
-      tab.isActive = tab.name === selectedLang;
+    this.$nextTick(() => {
+      const tabs = this.tabs;
+      const selectedLang = this.$selectedLang || tabs[0].name;
+      const result = tabs.reduce((partial, tab) => {
+        tab.isActive = tab.name === selectedLang;
 
-      return partial || tab.isActive;
-    }, false);
+        return partial || tab.isActive;
+      }, false);
 
-    if (!result) {
-      tabs[0].isActive = true;
-    }
+      if (!result) {
+        tabs[0].isActive = true;
+      }
+    });
   },
   watch: {
     $selectedLang(lang) {

@@ -10,13 +10,16 @@
         data-cy="name"
         required
       />
-      <InputString
-        label="Surname"
-        name="surname"
-        v-model="surname"
-        :validateme-rules="['len:2:10']"
-        data-cy="surname"
+      <InputNumber
+        label="Age"
+        v-model="age"
+        name="age"
+        data-cy="age"
+        :min="10"
+        :max="12"
+        required
       />
+      <InputCheckbox label="Ok?" name="ok" v-model="ok" data-cy="ok" />
       <br />
       <button data-cy="submit-button" :disabled="touched && invalid">
         Submit form
@@ -29,16 +32,21 @@
 import FormMixin from '@validate-me/vue/FormMixin';
 
 import InputString from './InputString';
+import InputCheckbox from './InputCheckbox';
+import InputNumber from './InputNumber';
 
 export default {
   components: {
+    InputNumber,
+    InputCheckbox,
     InputString,
   },
   mixins: [FormMixin],
   data() {
     return {
       name: 'a',
-      surname: '',
+      ok: true,
+      age: '',
     };
   },
   methods: {

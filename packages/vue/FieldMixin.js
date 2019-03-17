@@ -1,10 +1,21 @@
 import { loadRule, processRawRules } from '@validate-me/core/rules';
 import { getMessage, getWarning } from '@validate-me/core/dictionary';
 
+function handleUpdate() {
+  const { name, updateField, error, loading } = this;
+
+  updateField(name, Boolean(loading || error));
+}
+
 export default {
   inject: ['setField', 'updateField'],
   props: {
-    name: { type: String, require: true },
+    name: {
+      type: String,
+      required: true,
+    },
+    value: [String, Boolean],
+    required: Boolean,
   },
   data() {
     return {
@@ -45,16 +56,8 @@ export default {
     });
   },
   watch: {
-    error(error) {
-      const { name, updateField, loading } = this;
-
-      updateField(name, Boolean(loading || error));
-    },
-    loading(loading) {
-      const { name, updateField, error } = this;
-
-      updateField(name, Boolean(loading || error));
-    },
+    error: handleUpdate,
+    loading: handleUpdate,
   },
   methods: {
     setRules(rawRules) {
@@ -75,22 +78,15 @@ export default {
         this.localValue = value;
         this.$emit('input', value);
       }
-      const rules = this.rules;
+      if (value && this.required) {
+        for (const rule of this.rules) {
+          if (!rule.run(value)) {
+            this.error = getMessage(rule, value);
 
-      if (value === '' && rules[0].name !== 'required') {
-        this.error = '';
-
-        return false;
-      }
-
-      for (const rule of rules) {
-        if (!rule.run(value)) {
-          this.error = getMessage(rule, value);
-
-          return true;
+            return true;
+          }
         }
       }
-
       this.error = '';
     },
   },
