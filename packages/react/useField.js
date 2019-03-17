@@ -18,7 +18,7 @@ export default function useField({ form, rules, value, name, type, required }) {
 
   const runRules = useCallback(
     value => {
-      if (value && required) {
+      if (value || required) {
         for (const rule of ruleRunners) {
           if (!rule.run(value)) {
             setState(['error', getMessage(rule, value)]);
@@ -60,17 +60,16 @@ export default function useField({ form, rules, value, name, type, required }) {
   // 1. Instanciates every rule
   useEffect(() => {
     setState(loadingAction);
-    const finalRules = rules || [];
-    const unshift = finalRules.unshift;
+    const baseRules = required ? ['required'] : [];
+    const addRule = baseRules.push;
 
     if (type) {
-      unshift(type);
-    }
-    if (required) {
-      unshift('required');
+      addRule(type);
     }
 
-    processRawRules(finalRules, setRules, () => setState(notLoadingAction));
+    processRawRules(rules ? baseRules.concat(rules) : baseRules, setRules, () =>
+      setState(notLoadingAction),
+    );
   }, [required, rules, type]);
 
   // 2. Executes every rule
