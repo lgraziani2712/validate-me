@@ -17,9 +17,15 @@
         data-cy="age"
         :min="10"
         :max="12"
-        required
       />
       <InputCheckbox label="Ok?" name="ok" v-model="ok" data-cy="ok" />
+      <InputEmail
+        label="Emails"
+        name="emails"
+        v-model="emails"
+        pattern=".+@gmail.com"
+        multiple
+      />
       <br />
       <button data-cy="submit-button" :disabled="touched && invalid">
         Submit form
@@ -34,12 +40,14 @@ import FormMixin from '@validate-me/vue/FormMixin';
 import InputString from './InputString';
 import InputCheckbox from './InputCheckbox';
 import InputNumber from './InputNumber';
+import InputEmail from './InputEmail';
 
 export default {
   components: {
     InputNumber,
     InputCheckbox,
     InputString,
+    InputEmail,
   },
   mixins: [FormMixin],
   data() {
@@ -47,6 +55,7 @@ export default {
       name: 'a',
       ok: true,
       age: '',
+      emails: '',
     };
   },
   methods: {

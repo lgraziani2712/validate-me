@@ -3,12 +3,14 @@
     <h3>{{ label }}</h3>
     <p>
       <input
-        v-validate-me="numberRules"
+        v-validate-me="validatemeRules"
+        type="email"
         :name="name"
         :value="value"
         :autofocus="autofocus"
         :required="required"
-        type="number"
+        :multiple="multiple"
+        :pattern="pattern"
       />
     </p>
     <p style="min-height: 1.15em">
@@ -28,23 +30,10 @@ export default {
   mixins: [FieldMixin],
   props: {
     label: VueTypes.string.isRequired,
+    validatemeRules: VueTypes.arrayOf(VueTypes.string),
     autofocus: Boolean,
-    min: Number,
-    max: Number,
-  },
-  computed: {
-    numberRules() {
-      const rules = [];
-
-      if (this.min) {
-        rules.push(`min:${this.min}`);
-      }
-      if (this.max) {
-        rules.push(`max:${this.max}`);
-      }
-
-      return rules;
-    },
+    multiple: Boolean,
+    pattern: String,
   },
 };
 </script>

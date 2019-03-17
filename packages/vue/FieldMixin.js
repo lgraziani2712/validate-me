@@ -48,11 +48,7 @@ export default {
           .catch(rule => {
             this.warning = getWarning(rule, this.localValue);
           }),
-      touch: () => {
-        this.pristine = false;
-
-        return this.run(this.localValue);
-      },
+      touch: this.touch,
     });
   },
   watch: {
@@ -73,12 +69,18 @@ export default {
         },
       );
     },
+    touch() {
+      this.pristine = false;
+
+      return this.run(this.localValue);
+    },
     run(value) {
       if (this.localValue !== value) {
         this.localValue = value;
         this.$emit('input', value);
       }
-      if (value && this.required) {
+
+      if (value || this.required) {
         for (const rule of this.rules) {
           if (!rule.run(value)) {
             this.error = getMessage(rule, value);

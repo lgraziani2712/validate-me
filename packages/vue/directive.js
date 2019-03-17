@@ -10,10 +10,20 @@ const oncePassive = { once: true, passive: true };
 const passive = { passive: true };
 
 export default {
+  // eslint-disable-next-line valid-jsdoc
+  /**
+   * @type {Vue.DirectiveFunction}
+   * @param {HTMLInputElement} elem Elem
+   */
   bind(elem, binding, vnode) {
     const field = vnode.context;
 
     if (process.env.NODE_ENV !== 'production') {
+      if (!(elem instanceof HTMLInputElement)) {
+        throw new Error(
+          '[dev-only] @validate-me: directive can only be used in HTMLInputElement instances.',
+        );
+      }
       if (!elem.name) {
         throw new Error('[dev-only] @validate-me: "name" attribute not found.');
       }
@@ -24,18 +34,23 @@ export default {
       }
     }
 
-    const rules = binding.value || [];
+    /**
+     * @type Array<string>
+     */
+    const rules = elem.required ? ['required'] : [];
 
     if (elem.type === 'number') {
-      rules.unshift('number');
-      elem.min && rules.unshift(`min:${elem.min}`);
-      elem.max && rules.unshift(`max:${elem.max}`);
+      rules.push('number');
+      elem.min && rules.push(`min:${elem.min}`);
+      elem.max && rules.push(`max:${elem.max}`);
     }
-    if (elem.required) {
-      rules.unshift('required');
+    if (elem.pattern) {
+      const rule = `pattern:${elem.pattern}`;
+
+      rules.push(elem.type === 'email' && elem.multiple ? `${rule}:mul` : rule);
     }
 
-    field.setRules(rules);
+    field.setRules(binding.value ? rules.concat(binding.value) : rules);
 
     elem.addEventListener('blur', field.touch, oncePassive);
     elem.addEventListener('input', handleValue(field, elem.type), passive);
