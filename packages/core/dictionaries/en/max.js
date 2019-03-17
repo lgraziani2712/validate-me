@@ -1,4 +1,3 @@
-const max = (value, max) =>
-  `The value "${value}" must be less or equal than "${max}".`;
+const max = (_, max) => `It must be less or equal than "${max}".`;
 
 export default max;

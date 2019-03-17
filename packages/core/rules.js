@@ -69,22 +69,27 @@ export async function loadRule(rawRule) {
     };
   }
 
-  await loadMessage(name);
+  return Promise.all([
+    loadMessage(name),
+    clientHandler(name)
+      .catch(() => import(`./rules/${name}`))
+      .then(({ default: rule }) => {
+        cachedRules[name] = rule;
 
-  return clientHandler(name)
-    .catch(() => import(`./rules/${name}`))
-    .then(({ default: rule }) => {
-      cachedRules[name] = rule;
-
-      return { name, run: rule.apply(null, args), args };
-    })
-    .catch(() => {
-      throw { name, args };
-    });
+        return { name, run: rule.apply(null, args), args };
+      })
+      .catch(() => {
+        throw { name, args };
+      }),
+  ]).then(all => all[1]);
 }
 
-function unknownRuleErrorOnInit({ name, args }) {
-  throw new Error(`Unknown rule "${name}" with args "${args.join(', ')}".`);
+function unknownRuleErrorOnInit(err) {
+  throw err instanceof Error
+    ? err
+    : new Error(
+        `Unknown rule "${err.name}" with args "${err.args.join(', ')}".`,
+      );
 }
 
 export async function processRawRules(rawRules, onSuccess, onFinally) {
