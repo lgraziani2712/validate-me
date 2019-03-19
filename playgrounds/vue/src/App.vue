@@ -26,6 +26,12 @@
         pattern=".+@gmail.com"
         multiple
       />
+      <InputCheckboxList
+        v-model="ide"
+        name="ides"
+        label="What IDE do you like?"
+        :options="['VSCode', 'IntelliJIdea', 'Sublime', 'Atom', 'Vim']"
+      />
       <br />
       <button data-cy="submit-button" :disabled="touched && invalid">
         Submit form
@@ -41,6 +47,7 @@ import InputString from './InputString';
 import InputCheckbox from './InputCheckbox';
 import InputNumber from './InputNumber';
 import InputEmail from './InputEmail';
+import InputCheckboxList from './InputCheckboxList';
 
 export default {
   components: {
@@ -48,6 +55,7 @@ export default {
     InputCheckbox,
     InputString,
     InputEmail,
+    InputCheckboxList,
   },
   mixins: [FormMixin],
   data() {
@@ -56,6 +64,7 @@ export default {
       ok: true,
       age: '',
       emails: '',
+      ide: [],
     };
   },
   methods: {
