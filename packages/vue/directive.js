@@ -1,23 +1,23 @@
 /* eslint-disable no-underscore-dangle */
+function checkboxList({ _value, checked }, values) {
+  if (checked) {
+    return values.concat(_value);
+  }
+  const idx = values.findIndex(item => item === _value);
 
+  return values.slice(0, idx).concat(values.slice(idx + 1));
+}
 function handleValue(field, type) {
+  const checkbox = type === 'checkbox';
   // si checkbox and value, array, sino bool, sino string
-  const prop = type === 'checkbox' ? 'checked' : 'value';
+  const prop = checkbox ? 'checked' : 'value';
 
   return ({ target }) => {
-    if (!target._value || type === 'radio') {
-      return field.run(target[prop]);
-    }
-    const { _value, checked } = target;
-    const values = field.value;
-
-    if (checked) {
-      field.run(values.concat(_value));
-    } else {
-      const idx = values.findIndex(item => item === _value);
-
-      field.run(values.slice(0, idx).concat(values.slice(idx + 1)));
-    }
+    field.run(
+      checkbox && target._value
+        ? checkboxList(target, field.value)
+        : target[prop],
+    );
   };
 }
 
@@ -55,7 +55,7 @@ export default {
      */
     const rules = elem.required ? ['required'] : [];
 
-    if (elem.type === number) {
+    if (elem.type === number || elem.type === 'range') {
       rules.push(number);
       elem.min && rules.push(`min:${elem.min}`);
       elem.max && rules.push(`max:${elem.max}`);

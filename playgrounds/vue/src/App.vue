@@ -10,7 +10,7 @@
         data-cy="name"
         required
       />
-      <InputNumber
+      <NumberRange
         label="Age"
         v-model="age"
         name="age"
@@ -25,18 +25,30 @@
         v-model="emails"
         pattern=".+@gmail.com"
         multiple
+        data-cy="emails"
       />
       <InputCheckboxList
         v-model="ide"
         name="ides"
         label="What IDE do you like?"
         :options="['VSCode', 'IntelliJIdea', 'Sublime', 'Atom', 'Vim']"
+        data-cy="ides"
       />
       <RadioList
         v-model="job"
         name="job"
         label="What job would you prefer?"
         :options="['Front-end', 'Back-end', 'UI/UX Designer', 'Data Scientist']"
+        data-cy="job"
+      />
+      <NumberRange
+        label="From 0 to 10, how much experience do you think you have?"
+        v-model="exp"
+        name="experience"
+        data-cy="exp"
+        :min="0"
+        :max="10"
+        range
       />
       <br />
       <button data-cy="submit-button" :disabled="touched && invalid">
@@ -51,14 +63,14 @@ import FormMixin from '@validate-me/vue/FormMixin';
 
 import InputString from './InputString';
 import InputCheckbox from './InputCheckbox';
-import InputNumber from './InputNumber';
+import NumberRange from './NumberRange';
 import InputEmail from './InputEmail';
 import InputCheckboxList from './InputCheckboxList';
 import RadioList from './RadioList';
 
 export default {
   components: {
-    InputNumber,
+    NumberRange,
     InputCheckbox,
     InputString,
     InputEmail,
@@ -73,6 +85,7 @@ export default {
       age: '',
       emails: '',
       job: '',
+      exp: '5',
       ide: [],
     };
   },

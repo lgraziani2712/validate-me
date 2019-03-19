@@ -8,7 +8,9 @@
         :value="value"
         :autofocus="autofocus"
         :required="required"
-        type="number"
+        :min="min"
+        :max="max"
+        :type="type"
       />
     </p>
     <p style="min-height: 1.15em">
@@ -29,10 +31,14 @@ export default {
   props: {
     label: VueTypes.string.isRequired,
     autofocus: Boolean,
+    range: Boolean,
     min: Number,
     max: Number,
   },
   computed: {
+    type() {
+      return this.range ? 'range' : 'number';
+    },
     numberRules() {
       const rules = [];
 
