@@ -32,6 +32,12 @@
         label="What IDE do you like?"
         :options="['VSCode', 'IntelliJIdea', 'Sublime', 'Atom', 'Vim']"
       />
+      <RadioList
+        v-model="job"
+        name="job"
+        label="What job would you prefer?"
+        :options="['Front-end', 'Back-end', 'UI/UX Designer', 'Data Scientist']"
+      />
       <br />
       <button data-cy="submit-button" :disabled="touched && invalid">
         Submit form
@@ -48,6 +54,7 @@ import InputCheckbox from './InputCheckbox';
 import InputNumber from './InputNumber';
 import InputEmail from './InputEmail';
 import InputCheckboxList from './InputCheckboxList';
+import RadioList from './RadioList';
 
 export default {
   components: {
@@ -56,6 +63,7 @@ export default {
     InputString,
     InputEmail,
     InputCheckboxList,
+    RadioList,
   },
   mixins: [FormMixin],
   data() {
@@ -64,6 +72,7 @@ export default {
       ok: true,
       age: '',
       emails: '',
+      job: '',
       ide: [],
     };
   },

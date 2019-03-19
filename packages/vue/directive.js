@@ -5,7 +5,7 @@ function handleValue(field, type) {
   const prop = type === 'checkbox' ? 'checked' : 'value';
 
   return ({ target }) => {
-    if (!target._value) {
+    if (!target._value || type === 'radio') {
       return field.run(target[prop]);
     }
     const { _value, checked } = target;
