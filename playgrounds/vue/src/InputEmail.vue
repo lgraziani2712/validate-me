@@ -30,7 +30,7 @@ export default {
   mixins: [FieldMixin],
   props: {
     label: VueTypes.string.isRequired,
-    validatemeRules: VueTypes.arrayOf(VueTypes.string),
+    validatemeRules: VueTypes.arrayOf(VueTypes.arrayOf(String)),
     autofocus: Boolean,
     multiple: Boolean,
     pattern: String,

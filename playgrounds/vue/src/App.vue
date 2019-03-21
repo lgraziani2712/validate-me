@@ -4,7 +4,7 @@
     <form autocomplete="off" @submit.prevent="handleSubmit" data-cy="form">
       <InputString
         label="Name"
-        :validateme-rules="['len:2:10']"
+        :validateme-rules="[['len', '2', '10']]"
         v-model="name"
         name="name"
         data-cy="name"
@@ -17,6 +17,14 @@
         data-cy="age"
         :min="10"
         :max="12"
+      />
+      <Datetime
+        label="What time is it?"
+        name="time"
+        v-model="time"
+        min="2019-01-01T08:30"
+        max="2019-04-01T08:30"
+        data-cy="time"
       />
       <InputCheckbox label="Ok?" name="ok" v-model="ok" data-cy="ok" />
       <InputEmail
@@ -67,6 +75,7 @@ import NumberRange from './NumberRange';
 import InputEmail from './InputEmail';
 import InputCheckboxList from './InputCheckboxList';
 import RadioList from './RadioList';
+import Datetime from './Datetime';
 
 export default {
   components: {
@@ -76,6 +85,7 @@ export default {
     InputEmail,
     InputCheckboxList,
     RadioList,
+    Datetime,
   },
   mixins: [FormMixin],
   data() {
@@ -86,6 +96,7 @@ export default {
       emails: '',
       job: '',
       exp: '5',
+      time: '',
       ide: [],
     };
   },
@@ -96,7 +107,7 @@ export default {
       }
 
       this.process({
-        name: 'unexistingRule',
+        name: ['unexistingRule'],
       });
     },
   },

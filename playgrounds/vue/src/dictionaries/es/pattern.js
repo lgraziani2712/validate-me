@@ -1,6 +1,10 @@
-const min = (_, pattern, type) =>
+const pattern = (_, pattern, type, example) =>
   `${
     type === 'mul' ? 'Cada uno de los valores separados por coma d' : 'D'
-  }ebe coincidir con el siguiente patrón: ${pattern}`;
+  }ebe ${
+    example
+      ? `ser similar a: ${example}`
+      : `coincidir con el siguiente patrón: ${pattern}`
+  }`;
 
-export default min;
+export default pattern;

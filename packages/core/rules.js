@@ -50,15 +50,13 @@ export function processErrors(fields, failedFields) {
 
 export async function loadRule(rawRule) {
   if (process.env.NODE_ENV !== 'production') {
-    const type = typeof rawRule;
-
-    if (type !== 'string') {
+    if (!Array.isArray(rawRule)) {
       throw new Error(
-        `[dev-only] @validate-me: "loadRule" accepts only strings, received "${type}" instead.`,
+        `[dev-only] @validate-me: "loadRule" accepts only string[], received "${typeof rawRule}" instead.`,
       );
     }
   }
-  const [name, ...args] = rawRule.split(':');
+  const [name, ...args] = rawRule;
   const rule = cachedRules[name];
 
   if (rule) {

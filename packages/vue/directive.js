@@ -25,6 +25,10 @@ const oncePassive = { once: true, passive: true };
 const passive = { passive: true };
 const number = 'number';
 
+export const datePatterns = {
+  'datetime-local': /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])T([01]\d|2[0-3]):[0-5]\d$/,
+};
+
 export default {
   // eslint-disable-next-line valid-jsdoc
   /**
@@ -53,22 +57,53 @@ export default {
     /**
      * @type Array<string>
      */
-    const rules = elem.required ? ['required'] : [];
+    const rules = elem.required ? [['required']] : [];
+    const addRule = rules.push.bind(rules);
+    const type = vnode.data.attrs.type;
 
-    if (elem.type === number || elem.type === 'range') {
-      rules.push(number);
-      elem.min && rules.push(`min:${elem.min}`);
-      elem.max && rules.push(`max:${elem.max}`);
+    if (type === number || type === 'range') {
+      addRule([number]);
+      elem.min && addRule(['min', elem.min]);
+      elem.max && addRule(['max', elem.max]);
+    } else if (type === 'datetime-local') {
+      const pattern = datePatterns[type];
+
+      addRule(['pattern', pattern, '', '2019-02-28T23:59']);
+
+      if (elem.min) {
+        if (process.env.NODE_ENV !== 'production' && !pattern.test(elem.min)) {
+          throw new Error(
+            `[dev-only] @validate-me: the value "${
+              elem.min
+            }" from the min prop must be a valid datetime-local value.`,
+          );
+        }
+        addRule(['min', elem.min]);
+      }
+      if (elem.max) {
+        if (process.env.NODE_ENV !== 'production' && !pattern.test(elem.max)) {
+          throw new Error(
+            `[dev-only] @validate-me: the value "${
+              elem.max
+            }" from the max prop must be a valid datetime-local value.`,
+          );
+        }
+        addRule(['max', elem.max]);
+      }
     }
     if (elem.pattern) {
-      const rule = `pattern:${elem.pattern}`;
+      const rule = ['pattern', elem.pattern];
 
-      rules.push(elem.type === 'email' && elem.multiple ? `${rule}:mul` : rule);
+      if (type === 'email' && elem.multiple) {
+        rule.push('mul');
+      }
+
+      addRule(rule);
     }
 
     field.setRules(binding.value ? rules.concat(binding.value) : rules);
 
     elem.addEventListener('blur', field.touch, oncePassive);
-    elem.addEventListener('input', handleValue(field, elem.type), passive);
+    elem.addEventListener('input', handleValue(field, type), passive);
   },
 };

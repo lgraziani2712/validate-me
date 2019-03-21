@@ -1,6 +1,8 @@
-const min = (_, pattern, type) =>
+const min = (_, pattern, type, example) =>
   `${
     type === 'mul' ? 'Each comma-separated-value m' : 'M'
-  }ust match the following pattern: ${pattern}`;
+  }ust match the following pattern: ${pattern}${
+    example ? ` - E.g. ${example}` : ''
+  }`;
 
 export default min;
