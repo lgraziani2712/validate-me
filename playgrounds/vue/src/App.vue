@@ -19,11 +19,19 @@
         :max="12"
       />
       <Datetime
-        label="What time is it?"
-        name="time"
-        v-model="time"
+        label="What date-time is it?"
+        name="datetime"
+        v-model="datetime"
         min="2019-01-01T08:30"
         max="2019-04-01T08:30"
+        data-cy="datetime"
+      />
+      <Time
+        label="At what time did you have gotten up from bed?"
+        v-model="time"
+        name="time"
+        min="00:03"
+        max="23:57"
         data-cy="time"
       />
       <InputCheckbox label="Ok?" name="ok" v-model="ok" data-cy="ok" />
@@ -76,6 +84,7 @@ import InputEmail from './InputEmail';
 import InputCheckboxList from './InputCheckboxList';
 import RadioList from './RadioList';
 import Datetime from './Datetime';
+import Time from './Time';
 
 export default {
   components: {
@@ -86,6 +95,7 @@ export default {
     InputCheckboxList,
     RadioList,
     Datetime,
+    Time,
   },
   mixins: [FormMixin],
   data() {
@@ -96,6 +106,7 @@ export default {
       emails: '',
       job: '',
       exp: '5',
+      datetime: '',
       time: '',
       ide: [],
     };

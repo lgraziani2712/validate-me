@@ -27,6 +27,7 @@ const number = 'number';
 
 export const datePatterns = {
   'datetime-local': /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])T([01]\d|2[0-3]):[0-5]\d$/,
+  time: /^([01]\d|2[0-3]):[0-5]\d$/,
 };
 
 export default {
@@ -75,7 +76,7 @@ export default {
           throw new Error(
             `[dev-only] @validate-me: the value "${
               elem.min
-            }" from the min prop must be a valid datetime-local value.`,
+            }" from the min prop must be a valid ${type} value.`,
           );
         }
         addRule(['min', elem.min]);
@@ -85,7 +86,32 @@ export default {
           throw new Error(
             `[dev-only] @validate-me: the value "${
               elem.max
-            }" from the max prop must be a valid datetime-local value.`,
+            }" from the max prop must be a valid ${type} value.`,
+          );
+        }
+        addRule(['max', elem.max]);
+      }
+    } else if (type === 'time') {
+      const pattern = datePatterns[type];
+
+      addRule(['pattern', pattern, '', '14:59']);
+
+      if (elem.min) {
+        if (process.env.NODE_ENV !== 'production' && !pattern.test(elem.min)) {
+          throw new Error(
+            `[dev-only] @validate-me: the value "${
+              elem.min
+            }" from the min prop must be a valid ${type} value.`,
+          );
+        }
+        addRule(['min', elem.min]);
+      }
+      if (elem.max) {
+        if (process.env.NODE_ENV !== 'production' && !pattern.test(elem.max)) {
+          throw new Error(
+            `[dev-only] @validate-me: the value "${
+              elem.max
+            }" from the max prop must be a valid ${type} value.`,
           );
         }
         addRule(['max', elem.max]);
