@@ -50,15 +50,13 @@ export function processErrors(fields, failedFields) {
 
 export async function loadRule(rawRule) {
   if (process.env.NODE_ENV !== 'production') {
-    const type = typeof rawRule;
-
-    if (type !== 'string') {
+    if (!Array.isArray(rawRule)) {
       throw new Error(
-        `[dev-only] @validate-me: "loadRule" accepts only strings, received "${type}" instead.`,
+        `[dev-only] @validate-me: "loadRule" accepts only string[], received "${typeof rawRule}" instead.`,
       );
     }
   }
-  const [name, ...args] = rawRule.split(':');
+  const [name, ...args] = rawRule;
   const rule = cachedRules[name];
 
   if (rule) {
@@ -69,22 +67,27 @@ export async function loadRule(rawRule) {
     };
   }
 
-  await loadMessage(name);
+  return Promise.all([
+    loadMessage(name),
+    clientHandler(name)
+      .catch(() => import(`./rules/${name}`))
+      .then(({ default: rule }) => {
+        cachedRules[name] = rule;
 
-  return clientHandler(name)
-    .catch(() => import(`./rules/${name}`))
-    .then(({ default: rule }) => {
-      cachedRules[name] = rule;
-
-      return { name, run: rule.apply(null, args), args };
-    })
-    .catch(() => {
-      throw { name, args };
-    });
+        return { name, run: rule.apply(null, args), args };
+      })
+      .catch(() => {
+        throw { name, args };
+      }),
+  ]).then(all => all[1]);
 }
 
-function unknownRuleErrorOnInit({ name, args }) {
-  throw new Error(`Unknown rule "${name}" with args "${args.join(', ')}".`);
+function unknownRuleErrorOnInit(err) {
+  throw err instanceof Error
+    ? err
+    : new Error(
+        `Unknown rule "${err.name}" with args "${err.args.join(', ')}".`,
+      );
 }
 
 export async function processRawRules(rawRules, onSuccess, onFinally) {

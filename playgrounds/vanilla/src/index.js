@@ -7,7 +7,7 @@ window.addEventListener('load', () => {
   const result = document.getElementById('result');
   const nameField = new ValidatemeField({
     name: 'name',
-    rules: ['required', 'len:2:10'],
+    rules: [['required'], ['len', '2', '10']],
   });
   const nameInput = document.getElementsByName('name')[0];
   const validateme = new Validateme();
@@ -28,7 +28,7 @@ window.addEventListener('load', () => {
       first = false;
       validateme
         .process({
-          name: 'unexistingRule',
+          name: ['unexistingRule'],
         })
         .then(() => {
           result.innerHTML += `\n\nServer response: ${nameField.warning ||

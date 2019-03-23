@@ -1,5 +1,5 @@
 const max = rawMaxValue => {
-  const maxValue = parseInt(rawMaxValue);
+  const maxValue = isNaN(rawMaxValue) ? rawMaxValue : parseInt(rawMaxValue);
 
   return value => value <= maxValue;
 };

@@ -1,15 +1,15 @@
 <template>
   <div>
-    <h3>{{ label }}</h3>
-    <p>
+    <label>
       <input
-        v-validate-me="validatemeRules"
+        v-validate-me
         :name="name"
-        :value="value"
+        :checked="value"
         :autofocus="autofocus"
-        :required="required"
+        type="checkbox"
       />
-    </p>
+      {{ label }}
+    </label>
     <p style="min-height: 1.15em">
       <span v-show="!pristine && error" style="color: red">{{ error }}</span>
       <span v-show="!error && warning" style="color: orange">{{
@@ -27,7 +27,6 @@ export default {
   mixins: [FieldMixin],
   props: {
     label: VueTypes.string.isRequired,
-    validatemeRules: VueTypes.arrayOf(VueTypes.arrayOf(String)),
     autofocus: Boolean,
   },
 };

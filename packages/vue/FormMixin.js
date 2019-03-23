@@ -58,7 +58,7 @@ export default {
       if (!this.touched) {
         invalid = fields.reduce(
           (invalid, field) => field.touch() || invalid,
-          true,
+          false,
         );
 
         this.touched = true;

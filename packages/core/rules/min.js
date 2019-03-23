@@ -1,5 +1,5 @@
 const min = rawMinValue => {
-  const minValue = parseInt(rawMinValue);
+  const minValue = isNaN(rawMinValue) ? rawMinValue : parseInt(rawMinValue);
 
   return value => value >= minValue;
 };

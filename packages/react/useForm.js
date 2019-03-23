@@ -35,7 +35,7 @@ export default function useForm() {
     if (!state.touched) {
       localInvalid = fieldsValue.reduce(
         (invalid, field) => field.touch() || invalid,
-        true,
+        false,
       );
 
       setState(touchAction);

@@ -22,11 +22,11 @@ let clientHandler = () => {
 
 let lang = 'en';
 const dictionary = { en: {} };
-const extras = { en: {} };
+const extras = {};
 /**
- * @type {{[key: string]: string[]}}
+ * @type {{[key: string]: {[key: string}: boolean}}
  */
-const loadingCache = { en: [] };
+const loadingCache = { en: {} };
 
 /**
  * @param {Object} config The new configuration.
@@ -41,7 +41,6 @@ export function setConfig(config) {
 
     if (!dictionary[lang]) {
       dictionary[lang] = {};
-      extras[lang] = {};
       loadingCache[lang] = {};
     }
   }
@@ -51,12 +50,16 @@ export function setConfig(config) {
 }
 
 export function getWarning({ name, args }, value) {
-  const unknownRule = dictionary[lang]._unknownRule;
+  const unknownRule = extras[lang].unknownRule;
   const fn = dictionary[lang][name];
   const warning = extras[lang].preWarning || '';
 
   if (!(fn || unknownRule)) {
-    return '';
+    // eslint-disable-next-line no-console
+    return console.error(
+      `validate-me: Cannot render a warning for the unknown rule "${name}".` +
+        ' The _extras file must contain the "unknownRule" prop.',
+    );
   }
 
   return warning + (fn ? fn(value, ...args) : unknownRule(name, value));
@@ -81,10 +84,11 @@ export function loadMessage(name) {
 
   return clientHandler(lang, name)
     .catch(() => import(`./dictionaries/${lang}/${name}`))
-    .catch(() => clientHandler(lang, '_unknownRule'))
-    .catch(() => import(`./dictionaries/${lang}/_unknownRule`))
+    .catch(() => {
+      throw new Error(`Unknown dictionary for the "${name}" rule.`);
+    })
     .then(({ default: rule }) => {
-      dictionary[lang][rule.name] = rule;
+      dictionary[lang][name] = rule;
     })
     .finally(() => {
       cache[name] = false;

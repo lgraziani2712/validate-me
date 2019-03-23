@@ -1,10 +1,21 @@
 import { loadRule, processRawRules } from '@validate-me/core/rules';
 import { getMessage, getWarning } from '@validate-me/core/dictionary';
 
+function handleUpdate() {
+  const { name, updateField, error, loading } = this;
+
+  updateField(name, Boolean(loading || error));
+}
+
 export default {
   inject: ['setField', 'updateField'],
   props: {
-    name: { type: String, require: true },
+    name: {
+      type: String,
+      required: true,
+    },
+    value: [String, Boolean, Array],
+    required: Boolean,
   },
   data() {
     return {
@@ -37,24 +48,12 @@ export default {
           .catch(rule => {
             this.warning = getWarning(rule, this.localValue);
           }),
-      touch: () => {
-        this.pristine = false;
-
-        return this.run(this.localValue);
-      },
+      touch: this.touch,
     });
   },
   watch: {
-    error(error) {
-      const { name, updateField, loading } = this;
-
-      updateField(name, Boolean(loading || error));
-    },
-    loading(loading) {
-      const { name, updateField, error } = this;
-
-      updateField(name, Boolean(loading || error));
-    },
+    error: handleUpdate,
+    loading: handleUpdate,
   },
   methods: {
     setRules(rawRules) {
@@ -70,27 +69,26 @@ export default {
         },
       );
     },
+    touch() {
+      this.pristine = false;
+
+      return this.run(this.localValue);
+    },
     run(value) {
       if (this.localValue !== value) {
         this.localValue = value;
         this.$emit('input', value);
       }
-      const rules = this.rules;
 
-      if (value === '' && rules[0].name !== 'required') {
-        this.error = '';
+      if (value || this.required) {
+        for (const rule of this.rules) {
+          if (!rule.run(value)) {
+            this.error = getMessage(rule, value);
 
-        return false;
-      }
-
-      for (const rule of rules) {
-        if (!rule.run(value)) {
-          this.error = getMessage(rule, value);
-
-          return true;
+            return true;
+          }
         }
       }
-
       this.error = '';
     },
   },
