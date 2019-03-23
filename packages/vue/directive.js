@@ -24,6 +24,7 @@ function handleValue(field, type) {
 const oncePassive = { once: true, passive: true };
 const passive = { passive: true };
 const number = 'number';
+const color = 'color';
 
 export const datePatterns = {
   date: /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/,
@@ -65,7 +66,9 @@ export default {
     const addRule = rules.push.bind(rules);
     const type = vnode.data.attrs.type;
 
-    if (type === number || type === 'range') {
+    if (type === color) {
+      addRule([color]);
+    } else if (type === number || type === 'range') {
       addRule([number]);
       elem.min && addRule(['min', elem.min]);
       elem.max && addRule(['max', elem.max]);

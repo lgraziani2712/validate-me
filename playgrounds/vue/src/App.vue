@@ -91,6 +91,12 @@
         :max="10"
         range
       />
+      <Color
+        label="Gimme colors!"
+        v-model="color"
+        name="color"
+        data-cy="color"
+      />
       <br />
       <button data-cy="submit-button" :disabled="touched && invalid">
         Submit form
@@ -113,6 +119,7 @@ import Time from './Time';
 import Date from './Date';
 import Week from './Week';
 import Month from './Month';
+import Color from './Color';
 
 export default {
   components: {
@@ -127,6 +134,7 @@ export default {
     Date,
     Week,
     Month,
+    Color,
   },
   mixins: [FormMixin],
   data() {
@@ -142,6 +150,7 @@ export default {
       date: '',
       week: '',
       month: '',
+      color: '',
       ide: [],
     };
   },
