@@ -29,6 +29,7 @@ export const datePatterns = {
   date: /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/,
   time: /^([01]\d|2[0-3]):[0-5]\d$/,
   'datetime-local': /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])T([01]\d|2[0-3]):[0-5]\d$/,
+  week: /^\d{4}-W([0-4]\d|5[0-3])$/
 };
 
 export default {
@@ -121,6 +122,31 @@ export default {
       const pattern = datePatterns[type];
 
       addRule(['pattern', pattern, '', '2019-03-24']);
+
+      if (elem.min) {
+        if (process.env.NODE_ENV !== 'production' && !pattern.test(elem.min)) {
+          throw new Error(
+            `[dev-only] @validate-me: the value "${
+              elem.min
+            }" from the min prop must be a valid ${type} value.`,
+          );
+        }
+        addRule(['min', elem.min]);
+      }
+      if (elem.max) {
+        if (process.env.NODE_ENV !== 'production' && !pattern.test(elem.max)) {
+          throw new Error(
+            `[dev-only] @validate-me: the value "${
+              elem.max
+            }" from the max prop must be a valid ${type} value.`,
+          );
+        }
+        addRule(['max', elem.max]);
+      }
+    } else if (type === 'week') {
+      const pattern = datePatterns[type];
+
+      addRule(['pattern', pattern, '', '2019-W53']);
 
       if (elem.min) {
         if (process.env.NODE_ENV !== 'production' && !pattern.test(elem.min)) {

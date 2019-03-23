@@ -43,6 +43,14 @@
         max="2020-12-31"
         data-cy="date"
       />
+      <Week
+        label="What week is today?"
+        v-model="week"
+        name="week"
+        min="2019-W13"
+        max="2019-W52"
+        data-cy="week"
+      />
       <InputCheckbox label="Ok?" name="ok" v-model="ok" data-cy="ok" />
       <InputEmail
         label="Emails"
@@ -95,6 +103,7 @@ import RadioList from './RadioList';
 import Datetime from './Datetime';
 import Time from './Time';
 import Date from './Date';
+import Week from './Week';
 
 export default {
   components: {
@@ -107,6 +116,7 @@ export default {
     Datetime,
     Time,
     Date,
+    Week,
   },
   mixins: [FormMixin],
   data() {
@@ -120,6 +130,7 @@ export default {
       datetime: '',
       time: '',
       date: '',
+      week: '',
       ide: [],
     };
   },
