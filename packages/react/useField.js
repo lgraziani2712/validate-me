@@ -1,15 +1,19 @@
 import { useEffect, useCallback, useReducer } from 'react';
+import getRules from '@validate-me/core/getRules';
 import { loadRule, processRawRules } from '@validate-me/core/rules';
 import { getMessage, getWarning } from '@validate-me/core/dictionary';
 
 import { handleState } from './useForm';
 
-const init = value => ({ pristine: true, value });
+const init = value => ({ pristine: true, value: value == null ? '' : value });
 const pristineAction = ['pristine'];
 const notLoadingAction = ['loading'];
 const loadingAction = ['loading', true];
 
-export default function useField({ form, rules, value, name, type, required }) {
+export default function useField(
+  type,
+  { form, rules, value, name, required, min, max, pattern, multiple },
+) {
   const [state, setState] = useReducer(handleState, init(value));
   const [ruleRunners, setRules] = useReducer(
     (rules, rule) => (rule.length ? rule : rules.concat(rule)),
@@ -51,6 +55,9 @@ export default function useField({ form, rules, value, name, type, required }) {
               setState(['error', getMessage(rule, state.value)]);
             })
             .catch(rule => {
+              if (rule instanceof Error) {
+                throw rule;
+              }
               setState(['warning', getWarning(rule, state.value)]);
             }),
       }),
@@ -60,17 +67,18 @@ export default function useField({ form, rules, value, name, type, required }) {
   // 1. Instanciates every rule
   useEffect(() => {
     setState(loadingAction);
-    const baseRules = required ? [['required']] : [];
-    const addRule = baseRules.push;
-
-    if (type) {
-      addRule([type]);
-    }
+    const baseRules = getRules(type, {
+      required,
+      min,
+      max,
+      pattern,
+      multiple,
+    });
 
     processRawRules(rules ? baseRules.concat(rules) : baseRules, setRules, () =>
       setState(notLoadingAction),
     );
-  }, [required, rules, type]);
+  }, [max, min, multiple, pattern, required, rules, type]);
 
   // 2. Executes every rule
   useEffect(() => {
@@ -88,6 +96,10 @@ export default function useField({ form, rules, value, name, type, required }) {
       required,
       name,
       type,
+      min,
+      max,
+      pattern,
+      multiple,
       value: state.value,
       onChange(evt) {
         setState(['value', evt.target.value]);

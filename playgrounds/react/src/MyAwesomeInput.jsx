@@ -21,7 +21,7 @@ export default function MyAwesomeInput(props) {
 
 MyAwesomeInput.propTypes = {
   form: PropTypes.any.isRequired,
-  rules: PropTypes.arrayOf(PropTypes.string),
+  rules: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
   name: PropTypes.string.isRequired,
   value: PropTypes.string,
   required: PropTypes.bool,
