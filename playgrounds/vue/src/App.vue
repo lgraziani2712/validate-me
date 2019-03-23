@@ -24,6 +24,7 @@
         v-model="datetime"
         min="2019-01-01T08:30"
         max="2019-04-01T08:30"
+        type="datetime-local"
         data-cy="datetime"
       />
       <Time
@@ -33,6 +34,14 @@
         min="00:03"
         max="23:57"
         data-cy="time"
+      />
+      <Date
+        label="What is your birth date?"
+        v-model="date"
+        name="date"
+        min="1989-01-01"
+        max="2020-12-31"
+        data-cy="date"
       />
       <InputCheckbox label="Ok?" name="ok" v-model="ok" data-cy="ok" />
       <InputEmail
@@ -85,6 +94,7 @@ import InputCheckboxList from './InputCheckboxList';
 import RadioList from './RadioList';
 import Datetime from './Datetime';
 import Time from './Time';
+import Date from './Date';
 
 export default {
   components: {
@@ -96,6 +106,7 @@ export default {
     RadioList,
     Datetime,
     Time,
+    Date,
   },
   mixins: [FormMixin],
   data() {
@@ -108,6 +119,7 @@ export default {
       exp: '5',
       datetime: '',
       time: '',
+      date: '',
       ide: [],
     };
   },
