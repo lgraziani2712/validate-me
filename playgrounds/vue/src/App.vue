@@ -51,6 +51,14 @@
         max="2019-W52"
         data-cy="week"
       />
+      <Month
+        label="What month is today?"
+        v-model="month"
+        name="month"
+        min="2019-02"
+        max="2019-11"
+        data-cy="month"
+      />
       <InputCheckbox label="Ok?" name="ok" v-model="ok" data-cy="ok" />
       <InputEmail
         label="Emails"
@@ -104,6 +112,7 @@ import Datetime from './Datetime';
 import Time from './Time';
 import Date from './Date';
 import Week from './Week';
+import Month from './Month';
 
 export default {
   components: {
@@ -117,6 +126,7 @@ export default {
     Time,
     Date,
     Week,
+    Month,
   },
   mixins: [FormMixin],
   data() {
@@ -131,6 +141,7 @@ export default {
       time: '',
       date: '',
       week: '',
+      month: '',
       ide: [],
     };
   },
