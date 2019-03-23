@@ -18,7 +18,7 @@
         :min="10"
         :max="12"
       />
-      <Datetime
+      <Date
         label="What date-time is it?"
         name="datetime"
         v-model="datetime"
@@ -27,12 +27,13 @@
         type="datetime-local"
         data-cy="datetime"
       />
-      <Time
+      <Date
         label="At what time did you have gotten up from bed?"
         v-model="time"
         name="time"
         min="00:03"
         max="23:57"
+        type="time"
         data-cy="time"
       />
       <Date
@@ -41,22 +42,25 @@
         name="date"
         min="1989-01-01"
         max="2020-12-31"
+        type="date"
         data-cy="date"
       />
-      <Week
+      <Date
         label="What week is today?"
         v-model="week"
         name="week"
         min="2019-W13"
         max="2019-W52"
+        type="week"
         data-cy="week"
       />
-      <Month
+      <Date
         label="What month is today?"
         v-model="month"
         name="month"
         min="2019-02"
         max="2019-11"
+        type="month"
         data-cy="month"
       />
       <InputCheckbox label="Ok?" name="ok" v-model="ok" data-cy="ok" />
@@ -114,11 +118,7 @@ import NumberRange from './NumberRange';
 import InputEmail from './InputEmail';
 import InputCheckboxList from './InputCheckboxList';
 import RadioList from './RadioList';
-import Datetime from './Datetime';
-import Time from './Time';
 import Date from './Date';
-import Week from './Week';
-import Month from './Month';
 import Color from './Color';
 
 export default {
@@ -129,11 +129,7 @@ export default {
     InputEmail,
     InputCheckboxList,
     RadioList,
-    Datetime,
-    Time,
     Date,
-    Week,
-    Month,
     Color,
   },
   mixins: [FormMixin],

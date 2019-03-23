@@ -7,7 +7,7 @@
       :value="value"
       :min="min"
       :max="max"
-      type="date"
+      :type="type"
     />
     <p style="min-height: 1.15em">
       <span v-show="!pristine && error" style="color: red">{{ error }}</span>
@@ -21,20 +21,20 @@
 <script>
 import VueTypes from 'vue-types';
 import FieldMixin from '@validate-me/vue/FieldMixin';
-import { datePatterns } from '@validate-me/vue/directive';
 
-const pattern = datePatterns.date;
-const validator = {
-  validator: value => pattern.test(value),
-};
+const types = ['date', 'time', 'datetime-local', 'week', 'month'];
 
 export default {
   mixins: [FieldMixin],
   props: {
     label: VueTypes.string.isRequired,
     autofocus: Boolean,
-    min: validator,
-    max: validator,
+    min: String,
+    max: String,
+    type: {
+      validator: type => types.includes(type),
+      required: true,
+    },
   },
 };
 </script>
