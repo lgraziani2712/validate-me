@@ -1,25 +1,30 @@
-import { useEffect, useCallback, useReducer } from 'react';
+import { useEffect, useCallback, useReducer, useMemo } from 'react';
 import getRules from '@validate-me/core/getRules';
 import { loadRule, processRawRules } from '@validate-me/core/rules';
 import { getMessage, getWarning } from '@validate-me/core/dictionary';
 
 import { handleState } from './useForm';
 
-const init = value => ({ pristine: true, value: value == null ? '' : value });
+const init = (value, checkList) => ({
+  pristine: true,
+  // eslint-disable-next-line no-nested-ternary
+  value: checkList ? {} : value == null ? '' : value,
+});
 const pristineAction = ['pristine'];
 const notLoadingAction = ['loading'];
 const loadingAction = ['loading', true];
 
 export default function useField(
   type,
-  { form, rules, value, name, required, min, max, pattern, multiple },
+  { form, rules, value, name, required, min, max, pattern, multiple, options },
 ) {
-  const [state, setState] = useReducer(handleState, init(value));
+  const checkbox = type === 'checkbox';
+  const checkList = checkbox && options;
+  const [state, setState] = useReducer(handleState, init(value, checkList));
   const [ruleRunners, setRules] = useReducer(
     (rules, rule) => (rule.length ? rule : rules.concat(rule)),
     [],
   );
-
   const runRules = useCallback(
     value => {
       if (value || required) {
@@ -36,6 +41,20 @@ export default function useField(
     },
     [required, ruleRunners],
   );
+  const onChange = useMemo(() => {
+    if (checkList) {
+      return evt => {
+        const { defaultValue, checked } = evt.target;
+
+        setState(['value', { ...state.value, [defaultValue]: checked }]);
+      };
+    }
+    const prop = checkbox ? 'checked' : 'value';
+
+    return evt => {
+      setState(['value', evt.target[prop]]);
+    };
+  }, [checkList, checkbox, state.value]);
 
   useEffect(
     () =>
@@ -100,10 +119,8 @@ export default function useField(
       max,
       pattern,
       multiple,
+      onChange,
       value: state.value,
-      onChange(evt) {
-        setState(['value', evt.target.value]);
-      },
       // onBlur.once
       onBlur: state.pristine ? () => setState(pristineAction) : undefined,
     },

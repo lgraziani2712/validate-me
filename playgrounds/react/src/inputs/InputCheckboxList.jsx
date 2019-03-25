@@ -2,17 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import useField from '@validate-me/react/useField';
 
-export default function InputColor(props) {
-  const [field, inputProps] = useField('color', props);
-
-  if (inputProps.value === '') {
-    inputProps.value = '#000000';
-  }
+export default function InputCheckboxList(props) {
+  const [field, inputProps] = useField('checkbox', props);
 
   return (
     <div>
       <h3>{props.label}</h3>
-      <input value="#000000" {...inputProps} />
+      {Object.keys(props.options).map(key => (
+        <label key={key}>
+          <input {...inputProps} value={key} />
+          {props.options[key]}
+        </label>
+      ))}
       <p style={{ minHeight: '1.15em' }}>
         {!field.pristine && field.error && (
           <span style={{ color: 'red' }}>{field.error}</span>
@@ -25,10 +26,10 @@ export default function InputColor(props) {
   );
 }
 
-InputColor.propTypes = {
+InputCheckboxList.propTypes = {
   form: PropTypes.any.isRequired,
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  value: PropTypes.string,
-  required: PropTypes.bool,
+  options: PropTypes.objectOf(PropTypes.string),
+  value: PropTypes.arrayOf(PropTypes.string),
 };

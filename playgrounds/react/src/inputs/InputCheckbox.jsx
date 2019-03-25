@@ -2,17 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import useField from '@validate-me/react/useField';
 
-export default function InputColor(props) {
-  const [field, inputProps] = useField('color', props);
-
-  if (inputProps.value === '') {
-    inputProps.value = '#000000';
-  }
+export default function InputCheckbox(props) {
+  const [field, inputProps] = useField('checkbox', props);
 
   return (
     <div>
-      <h3>{props.label}</h3>
-      <input value="#000000" {...inputProps} />
+      <label>
+        <input {...inputProps} />
+        {props.label}
+      </label>
       <p style={{ minHeight: '1.15em' }}>
         {!field.pristine && field.error && (
           <span style={{ color: 'red' }}>{field.error}</span>
@@ -25,10 +23,9 @@ export default function InputColor(props) {
   );
 }
 
-InputColor.propTypes = {
+InputCheckbox.propTypes = {
   form: PropTypes.any.isRequired,
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   value: PropTypes.string,
-  required: PropTypes.bool,
 };

@@ -4,6 +4,8 @@ import useForm from '@validate-me/react/useForm';
 
 import InputColor from './inputs/InputColor';
 import InputDate from './inputs/InputDate';
+import InputCheckbox from './inputs/InputCheckbox';
+import InputCheckboxList from './inputs/InputCheckboxList';
 
 let alreadyProcessed = false;
 
@@ -34,6 +36,19 @@ function App() {
           });
         }}
       >
+        <InputCheckbox form={form} label="Check me plz" name="check" />
+        <InputCheckboxList
+          form={form}
+          name="ides"
+          label="What IDE do you like?"
+          options={{
+            vscode: 'VSCode',
+            intelliIdea: 'IntelliJIdea',
+            sublime: 'Sublime',
+            atom: 'Atom',
+            vim: 'Vim',
+          }}
+        />
         <InputDate
           form={form}
           label="What day is today?"
@@ -41,6 +56,7 @@ function App() {
           min="2018-02-24"
           max="2019-12-31"
           type="date"
+          required
         />
         <InputDate
           form={form}
@@ -49,6 +65,7 @@ function App() {
           min="10:10"
           max="20:20"
           type="time"
+          required
         />
         <InputDate
           form={form}
@@ -57,6 +74,7 @@ function App() {
           min="2018-02-24T10:10"
           max="2019-12-31T20:20"
           type="datetime-local"
+          required
         />
         <InputDate
           form={form}
@@ -65,6 +83,7 @@ function App() {
           min="2018-W02"
           max="2019-W50"
           type="week"
+          required
         />
         <InputDate
           form={form}
@@ -73,13 +92,9 @@ function App() {
           min="2018-02"
           max="2019-12"
           type="month"
+          required
         />
-        <InputColor
-          form={form}
-          label="Change my color"
-          name="color"
-          value="#334466"
-        />
+        <InputColor form={form} label="Change my color" name="color" required />
         <hr />
         <button disabled={formState.touched && formState.invalid}>Save!</button>
         <div>Persisted? {success ? 'yes' : 'no'}</div>
