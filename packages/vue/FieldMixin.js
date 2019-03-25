@@ -14,7 +14,7 @@ export default {
       type: String,
       required: true,
     },
-    value: [String, Boolean, Array],
+    value: [String, Boolean, Object],
     required: Boolean,
   },
   data() {

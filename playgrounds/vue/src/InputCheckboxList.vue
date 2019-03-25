@@ -1,10 +1,11 @@
 <template>
   <div>
     <h3>{{ label }}</h3>
-    <label v-for="option in options" :key="option">
-      <input v-validate-me :name="name" :value="option" type="checkbox" />
-      {{ option }}
-    </label>
+    <label v-for="(option, key) in options" :key="key">
+      <input v-validate-me :name="name" :value="key" type="checkbox" />{{
+        option
+      }}</label
+    >
     <p style="min-height: 1.15em">
       <span v-show="!pristine && error" style="color: red">{{ error }}</span>
       <span v-show="!error && warning" style="color: orange">{{
@@ -22,7 +23,7 @@ export default {
   mixins: [FieldMixin],
   props: {
     label: VueTypes.string.isRequired,
-    options: VueTypes.arrayOf(String).isRequired,
+    options: VueTypes.objectOf(String).isRequired,
     autofocus: Boolean,
   },
 };

@@ -73,10 +73,16 @@
         data-cy="emails"
       />
       <InputCheckboxList
-        v-model="ide"
+        v-model="ides"
         name="ides"
         label="What IDE do you like?"
-        :options="['VSCode', 'IntelliJIdea', 'Sublime', 'Atom', 'Vim']"
+        :options="{
+          vscode: 'VSCode',
+          intelliJIdea: 'IntelliJIdea',
+          sublime: 'Sublime',
+          atom: 'Atom',
+          vim: 'Vim',
+        }"
         data-cy="ides"
       />
       <RadioList
@@ -147,7 +153,7 @@ export default {
       week: '',
       month: '',
       color: '',
-      ide: [],
+      ides: {},
     };
   },
   methods: {
