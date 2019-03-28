@@ -5,6 +5,8 @@ import useField from '@validate-me/react/useField';
 export default function InputCheckboxList(props) {
   const [field, inputProps] = useField('checkbox', props);
 
+  // console.log(field.value);
+
   return (
     <div>
       <h3>{props.label}</h3>

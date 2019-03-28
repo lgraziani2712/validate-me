@@ -2,13 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import useField from '@validate-me/react/useField';
 
-export default function InputColor(props) {
-  const [field, inputProps] = useField(
-    'color',
-    props.value ? props : { ...props, value: '#000001' },
-  );
-
-  console.log(field.value);
+export default function InputText(props) {
+  const [field, inputProps] = useField('text', props);
 
   return (
     <div>
@@ -26,9 +21,11 @@ export default function InputColor(props) {
   );
 }
 
-InputColor.propTypes = {
+InputText.propTypes = {
   form: PropTypes.any.isRequired,
+  rules: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   value: PropTypes.string,
+  required: PropTypes.bool,
 };

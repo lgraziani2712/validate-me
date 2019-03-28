@@ -1,18 +1,47 @@
-import { useEffect, useCallback, useReducer, useMemo } from 'react';
+import { useEffect, useReducer, useMemo, useRef } from 'react';
 import getRules from '@validate-me/core/getRules';
 import { loadRule, processRawRules } from '@validate-me/core/rules';
 import { getMessage, getWarning } from '@validate-me/core/dictionary';
 
-import { handleState } from './useForm';
+function ruleRunner(rules, required, value) {
+  if (value || required) {
+    for (const rule of rules) {
+      if (!rule.run(value)) {
+        return getMessage(rule, value);
+      }
+    }
+  }
+}
+
+const handleState = (rules, required) => (state, prop) => {
+  const [type, value] = typeof prop === 'function' ? prop(state.value) : prop;
+
+  if (state[type] === value) {
+    return state;
+  }
+
+  const newState = {
+    ...state,
+    [type]: value,
+  };
+
+  if (type === 'value' && rules.length && state.value !== value) {
+    newState.error = ruleRunner(rules, required, value);
+  }
+
+  return newState;
+};
 
 const init = (value, checkList) => ({
   pristine: true,
+  loading: true,
   // eslint-disable-next-line no-nested-ternary
   value: checkList ? {} : value == null ? '' : value,
 });
 const pristineAction = ['pristine'];
 const notLoadingAction = ['loading'];
 const loadingAction = ['loading', true];
+const warning = ['warning'];
 
 export default function useField(
   type,
@@ -20,33 +49,21 @@ export default function useField(
 ) {
   const checkbox = type === 'checkbox';
   const checkList = checkbox && options;
-  const [state, setState] = useReducer(handleState, init(value, checkList));
+  const stateRef = useRef();
   const [ruleRunners, setRules] = useReducer(
     (rules, rule) => (rule.length ? rule : rules.concat(rule)),
     [],
   );
-  const runRules = useCallback(
-    value => {
-      if (value || required) {
-        for (const rule of ruleRunners) {
-          if (!rule.run(value)) {
-            setState(['error', getMessage(rule, value)]);
-
-            return true;
-          }
-        }
-      }
-
-      setState(['error']);
-    },
-    [required, ruleRunners],
+  const [state, setState] = useReducer(
+    handleState(ruleRunners, required),
+    init(value, checkList),
   );
   const onChange = useMemo(() => {
     if (checkList) {
       return evt => {
         const { defaultValue, checked } = evt.target;
 
-        setState(['value', { ...state.value, [defaultValue]: checked }]);
+        setState(value => ['value', { ...value, [defaultValue]: checked }]);
       };
     }
     const prop = checkbox ? 'checked' : 'value';
@@ -54,7 +71,7 @@ export default function useField(
     return evt => {
       setState(['value', evt.target[prop]]);
     };
-  }, [checkList, checkbox, state.value]);
+  }, [checkList, checkbox]);
 
   useEffect(
     () =>
@@ -62,30 +79,35 @@ export default function useField(
         touch() {
           setState(pristineAction);
 
-          return runRules(state.value);
+          return stateRef.current.error;
+        },
+        invalid() {
+          return Boolean(stateRef.current.loading || stateRef.current.error);
         },
         clearWarning() {
-          setState(['warning']);
+          setState(warning);
+
+          return stateRef.current.value;
         },
         parseError: rawError =>
           loadRule(rawError)
             .then(rule => {
               setRules(rule);
-              setState(['error', getMessage(rule, state.value)]);
+              setState(value => ['error', getMessage(rule, value)]);
             })
             .catch(rule => {
               if (rule instanceof Error) {
                 throw rule;
               }
-              setState(['warning', getWarning(rule, state.value)]);
+              setState(value => ['warning', getWarning(rule, value)]);
             }),
       }),
-    [name, state.value, runRules, form],
+    [name, form],
   );
 
-  // 1. Instanciates every rule
   useEffect(() => {
     setState(loadingAction);
+
     const baseRules = getRules(type, {
       required,
       min,
@@ -99,15 +121,9 @@ export default function useField(
     );
   }, [max, min, multiple, pattern, required, rules, type]);
 
-  // 2. Executes every rule
   useEffect(() => {
-    runRules(state.value);
-  }, [state.value, runRules]);
-
-  // 3. Pass its state to the form
-  useEffect(() => {
-    form.setFieldState([name, Boolean(state.loading || state.error)]);
-  }, [state.error, state.loading, name, form]);
+    stateRef.current = state;
+  }, [state]);
 
   return [
     state,

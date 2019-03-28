@@ -6,12 +6,13 @@ import InputColor from './inputs/InputColor';
 import InputDate from './inputs/InputDate';
 import InputCheckbox from './inputs/InputCheckbox';
 import InputCheckboxList from './inputs/InputCheckboxList';
+import InputText from './inputs/InputText';
 
 let alreadyProcessed = false;
 
 function App() {
   const [success, setSuccess] = useState(false);
-  const [formState, form] = useForm();
+  const form = useForm();
 
   return (
     <div className="app">
@@ -19,7 +20,7 @@ function App() {
         onSubmit={evt => {
           evt.preventDefault();
 
-          const success = form.validate();
+          const [success, fields] = form.validate();
 
           setSuccess(success);
 
@@ -27,15 +28,24 @@ function App() {
             return;
           }
 
+          // eslint-disable-next-line no-console
+          console.log('Persisted!', fields);
+
           alreadyProcessed = true;
 
           form.process({
-            asd1: ['unexistingRule'],
-            asd2: ['min', '10'],
+            name: ['unexistingRule'],
             unexistingField: ['withInvalidRule(Wtf)'],
           });
         }}
       >
+        <InputText
+          form={form}
+          label="Name"
+          name="name"
+          rules={[['len', '2', '10']]}
+          required
+        />
         <InputCheckbox form={form} label="Check me plz" name="check" />
         <InputCheckboxList
           form={form}
@@ -55,6 +65,7 @@ function App() {
           name="date"
           min="2018-02-24"
           max="2019-12-31"
+          value="2018-02-24"
           type="date"
           required
         />
@@ -64,6 +75,7 @@ function App() {
           name="time"
           min="10:10"
           max="20:20"
+          value="10:10"
           type="time"
           required
         />
@@ -73,6 +85,7 @@ function App() {
           name="datetime-local"
           min="2018-02-24T10:10"
           max="2019-12-31T20:20"
+          value="2018-02-24T10:10"
           type="datetime-local"
           required
         />
@@ -82,6 +95,7 @@ function App() {
           name="week"
           min="2018-W02"
           max="2019-W50"
+          value="2019-W50"
           type="week"
           required
         />
@@ -91,12 +105,13 @@ function App() {
           name="month"
           min="2018-02"
           max="2019-12"
+          value="2019-12"
           type="month"
           required
         />
-        <InputColor form={form} label="Change my color" name="color" required />
+        <InputColor form={form} label="Change my color" name="color" />
         <hr />
-        <button disabled={formState.touched && formState.invalid}>Save!</button>
+        <button>Save!</button>
         <div>Persisted? {success ? 'yes' : 'no'}</div>
       </form>
     </div>
