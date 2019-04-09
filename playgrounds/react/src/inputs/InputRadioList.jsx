@@ -2,13 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import useField from '@validate-me/react/useField';
 
-export default function InputDate(props) {
-  const [field, inputProps] = useField(props.type, props);
+export default function InputCheckboxList(props) {
+  const [field, inputProps] = useField('radio', props);
 
   return (
     <div>
       <h3>{props.label}</h3>
-      <input {...inputProps} />
+      {Object.keys(props.options).map(key => (
+        <label key={key}>
+          <input
+            {...inputProps}
+            value={key}
+            checked={inputProps.value === key}
+          />
+          {props.options[key]}
+        </label>
+      ))}
       <p style={{ minHeight: '1.15em' }}>
         {field.touched && field.error && (
           <span style={{ color: 'red' }}>{field.error}</span>
@@ -21,13 +30,10 @@ export default function InputDate(props) {
   );
 }
 
-InputDate.propTypes = {
+InputCheckboxList.propTypes = {
   form: PropTypes.any.isRequired,
-  type: PropTypes.oneOf(['date', 'time', 'datetime-local', 'week', 'month']),
-  min: PropTypes.string,
-  max: PropTypes.string,
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  options: PropTypes.objectOf(PropTypes.string),
   value: PropTypes.string,
-  required: PropTypes.bool,
 };

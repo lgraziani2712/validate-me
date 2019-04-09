@@ -3,42 +3,7 @@ import getRules from '@validate-me/core/getRules';
 import { loadRule, processRawRules } from '@validate-me/core/rules';
 import { getMessage, getWarning } from '@validate-me/core/dictionary';
 
-function ruleRunner(rules, required, value) {
-  if (value || required) {
-    for (const rule of rules) {
-      if (!rule.run(value)) {
-        return getMessage(rule, value);
-      }
-    }
-  }
-}
-
-const handleState = (rules, required) => (state, prop) => {
-  const [type, value] = typeof prop === 'function' ? prop(state.value) : prop;
-
-  if (state[type] === value) {
-    return state;
-  }
-
-  const newState = {
-    ...state,
-    [type]: value,
-  };
-
-  if (type === 'value' && rules.length && state.value !== value) {
-    newState.error = ruleRunner(rules, required, value);
-  }
-
-  return newState;
-};
-
-const init = (value, checkList) => ({
-  pristine: true,
-  loading: true,
-  // eslint-disable-next-line no-nested-ternary
-  value: checkList ? {} : value == null ? '' : value,
-});
-const pristineAction = ['pristine'];
+const touchedAction = ['touched', true];
 const notLoadingAction = ['loading'];
 const loadingAction = ['loading', true];
 const warning = ['warning'];
@@ -48,15 +13,47 @@ export default function useField(
   { form, rules, value, name, required, min, max, pattern, multiple, options },
 ) {
   const checkbox = type === 'checkbox';
+  const prop = checkbox ? 'checked' : 'value';
   const checkList = checkbox && options;
   const stateRef = useRef();
   const [ruleRunners, setRules] = useReducer(
-    (rules, rule) => (rule.length ? rule : rules.concat(rule)),
+    (rules, rule) => (rule.length == null ? rule : rules.concat(rule)),
     [],
   );
   const [state, setState] = useReducer(
-    handleState(ruleRunners, required),
-    init(value, checkList),
+    (state, prop) => {
+      const oldVal = state.value;
+      const [key, val] = typeof prop === 'function' ? prop(oldVal) : prop;
+
+      if (state[key] === val) {
+        return state;
+      }
+
+      const newState = { ...state, [key]: val };
+
+      if (
+        key === 'value' &&
+        ruleRunners.length &&
+        oldVal !== val &&
+        (val || required)
+      ) {
+        newState.error = '';
+
+        for (const rule of ruleRunners) {
+          if (!rule.run(val)) {
+            newState.error = getMessage(rule, val);
+
+            break;
+          }
+        }
+      }
+
+      return newState;
+    },
+    {
+      loading: true,
+      value: value || (checkList ? {} : ''),
+    },
   );
   const onChange = useMemo(() => {
     if (checkList) {
@@ -66,18 +63,17 @@ export default function useField(
         setState(value => ['value', { ...value, [defaultValue]: checked }]);
       };
     }
-    const prop = checkbox ? 'checked' : 'value';
 
     return evt => {
       setState(['value', evt.target[prop]]);
     };
-  }, [checkList, checkbox]);
+  }, [checkList, prop]);
 
   useEffect(
     () =>
       form.setField(name, {
         touch() {
-          setState(pristineAction);
+          setState(touchedAction);
 
           return stateRef.current.error;
         },
@@ -136,9 +132,9 @@ export default function useField(
       pattern,
       multiple,
       onChange,
-      value: state.value,
+      [prop]: state.value,
       // onBlur.once
-      onBlur: state.pristine ? () => setState(pristineAction) : undefined,
+      onBlur: state.touched ? undefined : () => setState(touchedAction),
     },
   ];
 }

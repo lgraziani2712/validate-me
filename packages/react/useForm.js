@@ -34,7 +34,13 @@ export default function useForm() {
     form.current.validate = () => {
       const fieldsValue = Object.values(fields.current);
 
-      if (!state.touched) {
+      if (state.touched) {
+        for (const field of fieldsValue) {
+          if (field.invalid()) {
+            return invalidState;
+          }
+        }
+      } else {
         const invalid = fieldsValue.reduce(
           (invalid, field) => field.invalid() || invalid,
           false,
@@ -44,12 +50,6 @@ export default function useForm() {
 
         if (invalid) {
           return invalidState;
-        }
-      } else {
-        for (const field of fieldsValue) {
-          if (field.invalid()) {
-            return invalidState;
-          }
         }
       }
 

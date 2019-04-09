@@ -5,19 +5,21 @@ import useField from '@validate-me/react/useField';
 export default function InputCheckboxList(props) {
   const [field, inputProps] = useField('checkbox', props);
 
-  // console.log(field.value);
-
   return (
     <div>
       <h3>{props.label}</h3>
       {Object.keys(props.options).map(key => (
         <label key={key}>
-          <input {...inputProps} value={key} />
+          <input
+            {...inputProps}
+            value={key}
+            checked={inputProps.checked[key] || false}
+          />
           {props.options[key]}
         </label>
       ))}
       <p style={{ minHeight: '1.15em' }}>
-        {!field.pristine && field.error && (
+        {field.touched && field.error && (
           <span style={{ color: 'red' }}>{field.error}</span>
         )}
         {!field.error && field.warning && (
@@ -33,5 +35,5 @@ InputCheckboxList.propTypes = {
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   options: PropTypes.objectOf(PropTypes.string),
-  value: PropTypes.arrayOf(PropTypes.string),
+  value: PropTypes.objectOf(PropTypes.bool),
 };

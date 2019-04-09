@@ -8,14 +8,12 @@ export default function InputColor(props) {
     props.value ? props : { ...props, value: '#000001' },
   );
 
-  console.log(field.value);
-
   return (
     <div>
       <h3>{props.label}</h3>
       <input {...inputProps} />
       <p style={{ minHeight: '1.15em' }}>
-        {!field.pristine && field.error && (
+        {field.touched && field.error && (
           <span style={{ color: 'red' }}>{field.error}</span>
         )}
         {!field.error && field.warning && (

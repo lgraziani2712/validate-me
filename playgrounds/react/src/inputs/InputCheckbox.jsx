@@ -12,7 +12,7 @@ export default function InputCheckbox(props) {
         {props.label}
       </label>
       <p style={{ minHeight: '1.15em' }}>
-        {!field.pristine && field.error && (
+        {field.touched && field.error && (
           <span style={{ color: 'red' }}>{field.error}</span>
         )}
         {!field.error && field.warning && (
@@ -27,5 +27,6 @@ InputCheckbox.propTypes = {
   form: PropTypes.any.isRequired,
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  value: PropTypes.string,
+  value: PropTypes.bool,
+  required: PropTypes.bool,
 };

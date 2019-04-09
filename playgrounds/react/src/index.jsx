@@ -6,6 +6,7 @@ import InputColor from './inputs/InputColor';
 import InputDate from './inputs/InputDate';
 import InputCheckbox from './inputs/InputCheckbox';
 import InputCheckboxList from './inputs/InputCheckboxList';
+import InputRadioList from './inputs/InputRadioList';
 import InputText from './inputs/InputText';
 
 let alreadyProcessed = false;
@@ -46,7 +47,12 @@ function App() {
           rules={[['len', '2', '10']]}
           required
         />
-        <InputCheckbox form={form} label="Check me plz" name="check" />
+        <InputCheckbox
+          form={form}
+          label="Must be Checked, plz"
+          name="check"
+          required
+        />
         <InputCheckboxList
           form={form}
           name="ides"
@@ -58,6 +64,20 @@ function App() {
             atom: 'Atom',
             vim: 'Vim',
           }}
+          value={{ vscode: true, sublime: true }}
+        />
+        <InputRadioList
+          form={form}
+          name="bestIde"
+          label="What is the best IDE for you?"
+          options={{
+            vscode: 'VSCode',
+            intelliIdea: 'IntelliJIdea',
+            sublime: 'Sublime',
+            atom: 'Atom',
+            vim: 'Vim',
+          }}
+          value="vscode"
         />
         <InputDate
           form={form}

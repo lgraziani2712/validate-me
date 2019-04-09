@@ -10,7 +10,7 @@ export default function InputText(props) {
       <h3>{props.label}</h3>
       <input {...inputProps} />
       <p style={{ minHeight: '1.15em' }}>
-        {!field.pristine && field.error && (
+        {field.touched && field.error && (
           <span style={{ color: 'red' }}>{field.error}</span>
         )}
         {!field.error && field.warning && (
