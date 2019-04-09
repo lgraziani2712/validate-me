@@ -5,14 +5,12 @@
       <InputString
         label="Name"
         :validateme-rules="[['len', '2', '10']]"
-        v-model="name"
         name="name"
         data-cy="name"
         required
       />
-      <NumberRange
+      <InputNumberRange
         label="Age"
-        v-model="age"
         name="age"
         data-cy="age"
         :min="10"
@@ -21,7 +19,6 @@
       <InputDate
         label="What date-time is it?"
         name="datetime"
-        v-model="datetime"
         min="2019-01-01T08:30"
         max="2019-04-01T08:30"
         type="datetime-local"
@@ -29,7 +26,6 @@
       />
       <InputDate
         label="At what time did you have gotten up from bed?"
-        v-model="time"
         name="time"
         min="00:03"
         max="23:57"
@@ -38,7 +34,6 @@
       />
       <InputDate
         label="What is your birth date?"
-        v-model="date"
         name="date"
         min="1989-01-01"
         max="2020-12-31"
@@ -47,7 +42,6 @@
       />
       <InputDate
         label="What week is today?"
-        v-model="week"
         name="week"
         min="2019-W13"
         max="2019-W52"
@@ -56,24 +50,21 @@
       />
       <InputDate
         label="What month is today?"
-        v-model="month"
         name="month"
         min="2019-02"
         max="2019-11"
         type="month"
         data-cy="month"
       />
-      <InputCheckbox label="Ok?" name="ok" v-model="ok" data-cy="ok" />
+      <InputCheckbox label="Ok?" name="ok" data-cy="ok" checked />
       <InputEmail
         label="Emails"
         name="emails"
-        v-model="emails"
         pattern=".+@gmail.com"
         multiple
         data-cy="emails"
       />
       <InputCheckboxList
-        v-model="ides"
         name="ides"
         label="What IDE do you like?"
         :options="{
@@ -83,30 +74,30 @@
           atom: 'Atom',
           vim: 'Vim',
         }"
+        :checked="{ vscode: true, atom: true }"
         data-cy="ides"
       />
-      <RadioList
-        v-model="job"
+      <InputRadioList
         name="job"
         label="What job would you prefer?"
-        :options="['Front-end', 'Back-end', 'UI/UX Designer', 'Data Scientist']"
+        :options="{
+          frontend: 'Front-end',
+          backend: 'Back-end',
+          uiUxDesigner: 'UI/UX Designer',
+          dataScientist: 'Data Scientist',
+        }"
+        checked="uiUxDesigner"
         data-cy="job"
       />
-      <NumberRange
+      <InputNumberRange
         label="From 0 to 10, how much experience do you think you have?"
-        v-model="exp"
         name="experience"
         data-cy="exp"
         :min="0"
         :max="10"
         range
       />
-      <Color
-        label="Gimme colors!"
-        v-model="color"
-        name="color"
-        data-cy="color"
-      />
+      <InputColor label="Gimme colors!" name="color" data-cy="color" />
       <br />
       <button data-cy="submit-button" :disabled="touched && invalid">
         Submit form
@@ -120,47 +111,35 @@ import FormMixin from '@validate-me/vue/FormMixin';
 
 import InputString from './InputString';
 import InputCheckbox from './InputCheckbox';
-import NumberRange from './NumberRange';
+import InputNumberRange from './InputNumberRange';
 import InputEmail from './InputEmail';
 import InputCheckboxList from './InputCheckboxList';
-import RadioList from './RadioList';
+import InputRadioList from './InputRadioList';
 import InputDate from './InputDate';
-import Color from './Color';
+import InputColor from './InputColor';
 
 export default {
   components: {
-    NumberRange,
+    InputNumberRange,
     InputCheckbox,
     InputString,
     InputEmail,
     InputCheckboxList,
-    RadioList,
+    InputRadioList,
     InputDate,
-    Color,
+    InputColor,
   },
   mixins: [FormMixin],
-  data() {
-    return {
-      name: 'a',
-      ok: true,
-      age: '',
-      emails: '',
-      job: '',
-      exp: '5',
-      datetime: '',
-      time: '',
-      date: '',
-      week: '',
-      month: '',
-      color: '',
-      ides: {},
-    };
-  },
   methods: {
     handleSubmit() {
-      if (!this.validate()) {
+      const [success, fields] = this.validate();
+
+      if (!success) {
         return;
       }
+
+      // eslint-disable-next-line no-console
+      console.log('Persisted!', fields);
 
       this.process({
         name: ['unexistingRule'],

@@ -6,11 +6,11 @@ export function setErrorHandler(handler) {
   errorHandler = handler;
 }
 
+const invalidState = [false];
+
 export default {
   data() {
     return {
-      fields: {},
-      invalid: true,
       touched: false,
     };
   },
@@ -23,26 +23,7 @@ export default {
 
         this.fieldMethods[name] = methods;
       },
-      updateField: (name, state) => {
-        if (this.fields[name] === state) {
-          return;
-        }
-        this.fields = { ...this.fields, [name]: state };
-      },
     };
-  },
-  watch: {
-    fields(newFields) {
-      for (const state of Object.values(newFields)) {
-        if (state) {
-          this.invalid = true;
-
-          return;
-        }
-      }
-
-      this.invalid = false;
-    },
   },
   created() {
     this.fieldMethods = {};
@@ -52,23 +33,35 @@ export default {
       return processErrors(this.fieldMethods, errorHandler(error));
     },
     validate() {
-      let invalid = false;
-      const fields = Object.values(this.fieldMethods);
+      const fieldsValue = Object.values(this.fieldMethods);
 
-      if (!this.touched) {
-        invalid = fields.reduce(
-          (invalid, field) => field.touch() || invalid,
+      if (this.touched) {
+        for (const field of fieldsValue) {
+          if (field.invalid()) {
+            return invalidState;
+          }
+        }
+      } else {
+        const invalid = fieldsValue.reduce(
+          (invalid, field) => field.invalid() || invalid,
           false,
         );
 
         this.touched = true;
-      }
-      if (invalid || this.invalid) {
-        return false;
-      }
-      fields.forEach(field => field.clearWarning());
 
-      return true;
+        if (invalid) {
+          return invalidState;
+        }
+      }
+
+      return [
+        true,
+        Object.keys(this.fieldMethods).reduce((data, key) => {
+          data[key] = this.fieldMethods[key].clearWarning();
+
+          return data;
+        }, {}),
+      ];
     },
   },
 };
