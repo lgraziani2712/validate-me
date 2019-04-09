@@ -1849,7 +1849,7 @@
     source-map "~0.6.1"
     vue-template-es2015-compiler "^1.9.0"
 
-"@vuepress/core@^1.0.0-alpha.44":
+"@vuepress/core@^1.0.0-alpha.47":
   version "1.0.0-alpha.47"
   resolved "https://registry.yarnpkg.com/@vuepress/core/-/core-1.0.0-alpha.47.tgz#b1965c0f0c0961aaf110d04525f08ac9a91545af"
   integrity sha512-4nD1fhQIK58W5hMzP2yT6rz8CNjwHWLI6ctRhNCFk4gnIDdwnRgfvkHSnN/fkNg4czZh9Gm7nOfL2sL7JurD6g==
@@ -1962,7 +1962,7 @@
     semver "^5.5.0"
     upath "^1.1.0"
 
-"@vuepress/theme-default@^1.0.0-alpha.44":
+"@vuepress/theme-default@^1.0.0-alpha.47":
   version "1.0.0-alpha.47"
   resolved "https://registry.yarnpkg.com/@vuepress/theme-default/-/theme-default-1.0.0-alpha.47.tgz#9eb8708c7319eb5b9a982fa17f0244c6da574a20"
   integrity sha512-/9Pw3vD0JEwXznmUwq5aYk1Npi14AloxkNcr6CyM1MXAmtZOG0Bbq2h9Sr5lpQLCPgrfOVuobqol4X0QeHokSw==
@@ -12741,13 +12741,13 @@ vuepress-plugin-container@^2.0.0:
   dependencies:
     markdown-it-container "^2.0.0"
 
-vuepress@1.0.0-alpha.44:
-  version "1.0.0-alpha.44"
-  resolved "https://registry.yarnpkg.com/vuepress/-/vuepress-1.0.0-alpha.44.tgz#044048047651f7e8890d48886e97f2ad5eb5ddea"
-  integrity sha512-m6tYdmQbqZQ2frqyPa/OwFoRRv+SY0nkv6dai+74+Vy4IAnPmY7/otrlvmWVNpPh6X4pT2HvNh08YetfUnWX7g==
+vuepress@1.0.0-alpha.47:
+  version "1.0.0-alpha.47"
+  resolved "https://registry.yarnpkg.com/vuepress/-/vuepress-1.0.0-alpha.47.tgz#b6f06a5569aaf0b4016f9eb1da5fd4e01f295d45"
+  integrity sha512-AxvDNsT1Cj7ZrVSR4pKtCDD4DYQOTMWtUkBcRDAuSzBIJfjOjdrW6FY/G27SrKHA7cKhVXzxBiHYmXysIpfPjw==
   dependencies:
-    "@vuepress/core" "^1.0.0-alpha.44"
-    "@vuepress/theme-default" "^1.0.0-alpha.44"
+    "@vuepress/core" "^1.0.0-alpha.47"
+    "@vuepress/theme-default" "^1.0.0-alpha.47"
     cac "^6.3.9"
 
 w3c-hr-time@^1.0.1:

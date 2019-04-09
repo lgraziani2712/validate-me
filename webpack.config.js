@@ -1,25 +1,32 @@
-const path = require('path');
-
 const { VueLoaderPlugin } = require('vue-loader');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
-const removeVueAttrPlugin = require('./removeVueAttrPlugin');
+process.env.NODE_ENV = 'production';
 
 let plugins = [new VueLoaderPlugin()];
 
-let modules = [];
-
-if (process.env.NODE_ENV === 'production') {
+if (!process.env.CI) {
   plugins = plugins.concat([new BundleAnalyzerPlugin()]);
-  modules = [removeVueAttrPlugin(['data-cy'])];
 }
 
 module.exports = {
-  mode: 'development',
-  entry: './src',
+  mode: 'production',
+  entry: {
+    vue: ['./packages/vue', './packages/vue/FieldMixin'],
+    react: ['./packages/react/useForm', './packages/react/useField'],
+    vanilla: [
+      './packages/vanilla',
+      './packages/vanilla/Validateme',
+      './packages/vanilla/ValidatemeField',
+    ],
+  },
+  externals: {
+    react: 'react',
+    vue: 'vue',
+  },
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
+    filename: '[name].js',
+    path: `${__dirname}/dist`,
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
@@ -42,7 +49,6 @@ module.exports = {
           rootMode: 'upward',
           compilerOptions: {
             preserveWhitespace: false,
-            modules,
           },
         },
       },
