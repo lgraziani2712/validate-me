@@ -6,12 +6,7 @@ const touchAction = ['touched', true];
 const invalidState = [false];
 
 function handleState(state, [type, value]) {
-  return state[type] === value
-    ? state
-    : {
-        ...state,
-        [type]: value,
-      };
+  return state[type] === value ? state : { ...state, [type]: value };
 }
 
 export function setErrorHandler(handler) {
