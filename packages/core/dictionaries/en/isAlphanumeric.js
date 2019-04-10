@@ -1,3 +1,3 @@
-const isAlpha = () => 'The field only accepts alphanumeric characters.';
+const isAlphanumeric = () => 'The field only accepts alphanumeric characters.';
 
-export default isAlpha;
+export default isAlphanumeric;

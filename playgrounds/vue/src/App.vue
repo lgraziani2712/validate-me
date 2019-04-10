@@ -60,7 +60,7 @@
       <InputEmail
         label="Emails"
         name="emails"
-        pattern=".+@gmail.com"
+        pattern=".+@gmail\.com"
         multiple
         data-cy="emails"
       />

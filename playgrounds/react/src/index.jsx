@@ -8,6 +8,8 @@ import InputCheckbox from './inputs/InputCheckbox';
 import InputCheckboxList from './inputs/InputCheckboxList';
 import InputRadioList from './inputs/InputRadioList';
 import InputText from './inputs/InputText';
+import InputNumber from './inputs/InputNumber';
+import InputEmail from './inputs/InputEmail';
 
 let alreadyProcessed = false;
 
@@ -51,6 +53,21 @@ function App() {
           form={form}
           label="Must be Checked, plz"
           name="check"
+          required
+        />
+        <InputNumber
+          form={form}
+          name="age"
+          label="How old are you?"
+          min={1}
+          max={100}
+          required
+        />
+        <InputEmail
+          form={form}
+          name="email"
+          label="What is your e-mail?"
+          multiple
           required
         />
         <InputCheckboxList

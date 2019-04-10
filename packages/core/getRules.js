@@ -18,6 +18,8 @@ const range = 'range';
 const min = 'min';
 const max = 'max';
 const patternName = 'pattern';
+const defaultMailPattern =
+  "[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9-]+(.[a-z0-9-]+)*";
 
 /**
  *
@@ -38,7 +40,7 @@ export default function getRules(type, props) {
   } else if (type in dateExamples) {
     const pattern = datePatterns[type];
 
-    addRule([patternName, pattern, '', dateExamples[type]]);
+    addRule([patternName, pattern, '', '', dateExamples[type]]);
 
     if (props.min) {
       if (process.env.NODE_ENV !== 'production' && !pattern.test(props.min)) {
@@ -61,10 +63,10 @@ export default function getRules(type, props) {
       addRule([max, props.max]);
     }
   }
-  if (props.pattern) {
-    const rule = [patternName, props.pattern];
+  if (type === 'email') {
+    const rule = [patternName, props.pattern || defaultMailPattern, 'i'];
 
-    if (type === 'email' && props.multiple) {
+    if (props.multiple) {
       rule.push('mul');
     }
 

@@ -2,22 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import useField from '@validate-me/react/useField';
 
-export default function InputRadioList(props) {
-  const [field, inputProps] = useField('radio', props);
+export default function InputEmail(props) {
+  const [field, inputProps] = useField('email', props);
 
   return (
     <div>
       <h3>{props.label}</h3>
-      {Object.keys(props.options).map(key => (
-        <label key={key}>
-          <input
-            {...inputProps}
-            value={key}
-            checked={inputProps.value === key}
-          />
-          {props.options[key]}
-        </label>
-      ))}
+      <input {...inputProps} />
       <p style={{ minHeight: '1.15em' }}>
         {field.touched && field.error && (
           <span style={{ color: 'red' }}>{field.error}</span>
@@ -30,10 +21,13 @@ export default function InputRadioList(props) {
   );
 }
 
-InputRadioList.propTypes = {
+InputEmail.propTypes = {
   form: PropTypes.any.isRequired,
+  rules: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  options: PropTypes.objectOf(PropTypes.string),
   value: PropTypes.string,
+  multiple: PropTypes.bool,
+  pattern: PropTypes.string,
+  required: PropTypes.bool,
 };

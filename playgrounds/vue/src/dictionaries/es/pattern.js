@@ -1,4 +1,4 @@
-const pattern = (_, pattern, type, example) =>
+const pattern = (_, pattern, type, flags, example) =>
   `${
     type === 'mul' ? 'Cada uno de los valores separados por coma d' : 'D'
   }ebe ${
