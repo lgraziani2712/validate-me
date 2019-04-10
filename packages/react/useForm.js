@@ -1,20 +1,15 @@
-import { useReducer, useEffect, useCallback, useRef } from 'react';
+import { useReducer, useEffect, useRef, createContext } from 'react';
 import { processErrors } from '@validate-me/core/rules';
 
 let errorHandler = f => f;
-const INIT_STATE = { invalid: true };
-const invalidAction = ['invalid', true];
-const validAction = ['invalid'];
 const touchAction = ['touched', true];
+const invalidState = [false];
 
-export function handleState(state, [type, value]) {
-  return state[type] === value
-    ? state
-    : {
-        ...state,
-        [type]: value,
-      };
+function handleState(state, [type, value]) {
+  return state[type] === value ? state : { ...state, [type]: value };
 }
+
+export const VContext = createContext();
 
 export function setErrorHandler(handler) {
   errorHandler = handler;
@@ -22,51 +17,49 @@ export function setErrorHandler(handler) {
 
 export default function useForm() {
   const fields = useRef({});
-  const [state, setState] = useReducer(handleState, INIT_STATE);
-  const [fieldStates, setFieldState] = useReducer(handleState, {});
-  const setField = useCallback((name, field) => {
-    fields.current[name] = field;
-  }, []);
-  // Executes the submit event. Touches every pristine input.
-  const validate = useCallback(() => {
-    let localInvalid;
-    const fieldsValue = Object.values(fields.current);
+  const [state, setState] = useReducer(handleState, {});
+  const form = useRef({
+    setField: (name, field) => {
+      fields.current[name] = field;
+    },
+    // Process errors from server
+    process: error => processErrors(fields.current, errorHandler(error)),
+  });
 
-    if (!state.touched) {
-      localInvalid = fieldsValue.reduce(
-        (invalid, field) => field.touch() || invalid,
-        false,
-      );
-
-      setState(touchAction);
-    }
-
-    if (localInvalid || state.invalid) {
-      return false;
-    }
-
-    fieldsValue.forEach(field => field.clearWarning());
-
-    return true;
-  }, [state.invalid, state.touched]);
-  // Process errors from server
-  const process = useCallback(
-    error => processErrors(fields.current, errorHandler(error)),
-    [],
-  );
-
-  // Verifies if every input is valid
   useEffect(() => {
-    for (const fieldInvalid of Object.values(fieldStates)) {
-      if (fieldInvalid) {
-        setState(invalidAction);
+    // Executes the submit event. Touches every pristine input.
+    form.current.validate = () => {
+      const fieldsValue = Object.values(fields.current);
 
-        return;
+      if (state.touched) {
+        for (const field of fieldsValue) {
+          if (field.invalid()) {
+            return invalidState;
+          }
+        }
+      } else {
+        const invalid = fieldsValue.reduce(
+          (invalid, field) => field.invalid() || invalid,
+          false,
+        );
+
+        setState(touchAction);
+
+        if (invalid) {
+          return invalidState;
+        }
       }
-    }
 
-    setState(validAction);
-  }, [fieldStates]);
+      return [
+        true,
+        Object.keys(fields.current).reduce((data, key) => {
+          data[key] = fields.current[key].clearWarning();
 
-  return [state, { setField, setFieldState, validate, process }];
+          return data;
+        }, {}),
+      ];
+    };
+  }, [state.touched]);
+
+  return form.current;
 }

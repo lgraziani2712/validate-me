@@ -1,30 +1,26 @@
 import { loadRule, processRawRules } from '@validate-me/core/rules';
 import { getMessage, getWarning } from '@validate-me/core/dictionary';
 
-function handleUpdate() {
-  const { name, updateField, error, loading } = this;
-
-  updateField(name, Boolean(loading || error));
-}
-
 export default {
-  inject: ['setField', 'updateField'],
+  inject: ['setField'],
   props: {
     name: {
       type: String,
       required: true,
     },
-    value: [String, Boolean, Array],
+    value: [String, Object],
     required: Boolean,
   },
   data() {
     return {
-      error: '',
-      warning: '',
-      loading: false,
-      pristine: true,
-      localValue: this.value || '',
-      rules: [],
+      vField: {
+        error: '',
+        warning: '',
+        loading: false,
+        touched: false,
+        value: this.value || '',
+        rules: [],
+      },
     };
   },
   created() {
@@ -37,59 +33,63 @@ export default {
 
     setField(name, {
       clearWarning: () => {
-        this.warning = '';
+        this.vField.warning = '';
+
+        return this.vField.value;
       },
-      parseError: rawError =>
-        loadRule(rawError)
+      parseError: rawError => {
+        const value = this.vField.value;
+
+        return loadRule(rawError)
           .then(rule => {
-            this.rules.push(rule);
-            this.error = getMessage(rule, this.localValue);
+            this.vField.rules.push(rule);
+            this.vField.error = getMessage(rule, value);
           })
           .catch(rule => {
-            this.warning = getWarning(rule, this.localValue);
-          }),
-      touch: this.touch,
+            this.vField.warning = getWarning(rule, value);
+          });
+      },
+      invalid: () => this.vField.touched,
     });
-  },
-  watch: {
-    error: handleUpdate,
-    loading: handleUpdate,
   },
   methods: {
     setRules(rawRules) {
-      this.loading = true;
+      this.vField.loading = true;
 
       return processRawRules(
         rawRules,
         rules => {
-          this.rules = rules;
+          this.vField.rules = rules;
         },
         () => {
-          this.loading = false;
+          this.vField.loading = false;
         },
       );
     },
     touch() {
-      this.pristine = false;
+      if (this.vField.touched) {
+        return this.vField.error;
+      }
 
-      return this.run(this.localValue);
+      this.vField.touched = true;
+
+      return this.run(this.vField.value);
     },
     run(value) {
-      if (this.localValue !== value) {
-        this.localValue = value;
-        this.$emit('input', value);
+      if (this.vField.value !== value) {
+        this.vField.value = value;
       }
 
       if (value || this.required) {
-        for (const rule of this.rules) {
+        for (const rule of this.vField.rules) {
           if (!rule.run(value)) {
-            this.error = getMessage(rule, value);
+            this.vField.error = getMessage(rule, value);
 
             return true;
           }
         }
       }
-      this.error = '';
+      this.vField.error = '';
     },
   },
 };

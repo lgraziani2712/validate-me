@@ -3,7 +3,13 @@ module.exports = function(api) {
 
   const presets = [
     ['@babel/preset-env', { debug: true, modules: false }],
-    '@babel/preset-react',
+    [
+      '@babel/preset-react',
+      {
+        useBuiltIns: true,
+        development: process.env.BABEL_ENV === 'development',
+      },
+    ],
   ];
 
   let plugins = ['@babel/plugin-syntax-dynamic-import'];

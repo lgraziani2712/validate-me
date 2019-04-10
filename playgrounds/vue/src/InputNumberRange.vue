@@ -14,9 +14,11 @@
       />
     </p>
     <p style="min-height: 1.15em">
-      <span v-show="!pristine && error" style="color: red">{{ error }}</span>
-      <span v-show="!error && warning" style="color: orange">{{
-        warning
+      <span v-show="vField.touched && vField.error" style="color: red">{{
+        vField.error
+      }}</span>
+      <span v-show="!vField.error && vField.warning" style="color: orange">{{
+        vField.warning
       }}</span>
     </p>
   </div>

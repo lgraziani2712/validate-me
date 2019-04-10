@@ -16,9 +16,6 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   mode: 'development',
-  optimization: {
-    minimize: false,
-  },
   entry: './src',
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -33,25 +30,35 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
-        options: {
-          rootMode: 'upward',
-        },
+        use: [
+          'cache-loader',
+          {
+            loader: 'babel-loader',
+            options: {
+              rootMode: 'upward',
+            },
+          },
+        ],
       },
       {
         test: /\.vue$/,
-        loader: 'vue-loader',
-        options: {
-          rootMode: 'upward',
-          compilerOptions: {
-            preserveWhitespace: false,
-            modules,
+        use: [
+          'cache-loader',
+          {
+            loader: 'vue-loader',
+            options: {
+              rootMode: 'upward',
+              compilerOptions: {
+                preserveWhitespace: false,
+                modules,
+              },
+            },
           },
-        },
+        ],
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: ['cache-loader', 'style-loader', 'css-loader'],
       },
     ],
   },

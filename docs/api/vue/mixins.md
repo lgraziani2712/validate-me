@@ -32,9 +32,9 @@ validate(): boolean;
 ```
 
 1. If the form is pristine, it touches every field.
-2. If the form is invalid, returns `false`.
+2. If the form is invalid, returns `[false]`.
 3. Clears every field's warning.
-4. Returns `true`.
+4. Returns `[true, fields]` where `fields` is an object representing each field and its values.
 
 ### process
 

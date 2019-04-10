@@ -1,86 +1,128 @@
-import { useEffect, useCallback, useReducer } from 'react';
+import { useEffect, useReducer, useMemo, useRef, useContext } from 'react';
+import getRules from '@validate-me/core/getRules';
 import { loadRule, processRawRules } from '@validate-me/core/rules';
 import { getMessage, getWarning } from '@validate-me/core/dictionary';
 
-import { handleState } from './useForm';
+import { VContext } from './useForm';
 
-const init = value => ({ pristine: true, value });
-const pristineAction = ['pristine'];
+const touchedAction = ['touched', true];
 const notLoadingAction = ['loading'];
 const loadingAction = ['loading', true];
+const warning = ['warning'];
 
-export default function useField({ form, rules, value, name, type, required }) {
-  const [state, setState] = useReducer(handleState, init(value));
+export default function useField(
+  type,
+  { rules, value, name, required, min, max, pattern, multiple, options },
+) {
+  const checkbox = type === 'checkbox';
+  const prop = checkbox ? 'checked' : 'value';
+  const checkList = checkbox && options;
+  const form = useContext(VContext);
+  const stateRef = useRef();
   const [ruleRunners, setRules] = useReducer(
-    (rules, rule) => (rule.length ? rule : rules.concat(rule)),
+    (rules, rule) => (rule.length == null ? rule : rules.concat(rule)),
     [],
   );
+  const [state, setState] = useReducer(
+    (state, prop) => {
+      const oldVal = state.value;
+      const [key, val] = typeof prop === 'function' ? prop(oldVal) : prop;
 
-  const runRules = useCallback(
-    value => {
-      if (value || required) {
+      if (state[key] === val) {
+        return state;
+      }
+
+      const newState = { ...state, [key]: val };
+
+      if (
+        key === 'value' &&
+        ruleRunners.length &&
+        oldVal !== val &&
+        (val || required)
+      ) {
+        newState.error = '';
+
         for (const rule of ruleRunners) {
-          if (!rule.run(value)) {
-            setState(['error', getMessage(rule, value)]);
+          if (!rule.run(val)) {
+            newState.error = getMessage(rule, val);
 
-            return true;
+            break;
           }
         }
       }
 
-      setState(['error']);
+      return newState;
     },
-    [required, ruleRunners],
+    {
+      loading: true,
+      value: value || (checkList ? {} : ''),
+    },
   );
+  const onChange = useMemo(() => {
+    if (checkList) {
+      return evt => {
+        const { defaultValue, checked } = evt.target;
+
+        setState(value => ['value', { ...value, [defaultValue]: checked }]);
+      };
+    }
+
+    return evt => {
+      setState(['value', evt.target[prop]]);
+    };
+  }, [checkList, prop]);
 
   useEffect(
     () =>
       form.setField(name, {
         touch() {
-          setState(pristineAction);
+          setState(touchedAction);
 
-          return runRules(state.value);
+          return stateRef.current.error;
+        },
+        invalid() {
+          return Boolean(stateRef.current.loading || stateRef.current.error);
         },
         clearWarning() {
-          setState(['warning']);
+          setState(warning);
+
+          return stateRef.current.value;
         },
         parseError: rawError =>
           loadRule(rawError)
             .then(rule => {
               setRules(rule);
-              setState(['error', getMessage(rule, state.value)]);
+              setState(value => ['error', getMessage(rule, value)]);
             })
             .catch(rule => {
-              setState(['warning', getWarning(rule, state.value)]);
+              if (rule instanceof Error) {
+                throw rule;
+              }
+              setState(value => ['warning', getWarning(rule, value)]);
             }),
       }),
-    [name, state.value, runRules, form],
+    [name, form],
   );
 
-  // 1. Instanciates every rule
   useEffect(() => {
     setState(loadingAction);
-    const baseRules = required ? [['required']] : [];
-    const addRule = baseRules.push;
 
-    if (type) {
-      addRule([type]);
-    }
+    const baseRules = getRules(type, {
+      required,
+      min,
+      max,
+      pattern,
+      multiple,
+    });
 
     processRawRules(rules ? baseRules.concat(rules) : baseRules, setRules, () =>
       setState(notLoadingAction),
     );
-  }, [required, rules, type]);
+  }, [max, min, multiple, pattern, required, rules, type]);
 
-  // 2. Executes every rule
   useEffect(() => {
-    runRules(state.value);
-  }, [state.value, runRules]);
-
-  // 3. Pass its state to the form
-  useEffect(() => {
-    form.setFieldState([name, Boolean(state.loading || state.error)]);
-  }, [state.error, state.loading, name, form]);
+    stateRef.current = state;
+  }, [state]);
 
   return [
     state,
@@ -88,12 +130,14 @@ export default function useField({ form, rules, value, name, type, required }) {
       required,
       name,
       type,
-      value: state.value,
-      onChange(evt) {
-        setState(['value', evt.target.value]);
-      },
+      min,
+      max,
+      pattern,
+      multiple,
+      onChange,
+      [prop]: state.value,
       // onBlur.once
-      onBlur: state.pristine ? () => setState(pristineAction) : undefined,
+      onBlur: state.touched ? undefined : () => setState(touchedAction),
     },
   ];
 }

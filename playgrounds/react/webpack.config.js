@@ -27,25 +27,31 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            rootMode: 'upward',
+        use: [
+          'cache-loader',
+          {
+            loader: 'babel-loader',
+            options: {
+              rootMode: 'upward',
+            },
           },
-        },
+        ],
       },
       {
         test: /\.jsx$/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            rootMode: 'upward',
+        use: [
+          'cache-loader',
+          {
+            loader: 'babel-loader',
+            options: {
+              rootMode: 'upward',
+            },
           },
-        },
+        ],
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: ['cache-loader', 'style-loader', 'css-loader'],
       },
     ],
   },

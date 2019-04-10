@@ -25,6 +25,7 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
       - run: yarn install
+      - run: yarn webpack
       - run: yarn bundlesize
       - run: yarn check:lint && yarn check:prettify
       - save_cache:
@@ -32,4 +33,5 @@ jobs:
             - node_modules
             - ~/.cache/yarn
             - .eslintcache
+            - .cache-loader
           key: v1-dependencies-{{ checksum "yarn.lock" }}
