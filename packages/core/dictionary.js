@@ -83,7 +83,7 @@ export function loadMessage(name) {
   cache[name] = true;
 
   return clientHandler(lang, name)
-    .catch(() => import(`./dictionaries/${lang}/${name}`))
+    .catch(() => import(`./dictionaries/${lang}/${name}.js`))
     .catch(() => {
       throw new Error(`Unknown dictionary for the "${name}" rule.`);
     })
@@ -97,7 +97,7 @@ export function loadMessage(name) {
 
 function loadExtras() {
   clientHandler(lang, '_extras')
-    .catch(() => import(`./dictionaries/${lang}/_extras`))
+    .catch(() => import(`./dictionaries/${lang}/_extras.js`))
     .then(mod => {
       extras[lang] = mod.default;
     });

@@ -70,7 +70,7 @@ export async function loadRule(rawRule) {
   return Promise.all([
     loadMessage(name),
     clientHandler(name)
-      .catch(() => import(`./rules/${name}`))
+      .catch(() => import(`./rules/${name}.js`))
       .then(({ default: rule }) => {
         cachedRules[name] = rule;
 
