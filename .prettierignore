@@ -6,6 +6,8 @@ flow-typed/npm
 # dependencies
 node_modules
 .yarn-cache
+.eslintcache
+.cache-loader
 
 # production
 temp

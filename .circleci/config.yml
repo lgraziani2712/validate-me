@@ -33,4 +33,5 @@ jobs:
             - node_modules
             - ~/.cache/yarn
             - .eslintcache
+            - .cache-loader
           key: v1-dependencies-{{ checksum "yarn.lock" }}

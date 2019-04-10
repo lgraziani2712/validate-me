@@ -1,9 +1,8 @@
-const { VueLoaderPlugin } = require('vue-loader');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 process.env.NODE_ENV = 'production';
 
-let plugins = [new VueLoaderPlugin()];
+let plugins = [];
 
 if (!process.env.CI) {
   plugins = plugins.concat([new BundleAnalyzerPlugin()]);
@@ -37,24 +36,19 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
-        options: {
-          rootMode: 'upward',
-        },
-      },
-      {
-        test: /\.vue$/,
-        loader: 'vue-loader',
-        options: {
-          rootMode: 'upward',
-          compilerOptions: {
-            preserveWhitespace: false,
+        use: [
+          'cache-loader',
+          {
+            loader: 'babel-loader',
+            options: {
+              rootMode: 'upward',
+            },
           },
-        },
+        ],
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: ['cache-loader', 'style-loader', 'css-loader'],
       },
     ],
   },

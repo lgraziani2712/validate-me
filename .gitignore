@@ -7,6 +7,7 @@ flow-typed/npm
 node_modules
 .yarn-cache
 .eslintcache
+.cache-loader
 
 # testing
 reports/**/*
