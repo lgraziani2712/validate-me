@@ -4,7 +4,43 @@
 
 - To know how they are lazy loaded, go to the [rules](/api/core/rules.html#rules-module) documentation.
 - To know how to write a custom rule, go to the [rule](/api/core/rule.html#rules) documentation.
-  :::
+
+:::
+
+## color
+
+The field must contains a sharp char and 6 hex numbers. E.g.: `#12345f`.
+
+<Tabs>
+<Tab name="vanilla">
+
+```js
+new ValidatemeItem({
+  name: 'field',
+  rules: ['color'],
+});
+```
+
+</Tab>
+<Tab name="vue">
+
+```html
+<input v-validate-me name="field" type="color" />
+```
+
+</Tab>
+<Tab name="react">
+
+```jsx
+function MyInputColor(props) {
+  const [state, inputProps] = useField('color', props);
+
+  return <input {...inputProps} />;
+}
+```
+
+</Tab>
+</Tabs>
 
 ## contains
 
@@ -12,7 +48,7 @@ The field must contains the substring passed as first argument.
 
 | Parameters |  Type  |
 | ---------- | :----: |
-| first      | String |
+| first      | string |
 
 <Tabs>
 <Tab name="vanilla">
@@ -28,17 +64,14 @@ new ValidatemeItem({
 <Tab name="vue">
 
 ```html
-<input v-validate-me="['contains:st']" name="field" />
+<input v-validate-me="[['contains', 'st']]" name="field" />
 ```
 
 </Tab>
 <Tab name="react">
 
 ```jsx
-<MyAwesomeInput
-  // Other props
-  rules={['contains:st']}
-/>
+<MyAwesomeInput rules={[['contains', 'st']]} />
 ```
 
 </Tab>
@@ -50,7 +83,7 @@ The field must _not_ contains the substring passed as first argument.
 
 | Parameters |  Type  |
 | ---------- | :----: |
-| first      | String |
+| first      | string |
 
 <Tabs>
 <Tab name="vanilla">
@@ -66,17 +99,14 @@ new ValidatemeItem({
 <Tab name="vue">
 
 ```html
-<input v-validate-me="['notContains:st']" name="field" />
+<input v-validate-me="[['notContains', 'st']]" name="field" />
 ```
 
 </Tab>
 <Tab name="react">
 
 ```jsx
-<MyAwesomeInput
-  // Other props
-  rules={['notContains:st']}
-/>
+<MyAwesomeInput rules={[['notContains', 'st']]} />
 ```
 
 </Tab>
@@ -100,17 +130,14 @@ new ValidatemeItem({
 <Tab name="vue">
 
 ```html
-<input v-validate-me="['isAlpha']" name="field" />
+<input v-validate-me="[['isAlpha']]" name="field" />
 ```
 
 </Tab>
 <Tab name="react">
 
 ```jsx
-<MyAwesomeInput
-  // Other props
-  rules={['isAlpha']}
-/>
+<MyAwesomeInput rules={[['isAlpha']]} />
 ```
 
 </Tab>
@@ -134,17 +161,53 @@ new ValidatemeItem({
 <Tab name="vue">
 
 ```html
-<input v-validate-me="['isAlphanumeric']" name="field" />
+<input v-validate-me="[['isAlphanumeric']]" name="field" />
 ```
 
 </Tab>
 <Tab name="react">
 
 ```jsx
-<MyAwesomeInput
-  // Other props
-  rules={['isAlphanumeric']}
-/>
+<MyAwesomeInput rules={[['isAlphanumeric']]} />
+```
+
+</Tab>
+</Tabs>
+
+## pattern
+
+The field must match the specified pattern.
+
+| Parameters                                     |  Type  | Required |
+| ---------------------------------------------- | :----: | :------: |
+| (1) Pattern                                    | string |   Yes    |
+| (2) RegExp Flags                               | string |    No    |
+| (3) type                                       | 'mul'  |    No    |
+| (4) Example (only for the dictionary function) | string |    No    |
+
+<Tabs>
+<Tab name="vanilla">
+
+```js
+new ValidatemeItem({
+  name: 'field',
+  // Right now cannot use :
+  rules: ['pattern:.+@.+'],
+});
+```
+
+</Tab>
+<Tab name="vue">
+
+```html
+<input v-validate-me="[['pattern', '.+@.+']]" name="field" />
+```
+
+</Tab>
+<Tab name="react">
+
+```jsx
+<MyAwesomeInput rules={[['pattern', '.+@.+']]} />
 ```
 
 </Tab>
@@ -171,17 +234,14 @@ new ValidatemeItem({
 <Tab name="vue">
 
 ```html
-<input v-validate-me="['isUrl']" name="field" />
+<input v-validate-me="[['isUrl']]" name="field" />
 ```
 
 </Tab>
 <Tab name="react">
 
 ```jsx
-<MyAwesomeInput
-  // Other props
-  rules={['isUrl']}
-/>
+<MyAwesomeInput rules={[['isUrl']]} />
 ```
 
 </Tab>
@@ -210,17 +270,49 @@ new ValidatemeItem({
 <Tab name="vue">
 
 ```html
-<input v-validate-me="['len:0:15']" name="field" />
+<input v-validate-me="[['len', '0', '15']]" name="field" />
 ```
 
 </Tab>
 <Tab name="react">
 
 ```jsx
-<MyAwesomeInput
-  // Other props
-  rules={['len:0:15']}
-/>
+<MyAwesomeInput rules={[['len', '0', '15']]} />
+```
+
+</Tab>
+</Tabs>
+
+## number
+
+The field must be numeric.
+
+<Tabs>
+<Tab name="vanilla">
+
+```js
+new ValidatemeItem({
+  name: 'field',
+  rules: ['number'],
+});
+```
+
+</Tab>
+<Tab name="vue">
+
+```html
+<input v-validateme name="field" type="number" />
+```
+
+</Tab>
+<Tab name="react">
+
+```jsx
+function MyInputNumber(props) {
+  const [state, inputProps] = useField('number', props);
+
+  return <input {...inputProps} />;
+}
 ```
 
 </Tab>
@@ -248,17 +340,14 @@ new ValidatemeItem({
 <Tab name="vue">
 
 ```html
-<input v-validate-me="['max:15']" name="field" />
+<input v-validate-me="[['max', '15']]" name="field" type="number" />
 ```
 
 </Tab>
 <Tab name="react">
 
 ```jsx
-<MyAwesomeInput
-  // Other props
-  rules={['max:15']}
-/>
+<MyInputNumber rules={[['max', '15']]} />
 ```
 
 </Tab>
@@ -286,17 +375,14 @@ new ValidatemeItem({
 <Tab name="vue">
 
 ```html
-<input v-validate-me="['min:-15']" name="field" />
+<input v-validate-me="[['min', '-15']]" name="field" type="number" />
 ```
 
 </Tab>
 <Tab name="react">
 
 ```jsx
-<MyAwesomeInput
-  // Other props
-  rules={['min:-15']}
-/>
+<MyInputNumber rules={[['min', '-15']]} />
 ```
 
 </Tab>
@@ -327,10 +413,7 @@ new ValidatemeItem({
 <Tab name="react">
 
 ```jsx
-<MyAwesomeInput
-  // Other props
-  required
-/>
+<MyAwesomeInput required />
 ```
 
 </Tab>

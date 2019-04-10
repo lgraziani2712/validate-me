@@ -15,7 +15,7 @@ This directive already configures for you the event listener and emits the `inpu
 The `v-validate-me` directive accepts an array of strings as value. Each string represents a rule. Example:
 
 ```html
-<input v-validate-me="['len:0:250']" />
+<input v-validate-me="[['len', '0', '250']]" />
 ```
 
 ## Attributes used by the directive

@@ -115,14 +115,11 @@ Vue.use(ValidatemePlugin);
 ```html
 <form autocomplete="off" @submit.prevent="handleSubmit">
   <MyAwesomeInput
-    :validateme-rules="['len:2:10']"
+    :validateme-rules="[['len', '2', '10']]"
     name="name"
-    v-model="name"
     required
   />
-  <button :disabled="touched && invalid">
-    Submit form
-  </button>
+  <button>Submit form</button>
 </form>
 ```
 
@@ -134,22 +131,19 @@ import MyAwesomeInput from './MyAwesomeInput';
 export default {
   components: [MyAwesomeInput],
   mixins: [FormMixin],
-  data() {
-    return {
-      name: '',
-    };
-  },
   methods: {
     handleSubmit() {
-      if (!this.validate()) {
+      const [success, fields] = this.validate();
+
+      if (!success) {
         return;
       }
 
-      // Send data to server
+      // Send fields to server
       // ...
       // And if the server returns new invalid rules...
       const errorsFromServer = {
-        name: 'isAlpha',
+        name: ['isAlpha'],
       };
 
       this.process(errorsFromServer);
@@ -162,7 +156,7 @@ export default {
 
 ```html
 <input
-  v-validate-me="['len:2:10']"
+  v-validate-me="validatemeRules"
   :name="name"
   :value="value"
   :autofocus="autofocus"
@@ -198,17 +192,19 @@ It works with `react@^16.8.0`
 
 ```jsx
 import React from 'react';
-import useForm from '@validate-me/react/useForm';
+import useForm, { VContext } from '@validate-me/react/useForm';
 
 export default function MyAwesomeForm() {
-  const [formState, form] = useForm();
+  const form = useForm();
 
   return (
     <form
       onSubmit={evt => {
         evt.preventDefault();
 
-        if (!form.validate()) {
+        const [success, fields] = form.validate();
+
+        if (!success) {
           return;
         }
 
@@ -222,10 +218,15 @@ export default function MyAwesomeForm() {
         form.process(errorsFromServer);
       }}
     >
-      <MyAwesomeInput form={form} rules={['len:2:10']} name="name" required />
-      <button disabled={formState.touched && formState.invalid}>
-        Submit form
-      </button>
+      <VContext.Provider value={form}>
+        <MyAwesomeInput
+          label="Name"
+          rules={[['len', '2', '10']]}
+          name="name"
+          required
+        />
+      </VContext.Provider>
+      <button>Submit form</button>
     </form>
   );
 }
@@ -238,9 +239,22 @@ import React from 'react';
 import useField from '@validate-me/react/useField';
 
 export default function MyAwesomeInput(props) {
-  const [fieldState, inputProps] = useField(props);
+  const [field, inputProps] = useField('text', props);
 
-  return <input {...inputProps} />;
+  return (
+    <div>
+      <h3>{props.label}</h3>
+      <input {...inputProps} />
+      <p style={{ minHeight: '1.15em' }}>
+        {field.touched && field.error && (
+          <span style={{ color: 'red' }}>{field.error}</span>
+        )}
+        {!field.error && field.warning && (
+          <span style={{ color: 'orange' }}>{field.warning}</span>
+        )}
+      </p>
+    </div>
+  );
 }
 ```
 

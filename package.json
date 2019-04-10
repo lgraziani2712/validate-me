@@ -78,7 +78,7 @@
     },
     {
       "path": "dist/[a-z]*.js",
-      "maxSize": "3.3 kb"
+      "maxSize": "3.5 kb"
     }
   ]
 }

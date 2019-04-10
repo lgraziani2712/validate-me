@@ -10,7 +10,15 @@ if (!process.env.CI) {
 
 module.exports = {
   mode: 'production',
+  // optimization: {
+  //   minimize: false,
+  // },
   entry: {
+    core: [
+      './packages/core/dictionary',
+      './packages/core/rules',
+      './packages/core/getRules',
+    ],
     vue: ['./packages/vue', './packages/vue/FieldMixin'],
     react: ['./packages/react/useForm', './packages/react/useField'],
     vanilla: [
