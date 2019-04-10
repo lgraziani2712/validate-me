@@ -22,7 +22,6 @@ export default function InputDate(props) {
 }
 
 InputDate.propTypes = {
-  form: PropTypes.any.isRequired,
   type: PropTypes.oneOf(['date', 'time', 'datetime-local', 'week', 'month']),
   min: PropTypes.string,
   max: PropTypes.string,

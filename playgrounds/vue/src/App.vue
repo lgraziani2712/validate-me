@@ -99,9 +99,7 @@
       />
       <InputColor label="Gimme colors!" name="color" data-cy="color" />
       <br />
-      <button data-cy="submit-button" :disabled="touched && invalid">
-        Submit form
-      </button>
+      <button data-cy="submit-button">Submit form</button>
     </form>
   </div>
 </template>

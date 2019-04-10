@@ -22,7 +22,6 @@ export default function InputNumber(props) {
 }
 
 InputNumber.propTypes = {
-  form: PropTypes.any.isRequired,
   rules: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,

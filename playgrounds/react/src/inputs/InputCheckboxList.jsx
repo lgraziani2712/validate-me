@@ -31,7 +31,6 @@ export default function InputCheckboxList(props) {
 }
 
 InputCheckboxList.propTypes = {
-  form: PropTypes.any.isRequired,
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   options: PropTypes.objectOf(PropTypes.string),

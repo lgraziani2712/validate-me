@@ -24,7 +24,6 @@ export default function InputCheckbox(props) {
 }
 
 InputCheckbox.propTypes = {
-  form: PropTypes.any.isRequired,
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   value: PropTypes.bool,

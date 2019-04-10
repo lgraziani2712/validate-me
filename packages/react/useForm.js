@@ -1,4 +1,4 @@
-import { useReducer, useEffect, useRef } from 'react';
+import { useReducer, useEffect, useRef, createContext } from 'react';
 import { processErrors } from '@validate-me/core/rules';
 
 let errorHandler = f => f;
@@ -8,6 +8,8 @@ const invalidState = [false];
 function handleState(state, [type, value]) {
   return state[type] === value ? state : { ...state, [type]: value };
 }
+
+export const VContext = createContext();
 
 export function setErrorHandler(handler) {
   errorHandler = handler;

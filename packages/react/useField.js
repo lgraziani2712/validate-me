@@ -1,7 +1,9 @@
-import { useEffect, useReducer, useMemo, useRef } from 'react';
+import { useEffect, useReducer, useMemo, useRef, useContext } from 'react';
 import getRules from '@validate-me/core/getRules';
 import { loadRule, processRawRules } from '@validate-me/core/rules';
 import { getMessage, getWarning } from '@validate-me/core/dictionary';
+
+import { VContext } from './useForm';
 
 const touchedAction = ['touched', true];
 const notLoadingAction = ['loading'];
@@ -10,11 +12,12 @@ const warning = ['warning'];
 
 export default function useField(
   type,
-  { form, rules, value, name, required, min, max, pattern, multiple, options },
+  { rules, value, name, required, min, max, pattern, multiple, options },
 ) {
   const checkbox = type === 'checkbox';
   const prop = checkbox ? 'checked' : 'value';
   const checkList = checkbox && options;
+  const form = useContext(VContext);
   const stateRef = useRef();
   const [ruleRunners, setRules] = useReducer(
     (rules, rule) => (rule.length == null ? rule : rules.concat(rule)),

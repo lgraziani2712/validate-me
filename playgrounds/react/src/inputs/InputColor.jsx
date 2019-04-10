@@ -25,7 +25,6 @@ export default function InputColor(props) {
 }
 
 InputColor.propTypes = {
-  form: PropTypes.any.isRequired,
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   value: PropTypes.string,

@@ -9,11 +9,6 @@ export function setErrorHandler(handler) {
 const invalidState = [false];
 
 export default {
-  data() {
-    return {
-      touched: false,
-    };
-  },
   provide() {
     return {
       setField: (name, methods) => {
@@ -27,6 +22,7 @@ export default {
   },
   created() {
     this.fieldMethods = {};
+    this.touched = false;
   },
   methods: {
     process(error) {

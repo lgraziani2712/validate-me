@@ -22,7 +22,6 @@ export default function InputText(props) {
 }
 
 InputText.propTypes = {
-  form: PropTypes.any.isRequired,
   rules: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
