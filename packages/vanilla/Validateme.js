@@ -6,6 +6,8 @@ export function setErrorHandler(handler) {
   errorHandler = handler;
 }
 
+const falseState = [false];
+
 export default class Validateme {
   constructor() {
     this.fields = {};
@@ -34,10 +36,17 @@ export default class Validateme {
       }
     }
 
-    if (isValid) {
-      fields.forEach(field => field.clearWarning());
+    if (!isValid) {
+      return falseState;
     }
 
-    return isValid;
+    return [
+      isValid,
+      Object.keys(this.fields).reduce((fields, key) => {
+        fields[key] = this.fields[key].clearWarning();
+
+        return fields;
+      }, {}),
+    ];
   }
 }

@@ -22,6 +22,6 @@ Adds a new field. It throws an error if the field name already exists in the fie
 
 Processes the server error and injects the new errors and warnings to every failed field.
 
-### `validate(): boolean`
+### `validate(): [boolean, Object?]`
 
-It validates every field and returns `true` or `false` if every field is correct or not.
+It validates every field and returns `[false]` if fails, or `[true, Object]` if success, where the `Object` represents each field and its value.
