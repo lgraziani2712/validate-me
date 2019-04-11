@@ -49,7 +49,7 @@ export default {
             this.vField.warning = getWarning(rule, value);
           });
       },
-      invalid: () => this.vField.touched,
+      invalid: () => Boolean(this.vField.loading || this.vField.error),
     });
   },
   methods: {

@@ -7,7 +7,7 @@
         :name="name"
         :value="key"
         type="radio"
-        :checked="checked === key"
+        :checked="vField.value === key"
       />
       {{ option }}
     </label>

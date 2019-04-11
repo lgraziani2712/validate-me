@@ -4,7 +4,7 @@
     <input
       v-validate-me
       :name="name"
-      :value="value"
+      :value="vField.value"
       :min="min"
       :max="max"
       :type="type"

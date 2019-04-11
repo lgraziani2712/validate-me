@@ -7,7 +7,7 @@
         :name="name"
         :value="key"
         type="checkbox"
-        :checked="checked[key]"
+        :checked="vField.value[key]"
       />{{ option }}</label
     >
     <p style="min-height: 1.15em">

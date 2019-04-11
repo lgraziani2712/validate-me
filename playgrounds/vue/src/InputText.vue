@@ -4,13 +4,10 @@
     <p>
       <input
         v-validate-me="validatemeRules"
-        type="email"
         :name="name"
         :value="vField.value"
         :autofocus="autofocus"
         :required="required"
-        :multiple="multiple"
-        :pattern="pattern"
       />
     </p>
     <p style="min-height: 1.15em">
@@ -34,8 +31,6 @@ export default {
     label: VueTypes.string.isRequired,
     validatemeRules: VueTypes.arrayOf(VueTypes.arrayOf(String)),
     autofocus: Boolean,
-    multiple: Boolean,
-    pattern: String,
   },
 };
 </script>

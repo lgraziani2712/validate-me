@@ -5,7 +5,7 @@
       <input
         v-validate-me
         :name="name"
-        :value="value"
+        :value="vField.value"
         :autofocus="autofocus"
         :required="required"
         :min="min"
