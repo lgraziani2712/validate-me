@@ -1,8 +1,9 @@
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 process.env.NODE_ENV = 'production';
 
-let plugins = [];
+let plugins = [new CleanWebpackPlugin()];
 
 if (!process.env.CI) {
   plugins = plugins.concat([new BundleAnalyzerPlugin()]);

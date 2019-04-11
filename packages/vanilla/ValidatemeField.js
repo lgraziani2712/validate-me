@@ -27,6 +27,8 @@ export default class ValidatemeField {
   }
   clearWarning() {
     this.warning = '';
+
+    return this.value;
   }
   valid() {
     const { loading, touched, error } = this;

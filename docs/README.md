@@ -74,7 +74,7 @@ window.addEventListener('load', () => {
   // 2. Create each field object
   const nameField = new ValidatemeField({
     name: 'name',
-    rules: ['required', 'len:2:10'],
+    rules: [['required'], ['len', '2', '10']],
   });
   const nameInput = document.getElementsByName('name')[0];
 
@@ -93,7 +93,7 @@ window.addEventListener('load', () => {
     // ...
     // And if the server returns new invalid rules...
     const errorsFromServer = {
-      name: 'isAlpha',
+      name: ['isAlpha'],
     };
     validateme.process(errorsFromServer);
 });

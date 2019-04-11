@@ -17,7 +17,7 @@ The field must contains a sharp char and 6 hex numbers. E.g.: `#12345f`.
 ```js
 new ValidatemeItem({
   name: 'field',
-  rules: ['color'],
+  rules: [['color']],
 });
 ```
 
@@ -56,7 +56,7 @@ The field must contains the substring passed as first argument.
 ```js
 new ValidatemeItem({
   name: 'field',
-  rules: ['contains:st'],
+  rules: [['contains', 'st']],
 });
 ```
 
@@ -91,7 +91,7 @@ The field must _not_ contains the substring passed as first argument.
 ```js
 new ValidatemeItem({
   name: 'field',
-  rules: ['notContains:st'],
+  rules: [['notContains', 'st']],
 });
 ```
 
@@ -122,7 +122,7 @@ The field accepts alphabetic characters only.
 ```js
 new ValidatemeItem({
   name: 'field',
-  rules: ['isAlpha'],
+  rules: [['isAlpha']],
 });
 ```
 
@@ -153,7 +153,7 @@ The field accepts alphabetic or numeric characters only.
 ```js
 new ValidatemeItem({
   name: 'field',
-  rules: ['isAlphanumeric'],
+  rules: [['isAlphanumeric']],
 });
 ```
 
@@ -191,8 +191,7 @@ The field must match the specified pattern.
 ```js
 new ValidatemeItem({
   name: 'field',
-  // Right now cannot use :
-  rules: ['pattern:.+@.+'],
+  rules: [['pattern', '.+@.+']],
 });
 ```
 
@@ -226,7 +225,7 @@ The field only accepts well structured urls. E.g. `http://my-awesome-site.com/`.
 ```js
 new ValidatemeItem({
   name: 'field',
-  rules: ['isUrl'],
+  rules: [['isUrl']],
 });
 ```
 
@@ -262,7 +261,7 @@ The field must be a string with a length between a range.
 ```js
 new ValidatemeItem({
   name: 'field',
-  rules: ['len:0:15'],
+  rules: [['len', '0', '15']],
 });
 ```
 
@@ -293,7 +292,7 @@ The field must be numeric.
 ```js
 new ValidatemeItem({
   name: 'field',
-  rules: ['number'],
+  rules: [['number']],
 });
 ```
 
@@ -332,7 +331,7 @@ The field must be a number equal or less than the argument.
 ```js
 new ValidatemeItem({
   name: 'field',
-  rules: ['max:15'],
+  rules: [['max', '15']],
 });
 ```
 
@@ -367,7 +366,7 @@ The field must be a number equal or greater than the argument.
 ```js
 new ValidatemeItem({
   name: 'field',
-  rules: ['min:-15'],
+  rules: [['min', '-15']],
 });
 ```
 
@@ -398,7 +397,7 @@ The field must contain something.
 ```js
 new ValidatemeItem({
   name: 'field',
-  rules: ['required'],
+  rules: [['required']],
 });
 ```
 
