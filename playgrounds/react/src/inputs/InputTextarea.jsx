@@ -2,22 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import useField from '@validate-me/react/useField';
 
-export default function InputRadioList(props) {
-  const [field, inputProps] = useField('radio', props);
+export default function InputTextarea(props) {
+  const [field, inputProps] = useField('textarea', props);
 
   return (
     <div>
       <h3>{props.label}</h3>
-      {Object.keys(props.options).map(key => (
-        <label key={key}>
-          <input
-            {...inputProps}
-            value={key}
-            checked={inputProps.value === key}
-          />
-          {props.options[key]}
-        </label>
-      ))}
+      <textarea {...inputProps} />
       <p style={{ minHeight: '1.15em' }}>
         {field.touched && field.error && (
           <span style={{ color: 'red' }}>{field.error}</span>
@@ -30,10 +21,10 @@ export default function InputRadioList(props) {
   );
 }
 
-InputRadioList.propTypes = {
+InputTextarea.propTypes = {
+  rules: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  options: PropTypes.objectOf(PropTypes.string),
-  required: PropTypes.bool,
   value: PropTypes.string,
+  required: PropTypes.bool,
 };

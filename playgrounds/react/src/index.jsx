@@ -10,6 +10,8 @@ import InputRadioList from './inputs/InputRadioList';
 import InputText from './inputs/InputText';
 import InputNumber from './inputs/InputNumber';
 import InputEmail from './inputs/InputEmail';
+import InputSelect from './inputs/InputSelect';
+import InputTextarea from './inputs/InputTextarea';
 
 let alreadyProcessed = false;
 
@@ -43,6 +45,18 @@ function App() {
         }}
       >
         <VContext.Provider value={form}>
+          <InputSelect
+            label="Select a place you want to travel to"
+            name="place"
+            options={{
+              viedma: 'Viedma',
+              caba: 'Buenos Aires',
+              gavà: 'Gavà',
+              kyoto: 'Kyoto',
+            }}
+            required
+          />
+          <InputTextarea label="Write what you want" name="write" />
           <InputText
             label="Name"
             name="name"
