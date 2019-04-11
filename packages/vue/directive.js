@@ -21,15 +21,22 @@ export default {
   // eslint-disable-next-line valid-jsdoc
   /**
    * @type {Vue.DirectiveFunction}
-   * @param {HTMLInputElement} elem Elem
+   * @param {HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement} elem Elem
    */
   bind(elem, binding, vnode) {
     const field = vnode.context;
 
     if (process.env.NODE_ENV !== 'production') {
-      if (!(elem instanceof HTMLInputElement)) {
+      if (
+        !(
+          elem instanceof HTMLInputElement ||
+          elem instanceof HTMLSelectElement ||
+          elem instanceof HTMLTextAreaElement
+        )
+      ) {
         throw new Error(
-          '[dev-only] @validate-me: directive can only be used in HTMLInputElement instances.',
+          '[dev-only] @validate-me: directive can only be used in ' +
+            'HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement instances.',
         );
       }
       if (!elem.name) {

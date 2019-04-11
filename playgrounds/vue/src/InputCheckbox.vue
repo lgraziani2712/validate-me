@@ -4,7 +4,7 @@
       <input
         v-validate-me
         :name="name"
-        :checked="checked"
+        :checked="vField.value"
         :autofocus="autofocus"
         type="checkbox"
       />

@@ -1,18 +1,17 @@
 <template>
   <div>
     <h3>{{ label }}</h3>
-    <p>
-      <input
-        v-validate-me="validatemeRules"
-        type="email"
-        :name="name"
-        :value="vField.value"
-        :autofocus="autofocus"
-        :required="required"
-        :multiple="multiple"
-        :pattern="pattern"
-      />
-    </p>
+    <select
+      v-validate-me
+      :name="name"
+      :value="vField.value"
+      :required="required"
+    >
+      <option value="" disabled>Select an option</option>
+      <option v-for="(option, key) in options" :key="key" :value="key">{{
+        option
+      }}</option>
+    </select>
     <p style="min-height: 1.15em">
       <span v-show="vField.touched && vField.error" style="color: red">{{
         vField.error
@@ -32,10 +31,8 @@ export default {
   mixins: [FieldMixin],
   props: {
     label: VueTypes.string.isRequired,
-    validatemeRules: VueTypes.arrayOf(VueTypes.arrayOf(String)),
+    options: VueTypes.objectOf(String).isRequired,
     autofocus: Boolean,
-    multiple: Boolean,
-    pattern: String,
   },
 };
 </script>

@@ -2,10 +2,10 @@
   <div>
     <h3>{{ label }}</h3>
     <p>
-      <input
-        v-validate-me="validatemeRules"
+      <textarea
+        v-validate-me
         :name="name"
-        :value="value"
+        :value="vField.value"
         :autofocus="autofocus"
         :required="required"
       />
@@ -29,8 +29,8 @@ export default {
   mixins: [FieldMixin],
   props: {
     label: VueTypes.string.isRequired,
-    validatemeRules: VueTypes.arrayOf(VueTypes.arrayOf(String)),
     autofocus: Boolean,
+    required: Boolean,
   },
 };
 </script>

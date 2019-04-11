@@ -2,7 +2,20 @@
   <div>
     <h2>Form</h2>
     <form autocomplete="off" @submit.prevent="handleSubmit" data-cy="form">
-      <InputString
+      <InputSelect
+        label="Select a place you want to travel to"
+        name="place"
+        :options="{
+          viedma: 'Viedma',
+          caba: 'Buenos Aires',
+          gavà: 'Gavà',
+          kyoto: 'Kyoto',
+        }"
+        data-cy="place"
+        required
+      />
+      <InputTextarea label="Write what you want" name="write" />
+      <InputText
         label="Name"
         :validateme-rules="[['len', '2', '10']]"
         name="name"
@@ -107,7 +120,8 @@
 <script>
 import FormMixin from '@validate-me/vue/FormMixin';
 
-import InputString from './InputString';
+import InputText from './InputText';
+import InputTextarea from './InputTextarea';
 import InputCheckbox from './InputCheckbox';
 import InputNumberRange from './InputNumberRange';
 import InputEmail from './InputEmail';
@@ -115,17 +129,20 @@ import InputCheckboxList from './InputCheckboxList';
 import InputRadioList from './InputRadioList';
 import InputDate from './InputDate';
 import InputColor from './InputColor';
+import InputSelect from './InputSelect';
 
 export default {
   components: {
     InputNumberRange,
     InputCheckbox,
-    InputString,
+    InputText,
+    InputTextarea,
     InputEmail,
     InputCheckboxList,
     InputRadioList,
     InputDate,
     InputColor,
+    InputSelect,
   },
   mixins: [FormMixin],
   methods: {
