@@ -1,6 +1,6 @@
 {
   "name": "@validate-me/vanilla",
-  "version": "1.0.0-alpha.18",
+  "version": "1.0.0-alpha.19",
   "repository": "https://github.com/lgraziani2712/validate-me",
   "homepage": "https://validate-me.netlify.com",
   "author": "Luciano Graziani @lgraziani2712",
@@ -22,6 +22,6 @@
     "vanilla"
   ],
   "dependencies": {
-    "@validate-me/core": "^1.0.0-alpha.18"
+    "@validate-me/core": "^1.0.0-alpha.19"
   }
 }
