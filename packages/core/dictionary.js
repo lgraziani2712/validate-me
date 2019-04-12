@@ -84,8 +84,10 @@ export function loadMessage(name) {
 
   return clientHandler(lang, name)
     .catch(() => import(`./dictionaries/${lang}/${name}.js`))
-    .catch(() => {
-      throw new Error(`Unknown dictionary for the "${name}" rule.`);
+    .catch(err => {
+      throw err.code === 'MODULE_NOT_FOUND'
+        ? new Error(`Unknown dictionary for the "${name}" rule.`)
+        : err;
     })
     .then(({ default: rule }) => {
       dictionary[lang][name] = rule;

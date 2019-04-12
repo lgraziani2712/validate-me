@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rules Fails when an unknown rule is being loaded 1`] = `[Error: Unknown rule "unknownRule" with args "".]`;
+
+exports[`rules Processes existing raw rule successfully 1`] = `
+Array [
+  Object {
+    "args": Array [],
+    "name": "required",
+    "run": [Function],
+  },
+]
+`;

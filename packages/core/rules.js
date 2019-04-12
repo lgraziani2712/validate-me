@@ -21,7 +21,6 @@ let clientHandler = () => {
 };
 
 /**
- *
  * @param {ClientRuleHandler} newHandler Rules' client handler
  * @return {void}
  */
@@ -48,7 +47,7 @@ export function processErrors(fields, failedFields) {
   );
 }
 
-export async function loadRule(rawRule) {
+export function loadRule(rawRule) {
   if (process.env.NODE_ENV !== 'production') {
     if (!Array.isArray(rawRule)) {
       throw new Error(
@@ -76,8 +75,8 @@ export async function loadRule(rawRule) {
 
         return { name, run: rule.apply(null, args), args };
       })
-      .catch(() => {
-        throw { name, args };
+      .catch(err => {
+        throw err.code === 'MODULE_NOT_FOUND' ? { name, args } : err;
       }),
   ]).then(all => all[1]);
 }
@@ -90,7 +89,7 @@ function unknownRuleErrorOnInit(err) {
       );
 }
 
-export async function processRawRules(rawRules, onSuccess, onFinally) {
+export function processRawRules(rawRules, onSuccess, onFinally) {
   return Promise.all(rawRules.map(loadRule))
     .then(onSuccess)
     .catch(unknownRuleErrorOnInit)
