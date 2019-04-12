@@ -3,7 +3,7 @@ import { setConfig } from '../dictionary';
 
 setConfig({ handler: () => Promise.reject() });
 
-describe('rules', () => {
+describe('core/rules', () => {
   test('Processes existing raw rule successfully', () =>
     processRawRules([['required']], rules => expect(rules).toMatchSnapshot()));
 

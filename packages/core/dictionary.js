@@ -47,6 +47,9 @@ export function setConfig(config) {
   if (config.handler) {
     clientHandler = config.handler;
   }
+  if (!extras[lang]) {
+    loadExtras();
+  }
 }
 
 export function getWarning({ name, args }, value) {
@@ -98,8 +101,11 @@ export function loadMessage(name) {
 }
 
 function loadExtras() {
+  extras[lang] = {};
+
   clientHandler(lang, '_extras')
     .catch(onModNotFound(() => import(`./dictionaries/${lang}/_extras.js`)))
+    .catch(onModNotFound(() => {}))
     .then(mod => {
       extras[lang] = mod.default;
     });
