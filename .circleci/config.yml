@@ -34,4 +34,5 @@ jobs:
             - ~/.cache/yarn
             - .eslintcache
             - .cache-loader
+            - .jest-cache
           key: v1-dependencies-{{ checksum "yarn.lock" }}

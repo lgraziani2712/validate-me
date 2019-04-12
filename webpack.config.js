@@ -9,6 +9,9 @@ if (!process.env.CI) {
   plugins = plugins.concat([new BundleAnalyzerPlugin()]);
 }
 
+/**
+ * @type {webpack.Configuration}
+ */
 module.exports = {
   mode: 'production',
   // optimization: {
