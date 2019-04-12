@@ -1,0 +1,178 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`core/getRules Build rules for color inputs 1`] = `
+Array [
+  Array [
+    "color",
+  ],
+]
+`;
+
+exports[`core/getRules Build rules for dates inputs with valid props 1`] = `
+Array [
+  Array [
+    "pattern",
+    /\\^\\\\d\\{4\\}-\\(0\\[1-9\\]\\|1\\[0-2\\]\\)-\\(0\\[1-9\\]\\|\\[12\\]\\\\d\\|3\\[01\\]\\)\\$/,
+    "",
+    "",
+    "2019-03-24",
+  ],
+  Array [
+    "min",
+    "2018-01-03",
+  ],
+  Array [
+    "max",
+    "2018-05-03",
+  ],
+]
+`;
+
+exports[`core/getRules Build rules for dates inputs with valid props 2`] = `
+Array [
+  Array [
+    "pattern",
+    /\\^\\(\\[01\\]\\\\d\\|2\\[0-3\\]\\):\\[0-5\\]\\\\d\\$/,
+    "",
+    "",
+    "14:59",
+  ],
+  Array [
+    "min",
+    "14:59",
+  ],
+  Array [
+    "max",
+    "23:00",
+  ],
+]
+`;
+
+exports[`core/getRules Build rules for dates inputs with valid props 3`] = `
+Array [
+  Array [
+    "pattern",
+    /\\^\\\\d\\{4\\}-\\(0\\[1-9\\]\\|1\\[0-2\\]\\)-\\(0\\[1-9\\]\\|\\[12\\]\\\\d\\|3\\[01\\]\\)T\\(\\[01\\]\\\\d\\|2\\[0-3\\]\\):\\[0-5\\]\\\\d\\$/,
+    "",
+    "",
+    "2019-02-28T23:59",
+  ],
+  Array [
+    "max",
+    "2019-02-28T23:59",
+  ],
+]
+`;
+
+exports[`core/getRules Build rules for dates inputs with valid props 4`] = `
+Array [
+  Array [
+    "pattern",
+    /\\^\\\\d\\{4\\}-W\\(\\[0-4\\]\\\\d\\|5\\[0-3\\]\\)\\$/,
+    "",
+    "",
+    "2019-W53",
+  ],
+  Array [
+    "min",
+    "2019-W01",
+  ],
+  Array [
+    "max",
+    "2019-W53",
+  ],
+]
+`;
+
+exports[`core/getRules Build rules for dates inputs with valid props 5`] = `
+Array [
+  Array [
+    "pattern",
+    /\\^\\\\d\\{4\\}-\\(0\\[1-9\\]\\|1\\[0-2\\]\\)\\$/,
+    "",
+    "",
+    "2019-12",
+  ],
+  Array [
+    "min",
+    "2019-01",
+  ],
+]
+`;
+
+exports[`core/getRules Build rules for email inputs 1`] = `
+Array [
+  Array [
+    "pattern",
+    "[a-z0-9!#$%&'*+/=?^_\`{|}~.-]+@[a-z0-9-]+(.[a-z0-9-]+)*",
+    "i",
+    "mul",
+  ],
+]
+`;
+
+exports[`core/getRules Build rules for email inputs 2`] = `
+Array [
+  Array [
+    "pattern",
+    ".+@gmail.com",
+    "i",
+  ],
+]
+`;
+
+exports[`core/getRules Build rules for number inputs 1`] = `
+Array [
+  Array [
+    "required",
+  ],
+  Array [
+    "number",
+  ],
+  Array [
+    "min",
+    "0",
+  ],
+  Array [
+    "max",
+    "2",
+  ],
+]
+`;
+
+exports[`core/getRules Build rules for number inputs 2`] = `
+Array [
+  Array [
+    "number",
+  ],
+  Array [
+    "min",
+    "0",
+  ],
+  Array [
+    "max",
+    "2",
+  ],
+]
+`;
+
+exports[`core/getRules Build rules for select inputs 1`] = `Array []`;
+
+exports[`core/getRules Build rules for text inputs 1`] = `
+Array [
+  Array [
+    "pattern",
+    "\\\\w+",
+  ],
+]
+`;
+
+exports[`core/getRules Fail to build rules for dates inputs with invalid props 1`] = `"[dev-only] @validate-me: the value \\"2018-2-03\\" from the max prop must be a valid date value."`;
+
+exports[`core/getRules Fail to build rules for dates inputs with invalid props 2`] = `"[dev-only] @validate-me: the value \\"24:00\\" from the min prop must be a valid time value."`;
+
+exports[`core/getRules Fail to build rules for dates inputs with invalid props 3`] = `"[dev-only] @validate-me: the value \\"2019-02-28T24:00\\" from the max prop must be a valid datetime-local value."`;
+
+exports[`core/getRules Fail to build rules for dates inputs with invalid props 4`] = `"[dev-only] @validate-me: the value \\"2019-W65\\" from the min prop must be a valid week value."`;
+
+exports[`core/getRules Fail to build rules for dates inputs with invalid props 5`] = `"[dev-only] @validate-me: the value \\"2019-15\\" from the max prop must be a valid month value."`;

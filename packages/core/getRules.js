@@ -22,7 +22,6 @@ const defaultMailPattern =
   "[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9-]+(.[a-z0-9-]+)*";
 
 /**
- *
  * @param {string} type Type
  * @param {any} props Props
  * @return {Array<Array<string>>} Configured rules
@@ -62,8 +61,7 @@ export default function getRules(type, props) {
       }
       addRule([max, props.max]);
     }
-  }
-  if (type === 'email') {
+  } else if (type === 'email') {
     const rule = [patternName, props.pattern || defaultMailPattern, 'i'];
 
     if (props.multiple) {
@@ -71,6 +69,8 @@ export default function getRules(type, props) {
     }
 
     addRule(rule);
+  } else if (props.pattern) {
+    addRule([patternName, props.pattern]);
   }
 
   return rules;
