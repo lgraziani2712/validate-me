@@ -2,6 +2,8 @@
 
 exports[`rules Fails when an unknown rule is being loaded 1`] = `[Error: Unknown rule "unknownRule" with args "".]`;
 
+exports[`rules Fails when the raw rule structure is invalid 1`] = `[Error: [dev-only] @validate-me: "loadRule" accepts only string[], received "string" instead.]`;
+
 exports[`rules Processes existing raw rule successfully 1`] = `
 Array [
   Object {
@@ -11,3 +13,5 @@ Array [
   },
 ]
 `;
+
+exports[`rules Throw unexpected error on client's handler 1`] = `[Error: Unexpected crash!]`;

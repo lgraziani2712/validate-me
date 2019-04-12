@@ -2,6 +2,14 @@ import { loadMessage } from './dictionary';
 
 const cachedRules = {};
 
+export const onModNotFound = callback => err => {
+  if (err && err.code !== 'MODULE_NOT_FOUND') {
+    throw err;
+  }
+
+  return callback();
+};
+
 // Dev/Test only
 let toCall = true;
 
@@ -47,7 +55,7 @@ export function processErrors(fields, failedFields) {
   );
 }
 
-export function loadRule(rawRule) {
+export async function loadRule(rawRule) {
   if (process.env.NODE_ENV !== 'production') {
     if (!Array.isArray(rawRule)) {
       throw new Error(
@@ -69,15 +77,17 @@ export function loadRule(rawRule) {
   return Promise.all([
     loadMessage(name),
     clientHandler(name)
-      .catch(() => import(`./rules/${name}.js`))
+      .catch(onModNotFound(() => import(`./rules/${name}.js`)))
       .then(({ default: rule }) => {
         cachedRules[name] = rule;
 
         return { name, run: rule.apply(null, args), args };
       })
-      .catch(err => {
-        throw err.code === 'MODULE_NOT_FOUND' ? { name, args } : err;
-      }),
+      .catch(
+        onModNotFound(() => {
+          throw { name, args };
+        }),
+      ),
   ]).then(all => all[1]);
 }
 

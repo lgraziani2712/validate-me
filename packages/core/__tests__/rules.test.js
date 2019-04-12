@@ -1,13 +1,6 @@
-import {
-  // ClientRuleHandler,
-  // loadRule,
-  // processErrors,
-  processRawRules,
-  setHandler,
-} from '../rules';
+import { loadRule, processErrors, processRawRules, setHandler } from '../rules';
 import { setConfig } from '../dictionary';
 
-setHandler(() => Promise.reject());
 setConfig({ handler: () => Promise.reject() });
 
 describe('rules', () => {
@@ -22,4 +15,26 @@ describe('rules', () => {
     }).catch(err => {
       expect(err).toMatchSnapshot();
     }));
+
+  test('Fails when the raw rule structure is invalid', () =>
+    loadRule('old:format:as:string').catch(err =>
+      expect(err).toMatchSnapshot(),
+    ));
+
+  test("Throw unexpected error on client's handler", () => {
+    setHandler(async () => {
+      throw new Error('Unexpected crash!');
+    });
+
+    return loadRule(['len']).catch(err => expect(err).toMatchSnapshot());
+  });
+
+  test('Process failed fields thrown by the server', () => {
+    const parseError = jest.fn();
+
+    return processErrors(
+      { name: { parseError } },
+      { name: ['len', '1'], unknownField: ['required'] },
+    ).then(() => expect(parseError).toHaveBeenCalled());
+  });
 });
