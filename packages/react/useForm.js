@@ -42,7 +42,7 @@ export default function useForm() {
         }
       } else {
         const invalid = fieldsValue.reduce(
-          (invalid, field) => field.invalid() || invalid,
+          (invalid, field) => field.touch() || invalid,
           false,
         );
 
