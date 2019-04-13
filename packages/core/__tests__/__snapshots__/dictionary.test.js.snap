@@ -8,8 +8,6 @@ exports[`core/dictionary Renders an unknown rule as a warning and error messages
 
 exports[`core/dictionary Renders an unknown rule as a warning and error messages 2`] = `""`;
 
-exports[`core/dictionary Renders the warning text of an unknown rule of a custom language 1`] = `undefined`;
-
 exports[`core/dictionary Returns undefined when an language doesn't have configured the \`unknownRule\` function 1`] = `undefined`;
 
 exports[`core/dictionary Tries to load an unknown message but gets an error 1`] = `[Error: Unknown dictionary for the "unknown" rule.]`;
