@@ -13,7 +13,7 @@ export default function InputCheckboxList(props) {
           <input
             {...inputProps}
             value={key}
-            checked={inputProps.checked[key] || false}
+            checked={inputProps.value[key] || false}
           />
           {props.options[key]}
         </label>
