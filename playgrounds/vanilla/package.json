@@ -1,6 +1,6 @@
 {
   "name": "@validate-me/web-vanilla",
-  "version": "1.0.0-alpha.19",
+  "version": "1.0.0-alpha.20",
   "private": true,
   "repository": "https://github.com/lgraziani2712/validate-me",
   "homepage": "https://validate-me.netlify.com",
@@ -10,6 +10,6 @@
     "start": "webpack-dev-server --content-base dist"
   },
   "dependencies": {
-    "@validate-me/vanilla": "1.0.0-alpha.19"
+    "@validate-me/vanilla": "^1.0.0-alpha.20"
   }
 }
