@@ -32,6 +32,7 @@ export default {
       );
     }
     this.ruleRunners = [];
+    this.isReq = this.required;
 
     const { name, setField } = this;
 
@@ -48,6 +49,9 @@ export default {
         return loadRule(rawError)
           .then(rule => {
             this.ruleRunners.push(rule);
+            if (rule.name === 'required') {
+              this.isReq = true;
+            }
             this.vField.error = getMessage(rule, value);
           })
           .catch(rule => {
@@ -56,6 +60,12 @@ export default {
       },
       invalid: () => Boolean(this.vField.loading || this.vField.error),
     });
+  },
+  watch: {
+    required(required) {
+      this.isReq =
+        required || !!this.ruleRunners.find(rule => rule.name === 'required');
+    },
   },
   methods: {
     setRules(rawRules) {
@@ -85,7 +95,7 @@ export default {
         this.vField.value = value;
       }
 
-      if (value || this.required) {
+      if (value || this.isReq) {
         for (const rule of this.ruleRunners) {
           if (!rule.run(value)) {
             return (this.vField.error = getMessage(rule, value));

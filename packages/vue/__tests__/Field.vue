@@ -6,6 +6,7 @@
     :type="type"
     :min="min"
     :max="max"
+    :pattern="pattern"
     :value="vField.value"
     :required="required"
   />
@@ -34,6 +35,7 @@ export default {
     type: String,
     min: String,
     max: String,
+    pattern: String,
     options: VueTypes.objectOf(String),
     rules: VueTypes.arrayOf(VueTypes.arrayOf(String)),
   },

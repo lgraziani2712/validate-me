@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`vue/FormMixin Instanciates a form and process errors from server with(out) custom error handler 1`] = `
+Object {
+  "vField": Object {
+    "error": "The field is required.",
+    "loading": false,
+    "touched": false,
+    "value": "",
+    "warning": "",
+  },
+}
+`;
+
+exports[`vue/FormMixin Instanciates a form and process errors from server with(out) custom error handler 2`] = `
+Array [
+  false,
+]
+`;
+
+exports[`vue/FormMixin Instanciates a form and process errors from server with(out) custom error handler 3`] = `
+Object {
+  "vField": Object {
+    "error": "Must match the following pattern: ^\\\\D+$",
+    "loading": false,
+    "touched": true,
+    "value": "",
+    "warning": "WARNING: Unknown server rule \\"warningFromServer\\" failed with the value \\"\\"",
+  },
+}
+`;
+
+exports[`vue/FormMixin Instanciates a form and process errors from server with(out) custom error handler 4`] = `
+Array [
+  false,
+]
+`;
+
+exports[`vue/FormMixin Instanciates a form and validates a valid and invalid input states 1`] = `
+Array [
+  true,
+  Object {
+    "text": "a",
+  },
+]
+`;
+
+exports[`vue/FormMixin Instanciates a form and validates a valid and invalid input states 2`] = `
+Array [
+  false,
+]
+`;

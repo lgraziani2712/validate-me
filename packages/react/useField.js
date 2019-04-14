@@ -32,7 +32,10 @@ export default function useField(
 
       if (
         (key === 'value' && rules.length && oldVal !== val) ||
-        (!state.error && !state.value && required)
+        (key !== 'error' &&
+          !state.error &&
+          !state.value &&
+          (required || rules.isReq))
       ) {
         newState.error = '';
 
@@ -86,6 +89,9 @@ export default function useField(
         loadRule(rawError)
           .then(rule => {
             ruleRunners.current.push(rule);
+            if (rule.name === 'required') {
+              ruleRunners.current.isReq = true;
+            }
             setState(value => ['error', getMessage(rule, value)]);
           })
           .catch(rule => {
