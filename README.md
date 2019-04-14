@@ -1,5 +1,7 @@
 # validate-me
 
+[![CircleCI](https://circleci.com/gh/lgraziani2712/validate-me.svg?style=svg)](https://circleci.com/gh/lgraziani2712/validate-me) [![codecov](https://codecov.io/gh/lgraziani2712/validate-me/branch/master/graph/badge.svg)](https://codecov.io/gh/lgraziani2712/validate-me) [![Netlify Status](https://api.netlify.com/api/v1/badges/ab1cf0d4-832f-4058-809a-f42132fe248b/deploy-status)](https://app.netlify.com/sites/validate-me/deploys)
+
 > validate-me stands for "client asking the server to validate its data"
 
 The main objective of `validate-me` is to enforce server side validations. There's one difference between client side validation and server side validation: the first one makes the UX better, the second makes the security better. Hence the purpose of this library is to rehydrate server side validations into the client inputs.
