@@ -8,6 +8,11 @@ node_modules
 .yarn-cache
 .eslintcache
 .cache-loader
+.jest-cache
+
+# testing
+coverage
+__snapshots__
 
 # production
 temp

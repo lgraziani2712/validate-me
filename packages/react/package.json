@@ -11,8 +11,7 @@
     "access": "public"
   },
   "files": [
-    "README.md",
-    "*.js"
+    "use*.js"
   ],
   "keywords": [
     "validation",

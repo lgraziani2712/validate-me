@@ -1,6 +1,9 @@
 import { loadRule, processRawRules } from '@validate-me/core/rules';
 import { getMessage, getWarning } from '@validate-me/core/dictionary';
 
+/**
+ * @type {Vue.ComponentOptions}
+ */
 export default {
   inject: ['setField'],
   props: {
@@ -19,7 +22,6 @@ export default {
         loading: false,
         touched: false,
         value: this.value || '',
-        rules: [],
       },
     };
   },
@@ -29,9 +31,13 @@ export default {
         '[dev-only] @validate-me: Field cannot be instanciated without an instance.',
       );
     }
+    this.ruleRunners = [];
+    this.isReq = this.required;
+
     const { name, setField } = this;
 
     setField(name, {
+      touch: this.touch,
       clearWarning: () => {
         this.vField.warning = '';
 
@@ -42,7 +48,10 @@ export default {
 
         return loadRule(rawError)
           .then(rule => {
-            this.vField.rules.push(rule);
+            this.ruleRunners.push(rule);
+            if (rule.name === 'required') {
+              this.isReq = true;
+            }
             this.vField.error = getMessage(rule, value);
           })
           .catch(rule => {
@@ -52,6 +61,12 @@ export default {
       invalid: () => Boolean(this.vField.loading || this.vField.error),
     });
   },
+  watch: {
+    required(required) {
+      this.isReq =
+        required || !!this.ruleRunners.find(rule => rule.name === 'required');
+    },
+  },
   methods: {
     setRules(rawRules) {
       this.vField.loading = true;
@@ -59,7 +74,7 @@ export default {
       return processRawRules(
         rawRules,
         rules => {
-          this.vField.rules = rules;
+          this.ruleRunners = rules;
         },
         () => {
           this.vField.loading = false;
@@ -80,12 +95,10 @@ export default {
         this.vField.value = value;
       }
 
-      if (value || this.required) {
-        for (const rule of this.vField.rules) {
+      if (value || this.isReq) {
+        for (const rule of this.ruleRunners) {
           if (!rule.run(value)) {
-            this.vField.error = getMessage(rule, value);
-
-            return true;
+            return (this.vField.error = getMessage(rule, value));
           }
         }
       }

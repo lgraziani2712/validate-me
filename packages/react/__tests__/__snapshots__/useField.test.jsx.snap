@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`react/useField Configures a checkbox list and checks every option 1`] = `
+Object {
+  "loading": undefined,
+  "value": Object {
+    "atom": true,
+    "vscode": true,
+  },
+}
+`;
+
+exports[`react/useField Configures a number field and sets a value bigger than its max 1`] = `
+Object {
+  "error": "It must be less or equal than \\"5\\".",
+  "loading": undefined,
+  "value": "15",
+}
+`;
+
+exports[`react/useField Configures a text input and touches it 1`] = `
+Object {
+  "error": "The field is required.",
+  "loading": undefined,
+  "touched": true,
+  "value": "",
+}
+`;
+
+exports[`react/useField Configures a text input and updates its value 1`] = `
+Object {
+  "error": "",
+  "loading": undefined,
+  "value": "a",
+}
+`;

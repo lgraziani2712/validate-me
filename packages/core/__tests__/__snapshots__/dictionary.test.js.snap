@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`core/dictionary Loads an existing message twice in a row (cache must prevent two requests) 1`] = `"The field is required."`;
+
+exports[`core/dictionary Renders a message as a warning and as an error 1`] = `"WARNING: The field is required."`;
+
+exports[`core/dictionary Renders an unknown rule as a warning and error messages 1`] = `"WARNING: Unknown server rule \\"unknown\\" failed with the value \\"undefined\\""`;
+
+exports[`core/dictionary Renders an unknown rule as a warning and error messages 2`] = `""`;
+
+exports[`core/dictionary Returns undefined when an language doesn't have configured the \`unknownRule\` function 1`] = `undefined`;
+
+exports[`core/dictionary Tries to load an unknown message but gets an error 1`] = `[Error: Unknown dictionary for the "unknown" rule.]`;

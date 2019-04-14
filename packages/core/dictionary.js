@@ -1,4 +1,4 @@
-/* eslint-disable no-underscore-dangle */
+import { onModNotFound } from './rules';
 
 // Dev/Test only
 let toCall = true;
@@ -47,6 +47,9 @@ export function setConfig(config) {
   if (config.handler) {
     clientHandler = config.handler;
   }
+  if (!extras[lang]) {
+    loadExtras();
+  }
 }
 
 export function getWarning({ name, args }, value) {
@@ -83,10 +86,12 @@ export function loadMessage(name) {
   cache[name] = true;
 
   return clientHandler(lang, name)
-    .catch(() => import(`./dictionaries/${lang}/${name}.js`))
-    .catch(() => {
-      throw new Error(`Unknown dictionary for the "${name}" rule.`);
-    })
+    .catch(onModNotFound(() => import(`./dictionaries/${lang}/${name}.js`)))
+    .catch(
+      onModNotFound(() => {
+        throw new Error(`Unknown dictionary for the "${name}" rule.`);
+      }),
+    )
     .then(({ default: rule }) => {
       dictionary[lang][name] = rule;
     })
@@ -96,8 +101,11 @@ export function loadMessage(name) {
 }
 
 function loadExtras() {
+  extras[lang] = {};
+
   clientHandler(lang, '_extras')
-    .catch(() => import(`./dictionaries/${lang}/_extras.js`))
+    .catch(onModNotFound(() => import(`./dictionaries/${lang}/_extras.js`)))
+    .catch(onModNotFound(() => {}))
     .then(mod => {
       extras[lang] = mod.default;
     });

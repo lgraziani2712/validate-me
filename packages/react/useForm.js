@@ -19,8 +19,11 @@ export default function useForm() {
   const fields = useRef({});
   const [state, setState] = useReducer(handleState, {});
   const form = useRef({
-    setField: (name, field) => {
+    setField(name, field) {
       fields.current[name] = field;
+    },
+    unsetField(name) {
+      fields.current[name] = undefined;
     },
     // Process errors from server
     process: error => processErrors(fields.current, errorHandler(error)),
@@ -39,7 +42,7 @@ export default function useForm() {
         }
       } else {
         const invalid = fieldsValue.reduce(
-          (invalid, field) => field.invalid() || invalid,
+          (invalid, field) => field.touch() || invalid,
           false,
         );
 

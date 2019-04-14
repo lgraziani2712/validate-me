@@ -39,6 +39,7 @@
 *.scss   text eol=lf
 *.sh     text eol=lf
 *.sql    text eol=lf
+*.snap   text eol=lf
 *.styl   text eol=lf
 *.ts     text eol=lf
 *.vue    text eol=lf

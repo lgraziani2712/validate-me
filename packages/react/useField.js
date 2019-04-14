@@ -14,15 +14,10 @@ export default function useField(
   type,
   { rules, value, name, required, min, max, pattern, multiple, options },
 ) {
-  const checkbox = type === 'checkbox';
-  const prop = checkbox ? 'checked' : 'value';
-  const checkList = checkbox && options;
+  const hasOptions = !!options;
   const form = useContext(VContext);
   const stateRef = useRef();
-  const [ruleRunners, setRules] = useReducer(
-    (rules, rule) => (rule.length == null ? rule : rules.concat(rule)),
-    [],
-  );
+  const ruleRunners = useRef([]);
   const [state, setState] = useReducer(
     (state, prop) => {
       const oldVal = state.value;
@@ -33,16 +28,18 @@ export default function useField(
       }
 
       const newState = { ...state, [key]: val };
+      const rules = ruleRunners.current;
 
       if (
-        key === 'value' &&
-        ruleRunners.length &&
-        oldVal !== val &&
-        (val || required)
+        (key === 'value' && rules.length && oldVal !== val) ||
+        (key !== 'error' &&
+          !state.error &&
+          !state.value &&
+          (required || rules.isReq))
       ) {
         newState.error = '';
 
-        for (const rule of ruleRunners) {
+        for (const rule of rules) {
           if (!rule.run(val)) {
             newState.error = getMessage(rule, val);
 
@@ -55,54 +52,58 @@ export default function useField(
     },
     {
       loading: true,
-      value: value || (checkList ? {} : ''),
+      value: value || '',
     },
   );
   const onChange = useMemo(() => {
-    if (checkList) {
-      return evt => {
-        const { defaultValue, checked } = evt.target;
+    const checkbox = type === 'checkbox';
+    const prop = checkbox ? 'checked' : 'value';
 
-        setState(value => ['value', { ...value, [defaultValue]: checked }]);
-      };
-    }
+    return checkbox && hasOptions
+      ? evt => {
+          const { defaultValue, checked } = evt.target;
 
-    return evt => {
-      setState(['value', evt.target[prop]]);
-    };
-  }, [checkList, prop]);
+          setState(value => ['value', { ...value, [defaultValue]: checked }]);
+        }
+      : evt => {
+          setState(['value', evt.target[prop]]);
+        };
+  }, [hasOptions, type]);
 
-  useEffect(
-    () =>
-      form.setField(name, {
-        touch() {
-          setState(touchedAction);
+  useEffect(() => {
+    form.setField(name, {
+      touch() {
+        setState(touchedAction);
 
-          return stateRef.current.error;
-        },
-        invalid() {
-          return Boolean(stateRef.current.loading || stateRef.current.error);
-        },
-        clearWarning() {
-          setState(warning);
+        return stateRef.current.error;
+      },
+      invalid() {
+        return Boolean(stateRef.current.loading || stateRef.current.error);
+      },
+      clearWarning() {
+        setState(warning);
 
-          return stateRef.current.value;
-        },
-        parseError: rawError =>
-          loadRule(rawError)
-            .then(rule => {
-              setRules(rule);
-              setState(value => ['error', getMessage(rule, value)]);
-            })
-            .catch(rule => {
-              if (rule instanceof Error) {
-                throw rule;
-              }
-              setState(value => ['warning', getWarning(rule, value)]);
-            }),
-      }),
-    [name, form],
-  );
+        return stateRef.current.value;
+      },
+      parseError: rawError =>
+        loadRule(rawError)
+          .then(rule => {
+            ruleRunners.current.push(rule);
+            if (rule.name === 'required') {
+              ruleRunners.current.isReq = true;
+            }
+            setState(value => ['error', getMessage(rule, value)]);
+          })
+          .catch(rule => {
+            if (rule instanceof Error) {
+              throw rule;
+            }
+            setState(value => ['warning', getWarning(rule, value)]);
+          }),
+    });
+
+    return () => form.unsetField(name);
+  }, [name, form]);
 
   useEffect(() => {
     setState(loadingAction);
@@ -115,10 +116,16 @@ export default function useField(
       multiple,
     });
 
-    processRawRules(rules ? baseRules.concat(rules) : baseRules, setRules, () =>
-      setState(notLoadingAction),
+    processRawRules(
+      rules ? baseRules.concat(rules) : baseRules,
+      rules => {
+        ruleRunners.current = rules;
+      },
+      () => {
+        setState(notLoadingAction);
+      },
     );
-  }, [max, min, multiple, pattern, required, rules, type]);
+  }, [type, max, min, multiple, pattern, required, rules]);
 
   useEffect(() => {
     stateRef.current = state;
@@ -135,7 +142,7 @@ export default function useField(
       pattern,
       multiple,
       onChange,
-      [prop]: state.value,
+      value: state.value,
       // onBlur.once
       onBlur: state.touched ? undefined : () => setState(touchedAction),
     },

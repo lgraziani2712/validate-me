@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`vue/FieldMixin Configures a checkbox list and checks every option 1`] = `
+Object {
+  "vField": Object {
+    "error": "",
+    "loading": false,
+    "touched": false,
+    "value": Object {
+      "atom": true,
+      "vscode": true,
+    },
+    "warning": "",
+  },
+}
+`;
+
+exports[`vue/FieldMixin Configures a number field and sets a value bigger than its max 1`] = `
+Object {
+  "vField": Object {
+    "error": "It must be less or equal than \\"5\\".",
+    "loading": false,
+    "touched": false,
+    "value": "15",
+    "warning": "",
+  },
+}
+`;
+
+exports[`vue/FieldMixin Configures a text input and touches it 1`] = `
+Object {
+  "vField": Object {
+    "error": "The field is required.",
+    "loading": false,
+    "touched": true,
+    "value": "",
+    "warning": "",
+  },
+}
+`;

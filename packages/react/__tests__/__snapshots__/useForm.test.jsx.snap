@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`react/useForm Instanciates a form and process errors from server with(out) custom error handler 1`] = `
+Object {
+  "error": "The field is required.",
+  "loading": undefined,
+  "value": "",
+}
+`;
+
+exports[`react/useForm Instanciates a form and process errors from server with(out) custom error handler 2`] = `
+Array [
+  false,
+]
+`;
+
+exports[`react/useForm Instanciates a form and process errors from server with(out) custom error handler 3`] = `
+Object {
+  "error": "",
+  "loading": undefined,
+  "touched": true,
+  "value": "a",
+  "warning": "WARNING: Unknown server rule \\"warningFromServer\\" failed with the value \\"\\"",
+}
+`;
+
+exports[`react/useForm Instanciates a form and process errors from server with(out) custom error handler 4`] = `
+Array [
+  true,
+  Object {
+    "text": "a",
+  },
+]
+`;
+
+exports[`react/useForm Instanciates a form and validates a valid and invalid input states 1`] = `
+Array [
+  true,
+  Object {
+    "text": "a",
+  },
+]
+`;
+
+exports[`react/useForm Instanciates a form and validates a valid and invalid input states 2`] = `
+Array [
+  false,
+]
+`;

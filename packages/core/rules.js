@@ -2,6 +2,14 @@ import { loadMessage } from './dictionary';
 
 const cachedRules = {};
 
+export const onModNotFound = callback => err => {
+  if (err && err.code !== 'MODULE_NOT_FOUND') {
+    throw err;
+  }
+
+  return callback();
+};
+
 // Dev/Test only
 let toCall = true;
 
@@ -21,7 +29,6 @@ let clientHandler = () => {
 };
 
 /**
- *
  * @param {ClientRuleHandler} newHandler Rules' client handler
  * @return {void}
  */
@@ -70,15 +77,17 @@ export async function loadRule(rawRule) {
   return Promise.all([
     loadMessage(name),
     clientHandler(name)
-      .catch(() => import(`./rules/${name}.js`))
+      .catch(onModNotFound(() => import(`./rules/${name}.js`)))
       .then(({ default: rule }) => {
         cachedRules[name] = rule;
 
         return { name, run: rule.apply(null, args), args };
       })
-      .catch(() => {
-        throw { name, args };
-      }),
+      .catch(
+        onModNotFound(() => {
+          throw { name, args };
+        }),
+      ),
   ]).then(all => all[1]);
 }
 
@@ -90,7 +99,7 @@ function unknownRuleErrorOnInit(err) {
       );
 }
 
-export async function processRawRules(rawRules, onSuccess, onFinally) {
+export function processRawRules(rawRules, onSuccess, onFinally) {
   return Promise.all(rawRules.map(loadRule))
     .then(onSuccess)
     .catch(unknownRuleErrorOnInit)
