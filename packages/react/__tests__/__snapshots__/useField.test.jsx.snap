@@ -18,7 +18,7 @@ Object {
 }
 `;
 
-exports[`react/useField Configures a text input and touch it 1`] = `
+exports[`react/useField Configures a text input and touches it 1`] = `
 Object {
   "error": "The field is required.",
   "loading": undefined,

@@ -1,6 +1,9 @@
 import { loadRule, processRawRules } from '@validate-me/core/rules';
 import { getMessage, getWarning } from '@validate-me/core/dictionary';
 
+/**
+ * @type {Vue.ComponentOptions}
+ */
 export default {
   inject: ['setField'],
   props: {
@@ -19,7 +22,6 @@ export default {
         loading: false,
         touched: false,
         value: this.value || '',
-        rules: [],
       },
     };
   },
@@ -29,9 +31,12 @@ export default {
         '[dev-only] @validate-me: Field cannot be instanciated without an instance.',
       );
     }
+    this.ruleRunners = [];
+
     const { name, setField } = this;
 
     setField(name, {
+      touch: this.touch,
       clearWarning: () => {
         this.vField.warning = '';
 
@@ -42,7 +47,7 @@ export default {
 
         return loadRule(rawError)
           .then(rule => {
-            this.vField.rules.push(rule);
+            this.ruleRunners.push(rule);
             this.vField.error = getMessage(rule, value);
           })
           .catch(rule => {
@@ -59,7 +64,7 @@ export default {
       return processRawRules(
         rawRules,
         rules => {
-          this.vField.rules = rules;
+          this.ruleRunners = rules;
         },
         () => {
           this.vField.loading = false;
@@ -81,11 +86,9 @@ export default {
       }
 
       if (value || this.required) {
-        for (const rule of this.vField.rules) {
+        for (const rule of this.ruleRunners) {
           if (!rule.run(value)) {
-            this.vField.error = getMessage(rule, value);
-
-            return true;
+            return (this.vField.error = getMessage(rule, value));
           }
         }
       }

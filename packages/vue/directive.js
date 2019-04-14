@@ -1,20 +1,21 @@
 import getRules from '@validate-me/core/getRules';
 
 /**
- *
  * @param {Vue.default} field field
  * @param {string} type type
  * @return {Function} input handler
  */
 function handleValue(field, type) {
   const checkbox = type === 'checkbox';
-  // si checkbox and value, array, sino bool, sino string
   const prop = checkbox ? 'checked' : 'value';
   const checkList = checkbox && field.$props.options;
 
   return checkList
     ? ({ target }) => {
-        field.run({ ...field.value, [target.defaultValue]: target.checked });
+        field.run({
+          ...field.vField.value,
+          [target.defaultValue]: target.checked,
+        });
       }
     : ({ target }) => {
         field.run(target[prop]);

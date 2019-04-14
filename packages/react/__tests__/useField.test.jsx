@@ -46,7 +46,7 @@ describe('react/useField', () => {
     expect(result.current[0]).toMatchSnapshot();
   });
 
-  test('Configures a text input and touch it', async () => {
+  test('Configures a text input and touches it', async () => {
     const props = {
       name: 'im-required',
       required: true,
@@ -80,10 +80,7 @@ describe('react/useField', () => {
   test('Configures a checkbox list and checks every option', async () => {
     const props = {
       name: 'checkbox',
-      options: {
-        vscode: 'VSCode',
-        Atom: 'Atom',
-      },
+      options: { vscode: 'VSCode', atom: 'Atom' },
     };
     const { result, waitForNextUpdate } = renderHook(
       () => useField('checkbox', props),
