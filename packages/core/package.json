@@ -10,7 +10,8 @@
   },
   "files": [
     "*.js",
-    "(rules|dictionaries)/**/*.js"
+    "rules/**/*.js",
+    "dictionaries/**/*.js"
   ],
   "keywords": [
     "validation",
