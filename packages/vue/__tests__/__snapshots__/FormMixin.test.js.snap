@@ -21,7 +21,7 @@ Array [
 exports[`vue/FormMixin Instanciates a form and process errors from server with(out) custom error handler 3`] = `
 Object {
   "vField": Object {
-    "error": "Must match the following pattern: ^\\\\D+$",
+    "error": "The field is required.",
     "loading": false,
     "touched": true,
     "value": "",

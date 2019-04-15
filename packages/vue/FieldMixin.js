@@ -48,9 +48,11 @@ export default {
 
         return loadRule(rawError)
           .then(rule => {
-            this.ruleRunners.push(rule);
             if (rule.name === 'required') {
+              this.ruleRunners.unshift(rule);
               this.isReq = true;
+            } else {
+              this.ruleRunners.push(rule);
             }
             this.vField.error = getMessage(rule, value);
           })

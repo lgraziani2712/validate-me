@@ -56,9 +56,7 @@ describe('react/useForm', () => {
 
     await act(fieldWait);
 
-    await act(async () => {
-      await form.current.process({ [inputName]: ['required'] });
-    });
+    await act(() => form.current.process({ [inputName]: ['required'] }));
     expect(field.current[0]).toMatchSnapshot();
     expect(form.current.validate()).toMatchSnapshot();
 

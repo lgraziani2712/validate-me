@@ -9,7 +9,8 @@
     "access": "public"
   },
   "files": [
-    "**/*.js"
+    "*.js",
+    "(rules|dictionaries)/**/*.js"
   ],
   "keywords": [
     "validation",
