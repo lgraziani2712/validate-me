@@ -21,7 +21,25 @@ Array [
 exports[`vue/FormMixin Instanciates a form and process errors from server with(out) custom error handler 3`] = `
 Object {
   "vField": Object {
-    "error": "The field is required.",
+    "error": "Must match the following pattern: .+",
+    "loading": false,
+    "touched": true,
+    "value": "",
+    "warning": "",
+  },
+}
+`;
+
+exports[`vue/FormMixin Instanciates a form and process errors from server with(out) custom error handler 4`] = `
+Array [
+  false,
+]
+`;
+
+exports[`vue/FormMixin Instanciates a form and process errors from server with(out) custom error handler 5`] = `
+Object {
+  "vField": Object {
+    "error": "Must match the following pattern: .+",
     "loading": false,
     "touched": true,
     "value": "",
@@ -30,7 +48,7 @@ Object {
 }
 `;
 
-exports[`vue/FormMixin Instanciates a form and process errors from server with(out) custom error handler 4`] = `
+exports[`vue/FormMixin Instanciates a form and process errors from server with(out) custom error handler 6`] = `
 Array [
   false,
 ]
@@ -50,3 +68,5 @@ Array [
   false,
 ]
 `;
+
+exports[`vue/FormMixin Instanciates a form with two fields with the same name 1`] = `"Field \\"text\\" already exists."`;

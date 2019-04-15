@@ -1,13 +1,26 @@
 <template>
-  <Field
-    :name="name"
-    :min="min"
-    :max="max"
-    :rules="rules"
-    :pattern="pattern"
-    :required="required"
-    :options="options"
-  />
+  <div>
+    <Field
+      :name="name"
+      :min="min"
+      :max="max"
+      :rules="rules"
+      :pattern="pattern"
+      :required="required"
+      :options="options"
+    />
+
+    <Field
+      v-if="name2"
+      :name="name2"
+      :min="min"
+      :max="max"
+      :rules="rules"
+      :pattern="pattern"
+      :required="required"
+      :options="options"
+    />
+  </div>
 </template>
 
 <script>
@@ -24,6 +37,7 @@ export default {
   mixins: [FormMixin],
   props: {
     name: VueTypes.string.isRequired,
+    name2: String,
     type: String,
     min: String,
     max: String,

@@ -16,6 +16,21 @@ Array [
 
 exports[`react/useForm Instanciates a form and process errors from server with(out) custom error handler 3`] = `
 Object {
+  "error": "Must match the following pattern: .+",
+  "loading": undefined,
+  "touched": true,
+  "value": "",
+}
+`;
+
+exports[`react/useForm Instanciates a form and process errors from server with(out) custom error handler 4`] = `
+Array [
+  false,
+]
+`;
+
+exports[`react/useForm Instanciates a form and process errors from server with(out) custom error handler 5`] = `
+Object {
   "error": "",
   "loading": undefined,
   "touched": true,
@@ -24,7 +39,7 @@ Object {
 }
 `;
 
-exports[`react/useForm Instanciates a form and process errors from server with(out) custom error handler 4`] = `
+exports[`react/useForm Instanciates a form and process errors from server with(out) custom error handler 6`] = `
 Array [
   true,
   Object {

@@ -60,6 +60,10 @@ describe('react/useForm', () => {
     expect(field.current[0]).toMatchSnapshot();
     expect(form.current.validate()).toMatchSnapshot();
 
+    await act(() => form.current.process({ [inputName]: ['pattern', '.+'] }));
+    expect(field.current[0]).toMatchSnapshot();
+    expect(form.current.validate()).toMatchSnapshot();
+
     await act(async () => {
       setErrorHandler(err => err.fields);
       await form.current.process({

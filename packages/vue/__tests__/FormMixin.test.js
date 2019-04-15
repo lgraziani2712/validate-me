@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { mount, createLocalVue } from '@vue/test-utils';
 import flushPromises from 'flush-promises';
 
@@ -8,9 +9,7 @@ import Form from './Form';
 
 const localVue = createLocalVue();
 
-localVue.use(ValidatemePlugin, {
-  errorHandler: f => f,
-});
+localVue.use(ValidatemePlugin);
 
 describe('vue/FormMixin', () => {
   const inputName = 'text';
@@ -19,6 +18,22 @@ describe('vue/FormMixin', () => {
     pattern: '^\\D+$',
     rules: [['len', '1', '5']],
   };
+
+  test('Instanciates a form with two fields with the same name', () => {
+    // Used to supress the expected error from vue runtime dev
+    const err = console.error;
+
+    console.error = () => {};
+
+    expect(() => {
+      mount(Form, {
+        localVue,
+        propsData: { ...propsData, name2: inputName, silent: true },
+      });
+    }).toThrowErrorMatchingSnapshot();
+
+    console.error = err;
+  });
 
   test('Instanciates a form and validates a valid and invalid input states', async () => {
     const app = mount(Form, { localVue, propsData });
@@ -39,6 +54,12 @@ describe('vue/FormMixin', () => {
   });
 
   test('Instanciates a form and process errors from server with(out) custom error handler', async () => {
+    const localVue = createLocalVue();
+
+    localVue.use(ValidatemePlugin, {
+      errorHandler: f => f,
+    });
+
     const app = mount(Form, { localVue, propsData });
 
     await flushPromises();
@@ -47,6 +68,10 @@ describe('vue/FormMixin', () => {
 
     app.setProps({ required: true });
     app.setProps({ required: false });
+    expect(app.vm.$children[0].$data).toMatchSnapshot();
+    expect(app.vm.validate()).toMatchSnapshot();
+
+    await app.vm.process({ [inputName]: ['pattern', '.+'] });
     expect(app.vm.$children[0].$data).toMatchSnapshot();
     expect(app.vm.validate()).toMatchSnapshot();
 
