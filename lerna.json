@@ -10,10 +10,5 @@
     }
   },
   "packages": ["packages/*"],
-  "ignoreChanges": [
-    "**/*.test.jsx?",
-    "**/package.json",
-    "**/.eslintrc.js",
-    "**/*.md"
-  ]
+  "ignoreChanges": ["**/*.test.jsx?", "**/.eslintrc.js", "**/*.md"]
 }
