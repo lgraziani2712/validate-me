@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <NonLabelWrapper :field="vField">
     <label>
       <input
         v-validate-me
@@ -10,22 +10,19 @@
       />
       {{ label }}
     </label>
-    <p style="min-height: 1.15em">
-      <span v-show="vField.touched && vField.error" style="color: red">{{
-        vField.error
-      }}</span>
-      <span v-show="!vField.error && vField.warning" style="color: orange">{{
-        vField.warning
-      }}</span>
-    </p>
-  </div>
+  </NonLabelWrapper>
 </template>
 
 <script>
 import VueTypes from 'vue-types';
 import FieldMixin from '@validate-me/vue/FieldMixin';
 
+import NonLabelWrapper from './wrappers/NonLabelWrapper';
+
 export default {
+  components: {
+    NonLabelWrapper,
+  },
   mixins: [FieldMixin],
   props: {
     label: VueTypes.string.isRequired,
