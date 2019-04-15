@@ -22,7 +22,7 @@ module.exports = {
       },
     ],
     sidebar: {
-      '/guides/': ['', 'rules.html'],
+      '/guides/': ['', 'react.html', 'vue.html', 'rules.html'],
       '/api/': [
         {
           title: 'Core API',

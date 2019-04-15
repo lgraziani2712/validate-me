@@ -156,7 +156,7 @@ export default {
 
 ```html
 <input
-  v-validate-me="validatemeRules"
+  v-validate-me="rules"
   :name="name"
   :value="value"
   :autofocus="autofocus"
@@ -173,7 +173,7 @@ export default {
   props: {
     name: VueTypes.string.isRequired,
     value: String,
-    validatemeRules: VueTypes.arrayOf(VueTypes.string),
+    rules: VueTypes.arrayOf(VueTypes.string),
     autofocus: Boolean,
     required: Boolean,
   },
