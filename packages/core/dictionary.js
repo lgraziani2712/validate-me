@@ -37,7 +37,7 @@ const loadingCache = { en: {} };
  */
 export function setConfig(config) {
   if (config.lang) {
-    lang = config.lang;
+    lang = config.lang || 'en';
 
     if (!dictionary[lang]) {
       dictionary[lang] = {};

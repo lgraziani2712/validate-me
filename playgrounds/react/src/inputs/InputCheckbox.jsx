@@ -2,24 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import useField from '@validate-me/react/useField';
 
+import NonLabelWrapper from './wrappers/NonLabelWrapper';
+
 export default function InputCheckbox(props) {
   const [field, inputProps] = useField('checkbox', props);
 
   return (
-    <div>
+    <NonLabelWrapper field={field}>
       <label>
-        <input {...inputProps} />
-        {props.label}
+        <input {...inputProps} /> {props.label}
       </label>
-      <p style={{ minHeight: '1.15em' }}>
-        {field.touched && field.error && (
-          <span style={{ color: 'red' }}>{field.error}</span>
-        )}
-        {!field.error && field.warning && (
-          <span style={{ color: 'orange' }}>{field.warning}</span>
-        )}
-      </p>
-    </div>
+    </NonLabelWrapper>
   );
 }
 

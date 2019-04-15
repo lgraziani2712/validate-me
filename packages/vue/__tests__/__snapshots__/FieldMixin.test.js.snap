@@ -38,3 +38,5 @@ Object {
   },
 }
 `;
+
+exports[`vue/FieldMixin Tries to configures an input without a form provider 1`] = `"[dev-only] @validate-me: Field cannot be instanciated without an instance."`;

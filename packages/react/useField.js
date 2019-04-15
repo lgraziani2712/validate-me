@@ -88,9 +88,13 @@ export default function useField(
       parseError: rawError =>
         loadRule(rawError)
           .then(rule => {
-            ruleRunners.current.push(rule);
+            const rules = ruleRunners.current;
+
             if (rule.name === 'required') {
-              ruleRunners.current.isReq = true;
+              rules.isReq = true;
+              rules.unshift(rule);
+            } else {
+              rules.push(rule);
             }
             setState(value => ['error', getMessage(rule, value)]);
           })

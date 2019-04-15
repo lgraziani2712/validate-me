@@ -61,6 +61,7 @@ function App() {
             label="Name"
             name="name"
             rules={[['len', '2', '10']]}
+            pattern="\D+"
             required
           />
           <InputCheckbox label="Must be Checked, plz" name="check" required />

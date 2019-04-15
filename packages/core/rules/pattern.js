@@ -1,6 +1,6 @@
 const pattern = (pattern, flags, type) => {
   const regex = new RegExp(
-    type !== 'mul' ? pattern : `^${pattern}(,${pattern},?)*$`,
+    type !== 'mul' ? `^${pattern}$` : `^${pattern}(,${pattern},?)*$`,
     flags,
   );
 

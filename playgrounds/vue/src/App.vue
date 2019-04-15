@@ -120,16 +120,16 @@
 <script>
 import FormMixin from '@validate-me/vue/FormMixin';
 
-import InputText from './InputText';
-import InputTextarea from './InputTextarea';
-import InputCheckbox from './InputCheckbox';
-import InputNumberRange from './InputNumberRange';
-import InputEmail from './InputEmail';
-import InputCheckboxList from './InputCheckboxList';
-import InputRadioList from './InputRadioList';
-import InputDate from './InputDate';
-import InputColor from './InputColor';
-import InputSelect from './InputSelect';
+import InputText from './inputs/InputText';
+import InputTextarea from './inputs/InputTextarea';
+import InputCheckbox from './inputs/InputCheckbox';
+import InputNumberRange from './inputs/InputNumberRange';
+import InputEmail from './inputs/InputEmail';
+import InputCheckboxList from './inputs/InputCheckboxList';
+import InputRadioList from './inputs/InputRadioList';
+import InputDate from './inputs/InputDate';
+import InputColor from './inputs/InputColor';
+import InputSelect from './inputs/InputSelect';
 
 export default {
   components: {

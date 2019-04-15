@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <h3>{{ label }}</h3>
+  <LabelWrapper :label="label" :field="vField">
     <input
       v-validate-me
       :name="name"
@@ -9,24 +8,21 @@
       :max="max"
       :type="type"
     />
-    <p style="min-height: 1.15em">
-      <span v-show="vField.touched && vField.error" style="color: red">{{
-        vField.error
-      }}</span>
-      <span v-show="!vField.error && vField.warning" style="color: orange">{{
-        vField.warning
-      }}</span>
-    </p>
-  </div>
+  </LabelWrapper>
 </template>
 
 <script>
 import VueTypes from 'vue-types';
 import FieldMixin from '@validate-me/vue/FieldMixin';
 
+import LabelWrapper from './wrappers/LabelWrapper';
+
 const types = ['date', 'time', 'datetime-local', 'week', 'month'];
 
 export default {
+  components: {
+    LabelWrapper,
+  },
   mixins: [FieldMixin],
   props: {
     label: VueTypes.string.isRequired,

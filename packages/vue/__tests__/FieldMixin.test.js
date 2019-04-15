@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { mount, createLocalVue } from '@vue/test-utils';
 import flushPromises from 'flush-promises';
 
@@ -5,11 +6,31 @@ import ValidatemePlugin from '../index';
 
 import Field from './Field';
 
+function supressVueErrors(cb) {
+  const err = console.error;
+
+  console.error = () => {};
+
+  cb();
+
+  console.error = err;
+}
+
 const localVue = createLocalVue();
 
 localVue.use(ValidatemePlugin);
 
 describe('vue/FieldMixin', () => {
+  test('Tries to configures an input without a form provider', () => {
+    supressVueErrors(() =>
+      expect(() => {
+        mount(Field, {
+          localVue,
+          propsData: { name: 'field', type: 'text', required: true },
+        });
+      }).toThrowErrorMatchingSnapshot(),
+    );
+  });
   test('Configures a text input and touches it', async () => {
     const setField = jest.fn();
     const app = mount(Field, {
