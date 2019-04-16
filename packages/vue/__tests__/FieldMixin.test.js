@@ -83,4 +83,24 @@ describe('vue/FieldMixin', () => {
     });
     expect(app.vm.$data).toMatchSnapshot();
   });
+  test('Rehidrates an input with invalid data and touches it', async () => {
+    const setField = jest.fn();
+    const app = mount(Field, {
+      localVue,
+      provide: { setField },
+      propsData: {
+        name: 'field',
+        type: 'text',
+        pattern: '\\D+',
+        value: 'a2 wsa2',
+      },
+    });
+
+    await flushPromises();
+
+    app.vm.touch();
+
+    expect(setField).toHaveBeenCalledTimes(1);
+    expect(app.vm.$data).toMatchSnapshot();
+  });
 });

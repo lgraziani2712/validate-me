@@ -34,3 +34,12 @@ Object {
   "value": "a",
 }
 `;
+
+exports[`react/useField Rehidrates an input with invalid data and touches it 1`] = `
+Object {
+  "error": "Must match the following pattern: \\\\D+",
+  "loading": undefined,
+  "touched": true,
+  "value": "a2 wsa2",
+}
+`;

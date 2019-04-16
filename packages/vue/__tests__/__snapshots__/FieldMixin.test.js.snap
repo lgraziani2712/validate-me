@@ -39,4 +39,16 @@ Object {
 }
 `;
 
+exports[`vue/FieldMixin Rehidrates an input with invalid data and touches it 1`] = `
+Object {
+  "vField": Object {
+    "error": "Must match the following pattern: \\\\D+",
+    "loading": false,
+    "touched": true,
+    "value": "a2 wsa2",
+    "warning": "",
+  },
+}
+`;
+
 exports[`vue/FieldMixin Tries to configures an input without a form provider 1`] = `"[dev-only] @validate-me: Field cannot be instanciated without an instance."`;

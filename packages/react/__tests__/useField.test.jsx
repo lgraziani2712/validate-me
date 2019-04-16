@@ -58,9 +58,7 @@ describe('react/useField', () => {
 
     await act(waitForNextUpdate);
 
-    act(() => {
-      result.current[1].onBlur();
-    });
+    act(result.current[1].onBlur);
 
     expect(result.current[0]).toMatchSnapshot();
   });
@@ -98,6 +96,24 @@ describe('react/useField', () => {
         target: { defaultValue: 'atom', checked: true },
       }),
     );
+
+    expect(result.current[0]).toMatchSnapshot();
+  });
+
+  test('Rehidrates an input with invalid data and touches it', async () => {
+    const props = {
+      name: 'text',
+      pattern: '\\D+',
+      value: 'a2 wsa2',
+    };
+    const { result, waitForNextUpdate } = renderHook(
+      () => useField('text', props),
+      { wrapper: FormContext },
+    );
+
+    await act(waitForNextUpdate);
+
+    act(result.current[1].onBlur);
 
     expect(result.current[0]).toMatchSnapshot();
   });

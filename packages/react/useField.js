@@ -31,17 +31,19 @@ export default function useField(
       const rules = ruleRunners.current;
 
       if (
+        key === 'touched' ||
         (key === 'value' && rules.length && oldVal !== val) ||
         (key !== 'error' &&
           !state.error &&
-          !state.value &&
+          !oldVal &&
           (required || rules.isReq))
       ) {
         newState.error = '';
+        const newVal = key === 'value' ? val : oldVal;
 
         for (const rule of rules) {
-          if (!rule.run(val)) {
-            newState.error = getMessage(rule, val);
+          if (!rule.run(newVal)) {
+            newState.error = getMessage(rule, newVal);
 
             break;
           }
