@@ -2,8 +2,13 @@ process.env.VUE_CLI_MODERN_BUILD = true;
 
 module.exports = {
   title: 'Validate-me',
-  description: 'Blazing fast validation library',
+  description: 'Extensible & blazing fast validation library',
+  head: [
+    ['link', { rel: 'icon', href: '/icon.svg' }],
+    ['link', { rel: 'icon', href: '/icon.png' }],
+  ],
   themeConfig: {
+    logo: '/logo.svg',
     repo: 'lgraziani2712/validate-me',
     editLinks: true,
     editLinkText: 'Help us improve this page!',
