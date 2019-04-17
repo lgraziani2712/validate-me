@@ -1,4 +1,4 @@
-<h1>
+<h1 style="text-align: center;">
   <img
     src="./docs/.vuepress/public/logo.svg"
     alt="Validate-me"

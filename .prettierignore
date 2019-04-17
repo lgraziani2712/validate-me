@@ -10,6 +10,8 @@ node_modules
 .cache-loader
 .jest-cache
 *.styl
+*.png
+*.svg
 
 # testing
 coverage
