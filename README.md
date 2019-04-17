@@ -1,4 +1,10 @@
-# validate-me
+<h1>
+  <img
+    src="./docs/.vuepress/public/logo.svg"
+    alt="Validate-me"
+    height="128px"
+  />
+</h1>
 
 [![CircleCI](https://circleci.com/gh/lgraziani2712/validate-me.svg?style=svg)](https://circleci.com/gh/lgraziani2712/validate-me) [![codecov](https://codecov.io/gh/lgraziani2712/validate-me/branch/master/graph/badge.svg)](https://codecov.io/gh/lgraziani2712/validate-me) [![Netlify Status](https://api.netlify.com/api/v1/badges/ab1cf0d4-832f-4058-809a-f42132fe248b/deploy-status)](https://app.netlify.com/sites/validate-me/deploys)
 
