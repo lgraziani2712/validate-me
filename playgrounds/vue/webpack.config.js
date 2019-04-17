@@ -6,7 +6,6 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const removeVueAttrPlugin = require('./removeVueAttrPlugin');
 
 let plugins = [new VueLoaderPlugin()];
-
 let modules = [];
 
 if (process.env.NODE_ENV === 'production') {

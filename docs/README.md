@@ -4,11 +4,6 @@ heroImage: /logo.svg
 heroAlt: Validate-me logo
 actionText: Guides →
 actionLink: /guides/
-meta:
-  - name: og:title
-    content: Validate-me
-  - name: og:description
-    content: Extensible & Blazing fast validation library
 footer: MIT Licensed | Copyright © 2018-present Luciano Graziani
 features:
   - title: ⚡️ Blazing fast

@@ -1,20 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>@validate-me</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>@validate-me</title>
-</head>
-
-<body>
-  <form id="form">
-    <input type="text" name="name">
-    <div class="label"></div>
-    <button id="submit">Submit</button>
-    <div id="result"></div>
-  </form>
-</body>
-<script src="/bundle.js"></script>
+  <body>
+    <form id="form">
+      <!-- START name -->
+      <label id="name">
+        <h3>Name</h3>
+        <input name="name" pattern="\D+" required />
+        <p style="min-height: 1.15em">
+          <span class="error" style="color: red"></span>
+          <span class="warning" style="color: orange"></span>
+        </p>
+      </label>
+      <!-- END Name -->
+      <!-- START Age -->
+      <label id="age">
+        <h3>Age</h3>
+        <input name="age" type="number" min="10" max="28" required />
+        <p style="min-height: 1.15em">
+          <span class="error" style="color: red"></span>
+          <span class="warning" style="color: orange"></span>
+        </p>
+      </label>
+      <!-- END Age -->
+      <!-- START Ok -->
+      <div id="ok">
+        <label><input name="ok" type="checkbox" checked /> Ok?</label>
+        <p style="min-height: 1.15em">
+          <span class="error" style="color: red"></span>
+          <span class="warning" style="color: orange"></span>
+        </p>
+      </div>
+      <!-- END Ok -->
+      <!-- START ides -->
+      <label id="ides">
+        <h3>What IDE do you like?</h3>
+        <div class="options" data-name="ides" data-type="checkbox"></div>
+        <p style="min-height: 1.15em">
+          <span class="error" style="color: red"></span>
+          <span class="warning" style="color: orange"></span>
+        </p>
+      </label>
+      <!-- END ides -->
+      <!-- START job -->
+      <label id="job">
+        <h3>What job would you prefer?</h3>
+        <div class="options" data-name="job" data-type="radio"></div>
+        <p style="min-height: 1.15em">
+          <span class="error" style="color: red"></span>
+          <span class="warning" style="color: orange"></span>
+        </p>
+      </label>
+      <!-- END job -->
+      <!-- START DateTime -->
+      <label id="datetime">
+        <h3>What date-time is it?</h3>
+        <input
+          name="datetime"
+          type="datetime-local"
+          min="2019-01-01T08:30"
+          max="2019-04-01T08:30"
+          value="2019-01-01T08:30"
+        />
+        <p style="min-height: 1.15em">
+          <span class="error" style="color: red"></span>
+          <span class="warning" style="color: orange"></span>
+        </p>
+      </label>
+      <!-- END DateTime -->
+      <!-- START Time -->
+      <label id="time">
+        <h3>At what time did you have gotten up from bed?</h3>
+        <input name="time" min="00:03" max="23:57" type="time" value="23:57" />
+        <p style="min-height: 1.15em">
+          <span class="error" style="color: red"></span>
+          <span class="warning" style="color: orange"></span>
+        </p>
+      </label>
+      <!-- END Time -->
+      <!-- START Date -->
+      <label id="date">
+        <h3>What is your birth date?</h3>
+        <input
+          name="date"
+          type="date"
+          min="1989-01-01"
+          max="2020-12-31"
+          value="2020-12-31"
+          required
+        />
+        <p style="min-height: 1.15em">
+          <span class="error" style="color: red"></span>
+          <span class="warning" style="color: orange"></span>
+        </p>
+      </label>
+      <!-- END Date -->
+      <!-- START emails -->
+      <label id="emails">
+        <h3>Emails</h3>
+        <input name="emails" type="email" pattern=".+@gmail\.com" multiple />
+        <p style="min-height: 1.15em">
+          <span class="error" style="color: red"></span>
+          <span class="warning" style="color: orange"></span>
+        </p>
+      </label>
+      <!-- END emails -->
+      <!-- START color -->
+      <label id="color">
+        <h3>Gimme colors!</h3>
+        <input name="color" type="color" />
+        <p style="min-height: 1.15em">
+          <span class="error" style="color: red"></span>
+          <span class="warning" style="color: orange"></span>
+        </p>
+      </label>
+      <!-- END color -->
+      <!-- START Experience -->
+      <label id="experience">
+        <h3>From 0 to 10, how much experience do you think you have?</h3>
+        <input name="experience" type="range" min="0" max="10" />
+        <p style="min-height: 1.15em">
+          <span class="error" style="color: red"></span>
+          <span class="warning" style="color: orange"></span>
+        </p>
+      </label>
+      <!-- END Experience -->
+      <button id="submit">Submit</button>
+    </form>
+  </body>
+  <script src="/bundle.js"></script>
 </html>
