@@ -12,7 +12,6 @@ export const onModNotFound = callback => err => {
 
 // Dev/Test only
 let toCall = true;
-
 /**
  * @type {ClientRuleHandler} client handler
  * @return {ModulePromise} Returns a validator

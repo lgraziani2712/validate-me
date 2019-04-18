@@ -6,6 +6,16 @@ module.exports = {
   head: [
     ['link', { rel: 'icon', href: '/icon.svg' }],
     ['link', { rel: 'icon', href: '/icon.png' }],
+    ['meta', { property: 'og:title', content: 'Validate-me' }],
+    ['meta', { property: 'og:site_name', content: 'Validate-me' }],
+    [
+      'meta',
+      {
+        property: 'og:description',
+        content: 'Extensible & Blazing fast validation library',
+      },
+    ],
+    ['meta', { property: 'og:image', content: '/icon.svg' }],
   ],
   themeConfig: {
     logo: '/logo.svg',

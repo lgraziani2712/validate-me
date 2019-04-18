@@ -2,7 +2,6 @@ import { onModNotFound } from './rules';
 
 // Dev/Test only
 let toCall = true;
-
 /**
  * @type {ClientRuleHandler} client handler
  * @return {ModulePromise} Returns a validator
@@ -19,7 +18,6 @@ let clientHandler = () => {
 
   return Promise.reject();
 };
-
 let lang = 'en';
 const dictionary = { en: {} };
 const extras = {};

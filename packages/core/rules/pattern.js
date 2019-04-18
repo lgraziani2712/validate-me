@@ -1,8 +1,11 @@
 const pattern = (pattern, flags, type) => {
-  const regex = new RegExp(
-    type !== 'mul' ? `^${pattern}$` : `^${pattern}(,${pattern},?)*$`,
-    flags,
-  );
+  const regex =
+    typeof pattern === 'string'
+      ? new RegExp(
+          type !== 'mul' ? `^${pattern}$` : `^${pattern}(,${pattern},?)*$`,
+          flags,
+        )
+      : pattern;
 
   return regex.test.bind(regex);
 };

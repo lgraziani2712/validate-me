@@ -19,7 +19,7 @@ __snapshots__
 
 # production
 temp
-dist
-!dist/index.html
+**/dist/**/*
+!playgrounds/**/dist/index.html
 
 .gitignore

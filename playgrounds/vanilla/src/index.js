@@ -1,39 +1,111 @@
 import Validateme from '@validate-me/vanilla/Validateme';
-import ValidatemeField from '@validate-me/vanilla/ValidatemeField';
 import vanillaConnector from '@validate-me/vanilla';
+
+const inputGetter = element => element.querySelector('input');
+const optionsGetter = element => element.querySelector('.options');
 
 window.addEventListener('load', () => {
   const form = document.getElementById('form');
-  const result = document.getElementById('result');
-  const nameField = new ValidatemeField({
-    name: 'name',
-    rules: [['required'], ['len', '2', '10']],
-  });
-  const nameInput = document.getElementsByName('name')[0];
   const validateme = new Validateme();
+  const connect = vanillaConnector(validateme, element => {
+    const error = element.querySelector('.error');
+    const warn = element.querySelector('.warning');
 
-  vanillaConnector(nameField, validateme, nameInput);
+    return (target, prop, val) => {
+      const touched = target.touched;
+
+      target[prop] = val;
+
+      if (touched && prop === 'error') {
+        error.textContent = val;
+        warn.textContent = val ? '' : target.warning;
+      }
+      if (prop === 'warning') {
+        warn.textContent = target.warning;
+      }
+
+      return true;
+    };
+  });
+
+  connect(
+    document.getElementById('name'),
+    inputGetter,
+  );
+  connect(
+    document.getElementById('age'),
+    inputGetter,
+  );
+  connect(
+    document.getElementById('datetime'),
+    inputGetter,
+  );
+  connect(
+    document.getElementById('time'),
+    inputGetter,
+  );
+  connect(
+    document.getElementById('date'),
+    inputGetter,
+  );
+  connect(
+    document.getElementById('emails'),
+    inputGetter,
+  );
+  connect(
+    document.getElementById('color'),
+    inputGetter,
+  );
+  connect(
+    document.getElementById('experience'),
+    inputGetter,
+  );
+  connect(
+    document.getElementById('ok'),
+    inputGetter,
+  );
+  connect(
+    document.getElementById('ides'),
+    optionsGetter,
+    undefined,
+    {
+      vscode: 'VSCode',
+      atom: 'Atom',
+      sublime: 'Sublime',
+    },
+    { vscode: true },
+  );
+  connect(
+    document.getElementById('job'),
+    optionsGetter,
+    undefined,
+    {
+      frontend: 'Front-end',
+      backend: 'Back-end',
+      uiUxDesigner: 'UI/UX Designer',
+      dataScientist: 'Data Scientist',
+    },
+    'uiUxDesigner',
+  );
+
   let first = true;
 
   form.addEventListener('submit', evt => {
     evt.preventDefault();
 
-    const success = validateme.validate();
+    const [success, data] = validateme.validate();
 
-    result.innerHTML = `Validation complete: ${
-      success ? 'Success!' : nameField.error || 'Loading messages...'
-    }`;
+    if (!success) {
+      return;
+    }
+    // eslint-disable-next-line no-console
+    console.log('Persisted!', data);
 
-    if (success && first) {
+    if (first) {
       first = false;
-      validateme
-        .process({
-          name: ['unexistingRule'],
-        })
-        .then(() => {
-          result.innerHTML += `\n\nServer response: ${nameField.warning ||
-            'Success!'}`;
-        });
+      validateme.process({
+        name: ['unexistingRule'],
+      });
     }
   });
 });
