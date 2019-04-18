@@ -11,7 +11,9 @@
     "access": "public"
   },
   "files": [
-    "*.js"
+    "index.js",
+    "Validateme.js",
+    "ValidatemeField.js"
   ],
   "keywords": [
     "validation",

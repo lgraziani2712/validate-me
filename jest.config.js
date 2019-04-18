@@ -11,7 +11,7 @@ module.exports = {
   collectCoverageFrom: [
     './packages/**/*.{js,jsx}',
     // FIXME: Remove this filter after adding tests to it
-    '!./packages/(apollo-error-parser|vanilla)/*.{js,jsx}',
+    '!./packages/apollo-error-parser/*.{js,jsx}',
     '!**/.eslintrc.js',
     '!./packages/core/(dictionaries|rules)/**/*.js',
     '!**/node_modules/**',

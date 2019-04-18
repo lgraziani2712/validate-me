@@ -15,7 +15,7 @@ export default class ValidatemeField {
   setRules(rules) {
     this.loading = true;
 
-    processRawRules(
+    return processRawRules(
       rules,
       rules => {
         this.rules = rules;
@@ -57,7 +57,7 @@ export default class ValidatemeField {
     this.value = value;
     const rules = this.rules;
 
-    if (!rules) {
+    if (!rules.length) {
       return;
     }
 

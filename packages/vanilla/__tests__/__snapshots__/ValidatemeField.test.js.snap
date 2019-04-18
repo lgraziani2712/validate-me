@@ -1,0 +1,190 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`vanilla/ValidatemeField Configures a checkbox field and selects it 1`] = `
+ValidatemeField {
+  "error": "The field is required.",
+  "loading": false,
+  "name": "checkbox",
+  "required": true,
+  "rules": Array [
+    Object {
+      "args": Array [],
+      "name": "required",
+      "run": [Function],
+    },
+  ],
+  "touched": true,
+  "value": "",
+  "warning": "",
+}
+`;
+
+exports[`vanilla/ValidatemeField Configures a checkbox field and selects it 2`] = `
+ValidatemeField {
+  "error": "",
+  "loading": false,
+  "name": "checkbox",
+  "required": true,
+  "rules": Array [
+    Object {
+      "args": Array [],
+      "name": "required",
+      "run": [Function],
+    },
+  ],
+  "touched": true,
+  "value": true,
+  "warning": "",
+}
+`;
+
+exports[`vanilla/ValidatemeField Configures a checkbox list and checks every option 1`] = `
+ValidatemeField {
+  "error": "",
+  "name": "ides",
+  "required": undefined,
+  "rules": Array [],
+  "touched": true,
+  "value": Object {
+    "atom": true,
+    "vscode": true,
+  },
+  "warning": "",
+}
+`;
+
+exports[`vanilla/ValidatemeField Configures a number field and sets a value bigger than its max 1`] = `
+ValidatemeField {
+  "error": "",
+  "loading": false,
+  "name": "number",
+  "required": false,
+  "rules": Array [
+    Object {
+      "args": Array [],
+      "name": "number",
+      "run": [Function],
+    },
+    Object {
+      "args": Array [
+        "1",
+      ],
+      "name": "min",
+      "run": [Function],
+    },
+    Object {
+      "args": Array [
+        "5",
+      ],
+      "name": "max",
+      "run": [Function],
+    },
+  ],
+  "touched": true,
+  "value": "",
+  "warning": "",
+}
+`;
+
+exports[`vanilla/ValidatemeField Configures a number field and sets a value bigger than its max 2`] = `
+ValidatemeField {
+  "error": "It must be less or equal than \\"5\\".",
+  "loading": false,
+  "name": "number",
+  "required": false,
+  "rules": Array [
+    Object {
+      "args": Array [],
+      "name": "number",
+      "run": [Function],
+    },
+    Object {
+      "args": Array [
+        "1",
+      ],
+      "name": "min",
+      "run": [Function],
+    },
+    Object {
+      "args": Array [
+        "5",
+      ],
+      "name": "max",
+      "run": [Function],
+    },
+  ],
+  "touched": true,
+  "value": "15",
+  "warning": "",
+}
+`;
+
+exports[`vanilla/ValidatemeField Configures a radio list and selects one option 1`] = `
+ValidatemeField {
+  "error": "",
+  "name": "ide",
+  "required": undefined,
+  "rules": Array [],
+  "value": "vscode",
+  "warning": "",
+}
+`;
+
+exports[`vanilla/ValidatemeField Configures a text input and updates its value 1`] = `
+ValidatemeField {
+  "error": "",
+  "loading": false,
+  "name": "text",
+  "required": true,
+  "rules": Array [
+    Object {
+      "args": Array [],
+      "name": "required",
+      "run": [Function],
+    },
+    Object {
+      "args": Array [
+        "\\\\D+",
+      ],
+      "name": "pattern",
+      "run": [Function],
+    },
+    Object {
+      "args": Array [
+        "1",
+        "5",
+      ],
+      "name": "len",
+      "run": [Function],
+    },
+  ],
+  "value": "a",
+  "warning": "",
+}
+`;
+
+exports[`vanilla/ValidatemeField Rehidrates an input with invalid data and touches it 1`] = `
+ValidatemeField {
+  "error": "Must match the following pattern: \\\\D+",
+  "loading": false,
+  "name": "text",
+  "required": true,
+  "rules": Array [
+    Object {
+      "args": Array [],
+      "name": "required",
+      "run": [Function],
+    },
+    Object {
+      "args": Array [
+        "\\\\D+",
+      ],
+      "name": "pattern",
+      "run": [Function],
+    },
+  ],
+  "touched": true,
+  "value": "a2 wsa2",
+  "warning": "",
+}
+`;

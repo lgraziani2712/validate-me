@@ -1,22 +1,72 @@
 import Validateme from '@validate-me/vanilla/Validateme';
 import vanillaConnector from '@validate-me/vanilla';
 
+const inputGetter = element => element.querySelector('input');
+const optionsGetter = element => element.querySelector('.options');
+
 window.addEventListener('load', () => {
   const form = document.getElementById('form');
   const validateme = new Validateme();
+  const connect = vanillaConnector(validateme, element => {
+    const error = element.querySelector('.error');
+    const warn = element.querySelector('.warning');
 
-  vanillaConnector(validateme, document.getElementById('name'));
-  vanillaConnector(validateme, document.getElementById('age'));
-  vanillaConnector(validateme, document.getElementById('datetime'));
-  vanillaConnector(validateme, document.getElementById('time'));
-  vanillaConnector(validateme, document.getElementById('date'));
-  vanillaConnector(validateme, document.getElementById('emails'));
-  vanillaConnector(validateme, document.getElementById('color'));
-  vanillaConnector(validateme, document.getElementById('experience'));
-  vanillaConnector(validateme, document.getElementById('ok'));
-  vanillaConnector(
-    validateme,
+    return (target, prop, val) => {
+      const touched = target.touched;
+
+      target[prop] = val;
+
+      if (touched && prop === 'error') {
+        error.textContent = val;
+        warn.textContent = val ? '' : target.warning;
+      }
+      if (prop === 'warning') {
+        warn.textContent = target.warning;
+      }
+
+      return true;
+    };
+  });
+
+  connect(
+    document.getElementById('name'),
+    inputGetter,
+  );
+  connect(
+    document.getElementById('age'),
+    inputGetter,
+  );
+  connect(
+    document.getElementById('datetime'),
+    inputGetter,
+  );
+  connect(
+    document.getElementById('time'),
+    inputGetter,
+  );
+  connect(
+    document.getElementById('date'),
+    inputGetter,
+  );
+  connect(
+    document.getElementById('emails'),
+    inputGetter,
+  );
+  connect(
+    document.getElementById('color'),
+    inputGetter,
+  );
+  connect(
+    document.getElementById('experience'),
+    inputGetter,
+  );
+  connect(
+    document.getElementById('ok'),
+    inputGetter,
+  );
+  connect(
     document.getElementById('ides'),
+    optionsGetter,
     undefined,
     {
       vscode: 'VSCode',
@@ -25,9 +75,9 @@ window.addEventListener('load', () => {
     },
     { vscode: true },
   );
-  vanillaConnector(
-    validateme,
+  connect(
     document.getElementById('job'),
+    optionsGetter,
     undefined,
     {
       frontend: 'Front-end',

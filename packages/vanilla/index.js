@@ -12,65 +12,38 @@ function handleValue(field, type, options) {
           ...field.value,
           [target.defaultValue]: target.checked,
         })
-    : ({ target }) => field.run(target[prop]);
+    : ({ target }) => {
+        field.run(target[prop]);
+      };
 }
-/**
- * @param {HTMLElement} error Span
- * @param {HTMLElement} warn Span
- * @return {ProxyHandler} Proxy handler
- */
-const proxyHandler = (error, warn) => ({
-  set(target, prop, val) {
-    const touched = target.touched;
 
-    target[prop] = val;
-
-    if (touched && prop === 'error') {
-      error.textContent = val;
-      warn.textContent = val ? '' : target.warning;
-    }
-    if (prop === 'warning') {
-      warn.textContent = target.warning;
-    }
-
-    return true;
-  },
-});
 const oncePassive = { once: true, passive: true };
 const passive = { passive: true };
-
-/**
- * Connect Validateme to raw html element.
- *
- * @param {Validateme} form The validateme instance.
- * @param {HTMLElement} element The entire element with the input.
- * @param {Array<string[]>} baseRules Extra rules that aren't setted through the input props.
- * @param {Object} [options] Possible options for checkbox lists, & radios.
- * @param {Object} [values] Possible values for checkbox lists, & radios.
- * @return {void}
- */
-export default function vanillaConnector(
-  form,
+const vanillaConnector = (form, proxySetter) => (
   element,
+  inputGetter,
   baseRules,
   options,
   values,
-) {
+) => {
   if (options) {
-    return listBuilder(form, element, options, values || {});
+    return listBuilder(
+      form,
+      proxySetter,
+      inputGetter,
+      element,
+      options,
+      values || {},
+    );
   }
-
-  const input = element.querySelector('input');
+  const input = inputGetter(element);
   const field = new Proxy(
     new ValidatemeField(
       input.name,
       input.type === 'checkbox' ? input.checked : input.value,
       input.required,
     ),
-    proxyHandler(
-      element.querySelector('.error'),
-      element.querySelector('.warning'),
-    ),
+    { set: proxySetter(element) },
   );
   const rules = getRules(input.type, input);
 
@@ -84,10 +57,12 @@ export default function vanillaConnector(
     handleValue(field, input.type, options),
     passive,
   );
-}
 
-function listBuilder(form, element, options, values = {}) {
-  const optionsHtml = element.querySelector('.options');
+  return field;
+};
+
+function listBuilder(form, proxySetter, inputGetter, element, options, values) {
+  const optionsHtml = inputGetter(element);
   const name = optionsHtml.getAttribute('data-name');
   const type = optionsHtml.getAttribute('data-type');
   const [labels, inputs] = Object.keys(options).reduce(
@@ -111,13 +86,9 @@ function listBuilder(form, element, options, values = {}) {
   );
 
   optionsHtml.append(...labels);
-  const field = new Proxy(
-    new ValidatemeField(name, values),
-    proxyHandler(
-      element.querySelector('.error'),
-      element.querySelector('.warning'),
-    ),
-  );
+  const field = new Proxy(new ValidatemeField(name, values), {
+    set: proxySetter(element),
+  });
 
   form.setField(field);
 
@@ -125,4 +96,8 @@ function listBuilder(form, element, options, values = {}) {
     input.addEventListener('blur', () => field.touch(), oncePassive);
     input.addEventListener('input', handleValue(field, type, options), passive);
   });
+
+  return field;
 }
+
+export default vanillaConnector;
